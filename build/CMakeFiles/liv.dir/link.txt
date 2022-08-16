@@ -1,0 +1,1 @@
+/usr/bin/g++ -O3 -rdynamic CMakeFiles/liv.dir/main.cpp.o CMakeFiles/liv.dir/src/Lib/Utils/src/Utils.cpp.o CMakeFiles/liv.dir/src/Compilers/Armavir/src/Lexer.cpp.o CMakeFiles/liv.dir/src/Compilers/Armavir/src/Analyzer.cpp.o CMakeFiles/liv.dir/src/Compilers/Armavir/src/FunctionDefinition.cpp.o -o liv 

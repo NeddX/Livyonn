@@ -1,0 +1,4 @@
+fn Entry(int argc, char argv)
+{
+    printline("I was trying to fix a fucking bug for the {0} time", 1 - 1);
+}

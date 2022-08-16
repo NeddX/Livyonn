@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "optional": "cpp",
+        "stdexcept": "cpp",
+        "ostream": "cpp",
+        "exception": "cpp",
+        "iostream": "cpp"
+    },
+    "C_Cpp.default.configurationProvider": "ms-vscode.makefile-tools"
+}
