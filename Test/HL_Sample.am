@@ -1,4 +1,4 @@
-fn Entry(int argc, char argv)
+fn Entry(var argc, var argv)
 {
-    printline("I was trying to fix a fucking bug for the {0} time", 1 - 1);
+    printline("sup fucker! 10 - 6 * (3 + 2) is ", 10 - 6 * (3 + 2));
 }
