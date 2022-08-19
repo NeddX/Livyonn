@@ -10,7 +10,7 @@ set(CMAKE_CXX_FLAGS_DEBUG "-O3")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 
 add_executable(liv 
-main.cpp
+src/main.cpp
 src/Lib/src/Utils.cpp
 src/Analyzer/Armavir/src/Lexer.cpp
 src/Analyzer/Armavir/src/Analyzer.cpp

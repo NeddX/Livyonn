@@ -4,10 +4,10 @@
 #include <optional>
 #include <cstdlib>
 
-#include "src/Lib/include/Define.h"
-#include "src/Lib/include/Utils.h"
-#include "src/Analyzer/Armavir/include/Analyzer.h"
-#include "src/Compilers/AVM/include/AVM.h"
+#include "Lib/include/Define.h"
+#include "Lib/include/Utils.h"
+#include "Analyzer/Armavir/include/Analyzer.h"
+#include "Compilers/AVM/include/AVM.h"
 
 //\ |
 
