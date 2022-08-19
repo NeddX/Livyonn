@@ -18,7 +18,7 @@ int main(int argc, char** argv)
 {
     try
     {
-        std::optional<std::string> src = ReadToString("/home/nedd/source/repos/Livyonn/Test/HL_Sample.am");
+        std::optional<std::string> src = ReadToString("/home/nedd/source/repos/Livyonn/Test/HL_Sample.arm");
         if (!src.has_value()) throw runtime_error(string("Failed to open source file."));
 
         // Analyzer an;

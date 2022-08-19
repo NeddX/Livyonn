@@ -4,32 +4,45 @@ namespace avm
 {
     InstHandler handlers[] =
     {
+        EndHandler,
         PushHandler,
+        PopHandler,
         AddHandler,
-        AddSHandler,
-        AddRHandler,
+        SubHandler,
+        MulHandler,
+        DivHandler,
         PrintIntHandler,
         PrintHandler,
         CompIntLTHandler,
         CompIntETHandler,
-        SaveIntHandler,
-        LoadIntHandler,
+        ComptIntGTHandler,
         MoveHandler,
+        MoveSHandler,
         JumpHandler,
-        JumpLTHandler,
-        JumpETHandler,
-        JumpRelativeHandler,
+        ConditionalJumpHandler,
+        CallHandler,
+        ReturnHandler
         
-        EndHandler
     };
 
-    void Runtime::Run(Instruction* bytecode)
+    void Runtime::Run(Instruction* bytecode, int64_t& result, optional<ByteBuffer> args)
     {
         Runtime r(bytecode);
+        
+        r.stack.Reserve(1024);
+        r.stack.Write64(r.baseIndex); 
+        r.baseIndex = r.stack.Size();
+        r.stack.Write64(0);
+
+        if (args) r.stack.InsertBack(*args);
+
         while (r.pc != nullptr) 
-        {
             handlers[r.pc->opcode](r);
-        }
+
+        size_t argc = args->Size();
+        r.stack.RemoveRange(0, argc);
+
+        result = r.regs[FNR];
     }
 
     // End Instruction handler. Simply ends the runtime.
@@ -41,124 +54,101 @@ namespace avm
     // Push instruction handler. Pushes a value to the stack.
     void PushHandler(Runtime& r)
     {
-        if (r.pc->reg1 == NUL) r.stack.Write64(r.pc->p3);
-        else r.stack.Write64(r.regs[r.pc->reg1]);
+        if (r.pc->reg1 != NUL) r.stack.Write64(r.regs[r.pc->reg1]);
+        else r.stack.Write64(r.pc->p3);
+        r.pc++;
+    }
+
+    void PopHandler(Runtime& r)
+    {
+        r.stack.Pop64();
         r.pc++;
     }
 
     // Add instruction handler. Adds two numbers together.
     void AddHandler(Runtime& r)
     {
-        uint64_t rhv, lhv;
-        if (r.pc->reg1 == NUL && r.pc->reg2 == NUL) 
-        {
-            rhv = r.stack.Read64();
-            lhv = r.stack.Read64();
-            r.stack.Write64(lhv + rhv);
-        }    
-        else
-        {
-            if (r.pc->reg1 != NUL) rhv = r.regs[r.pc->reg1];
-            else rhv = r.stack.Read64();
-            if (r.pc->reg2 != NUL) lhv = r.regs[r.pc->reg2];
-            else lhv = r.pc->p3;
-            r.regs[r.pc->reg1] = rhv + lhv;
-        }
-        r.pc++;
-    }
-
-    void AddSHandler(Runtime& r)
-    {
-        uint64_t rhv, lhv;
-        rhv = r.stack.Read64();
-        lhv = r.stack.Read64();
-        r.stack.Write64(lhv + rhv);
-        r.pc++;
-    }
-
-    void AddRHandler(Runtime& r)
-    {
-        uint64_t rhv, lhv;
+        int64_t rhv, lhv;
         rhv = r.regs[r.pc->reg1];
-        if (r.pc->reg2 != NUL) lhv = r.pc->reg2;
+        if (r.pc->reg2 != NUL) lhv = r.regs[r.pc->reg2];
         else lhv = r.pc->p3;
         r.regs[r.pc->reg1] = rhv + lhv;
         r.pc++;
     }
 
+    void SubHandler(Runtime& r)
+    {
+        int64_t rhv, lhv;
+        rhv = r.regs[r.pc->reg1];
+        if (r.pc->reg2 != NUL) lhv = r.regs[r.pc->reg2];
+        else lhv = r.pc->p3;
+        r.regs[r.pc->reg1] = rhv - lhv;
+        r.pc++;
+    }
+
+    void MulHandler(Runtime& r)
+    {
+        int64_t rhv, lhv;
+        rhv = r.regs[r.pc->reg1];
+        if (r.pc->reg2 != NUL) lhv = r.regs[r.pc->reg2];
+        else lhv = r.pc->p3;
+        r.regs[r.pc->reg1] = rhv * lhv;
+        r.pc++;
+    }
+
+    void DivHandler(Runtime& r)
+    {
+        int64_t rhv, lhv;
+        rhv = r.regs[r.pc->reg1];
+        if (r.pc->reg2 != NUL) lhv = r.regs[r.pc->reg2];
+        else lhv = r.pc->p3;
+        r.regs[r.pc->reg1] = rhv / lhv;
+        r.pc++;
+    }  
+
     // Print Int handler. Prints the last integer in the stack.
     void PrintIntHandler(Runtime& r)
     {
+        //uint64_t ra = r.stack.Read64();
         cout << r.stack.Read64() << endl;
         r.pc++;
     }
 
     void PrintHandler(Runtime& r)
     {
-        if (r.pc->reg1 == NUL && r.pc->reg2 == NUL) 
-        {
-            cout << r.stack.Read64() << endl;
-        }
-        else
-        {
-            if (r.pc->reg1 != NUL) cout << r.regs[r.pc->reg1] << endl;
-            else cout << r.stack.Read64() << endl;
-        }
+        if (r.pc->reg1 != NUL) cout << r.regs[r.pc->reg1] << endl;
+        else cout << r.stack.Read64() << endl;
         r.pc++;
     }
 
     // Compare Int Less Than instruction handler. Compares if int a is less than int b (a < b).
     void CompIntLTHandler(Runtime& r)
     {
-        uint64_t rhv, lhv;
-        if (r.pc->reg1 == NUL && r.pc->reg2 == NUL)
-        {
-            rhv = r.stack.Read64();
-            lhv = r.stack.Read64();
-            r.stack.Write(lhv < rhv);
-        }
-        else
-        {
-            if (r.pc->reg1 != NUL) rhv = r.regs[r.pc->reg1];
-            else rhv = r.stack.Read64();
-            if (r.pc->reg2 != NUL) lhv = r.regs[r.pc->reg2];
-            else lhv = r.stack.Read64();
-
-            r.stack.Write(lhv < rhv);
-        }
+        int64_t rhv, lhv;
+        rhv = r.regs[r.pc->reg1];
+        if (r.pc->reg2 != NUL) lhv = r.regs[r.pc->reg2];
+        else lhv = r.stack.Read64();
+        r.regs[ZF] = rhv < lhv;
         r.pc++;
     }
 
     void CompIntETHandler(Runtime& r)
     {
-        uint64_t rhv, lhv;
-        if (r.pc->reg1 == NUL && r.pc->reg2 == NUL)
-        {
-            rhv = r.stack.Read64();
-            lhv = r.stack.Read64();
-        }
-        else
-        {
-            if (r.pc->reg1 != NUL) rhv = r.regs[r.pc->reg1];
-            else rhv = r.stack.Read64();
-            if (r.pc->reg2 != NUL) lhv = r.regs[r.pc->reg2];
-            else lhv = r.stack.Read64();
-
-        }
-        r.stack.Write(lhv == rhv);
+        int64_t rhv, lhv;
+        rhv = r.regs[r.pc->reg1];
+        if (r.pc->reg2 != NUL) lhv = r.regs[r.pc->reg2];
+        else lhv = r.stack.Read64();
+        r.regs[ZF] = lhv == rhv;//r.stack.Write(lhv == rhv);
         r.pc++;
     }
 
-    void SaveIntHandler(Runtime& r)
+    void ComptIntGTHandler(Runtime& r)
     {
-        r.stack[r.pc->p2] = r.stack.Last();
-        r.stack.Pop();
-        r.pc++;
-    }
-
-    void LoadIntHandler(Runtime& r)
-    {
-        r.stack.Push(r.stack[r.pc->p2]);
+        int64_t rhv, lhv;
+        rhv = r.regs[r.pc->reg1];
+        if (r.pc->reg2 != NUL) lhv = r.regs[r.pc->reg2];
+        else lhv = r.stack.Read64();
+        r.regs[ZF] = rhv > lhv;
         r.pc++;
     }
 
@@ -169,26 +159,37 @@ namespace avm
         r.pc++;
     }
 
+    void MoveSHandler(Runtime& r)
+    {
+        r.regs[r.pc->reg1] = r.stack.Read64();
+        r.pc++;
+    }
+
     void JumpHandler(Runtime& r)
     {
-        if (r.pc->reg1 != NUL) r.pc = &r.bytecode[r.pc->reg1];
+        if (r.pc->reg1 != NUL) r.pc = &r.bytecode[r.regs[r.pc->reg1]];
         else r.pc = &r.bytecode[r.pc->p3];
     }
 
-    void JumpLTHandler(Runtime& r)
+    void ConditionalJumpHandler(Runtime& r)
     {
-        if (r.stack.Read() == 1) JumpHandler(r);
-        else r.pc++;
-    }
-
-    void JumpETHandler(Runtime& r)
-    {
-        if (r.stack.Read() == 1) JumpHandler(r);
+        //
+        if (r.regs[ZF] == 1) JumpHandler(r);
         else r.pc++;    
     }
 
-    void JumpRelativeHandler(Runtime& r)
+    void CallHandler(Runtime& r)
     {
-        r.pc += r.pc->p2;
+        r.stack.Write64(r.baseIndex);
+        r.stack.Write64(reinterpret_cast<int64_t>(r.pc));
+        r.baseIndex = r.stack.Size();
+        r.pc += r.pc->p3;
     }
+
+    void ReturnHandler(Runtime& r)
+    {
+        Instruction* addr = reinterpret_cast<Instruction*>(r.stack.Read64());
+        r.baseIndex = r.stack.Read64();
+        r.pc = addr;
+    }    
 }

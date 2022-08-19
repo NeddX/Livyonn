@@ -8,7 +8,7 @@ fn Entry(var argc, var argv)
     capabilities();
 }
 
-fn capabilities()
+fn capabilities() 
 {
     var str = "declare dynamically typed variables like the toying languages";
     var num = 1;

@@ -8,7 +8,7 @@ make: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Tue Aug 16 04:06:14 2022
+# Make data base, printed on Fri Aug 19 19:33:26 2022
 
 # Variables
 
@@ -51,9 +51,9 @@ XDG_DATA_DIRS = /home/nedd/.local/share/flatpak/exports/share:/var/lib/flatpak/e
 # automatic
 %F = $(notdir $%)
 # environment
-VSCODE_CODE_CACHE_PATH = /home/nedd/.config/Code/CachedData/da76f93349a72022ca4670c1b84860304616aaa2
+VSCODE_CODE_CACHE_PATH = /home/nedd/.config/Code/CachedData/6d9b74a70ca9c7733b29f0456fd8195364076dda
 # environment
-XDG_SESSION_PATH = /org/freedesktop/DisplayManager/Session1
+XDG_SESSION_PATH = /org/freedesktop/DisplayManager/Session2
 # environment
 LANG = C
 # environment
@@ -83,7 +83,7 @@ XDG_CONFIG_DIRS = /home/nedd/.config/kdedefaults:/etc/xdg
 # automatic
 +D = $(patsubst %/,%,$(dir $+))
 # environment
-XCURSOR_THEME = WhiteSur-cursors
+XCURSOR_THEME = Adwaita
 # environment
 XDG_SESSION_DESKTOP = KDE
 # makefile
@@ -91,13 +91,13 @@ MAKEFILE_LIST :=
 # automatic
 @F = $(notdir $@)
 # environment
-VSCODE_PID = 1501
+VSCODE_PID = 1679
 # environment
 XDG_SESSION_TYPE = x11
 # automatic
 ?D = $(patsubst %/,%,$(dir $?))
 # environment
-SESSION_MANAGER = local/Node:@/tmp/.ICE-unix/1111,unix/Node:/tmp/.ICE-unix/1111
+SESSION_MANAGER = local/Node:@/tmp/.ICE-unix/1210,unix/Node:/tmp/.ICE-unix/1210
 # automatic
 *F = $(notdir $*)
 # environment
@@ -163,7 +163,7 @@ XDG_VTNR = 1
 # makefile
 .DEFAULT_GOAL := 
 # environment
-SYSTEMD_EXEC_PID = 982
+SYSTEMD_EXEC_PID = 1076
 # environment
 DISPLAY = :0
 # environment
@@ -183,6 +183,8 @@ LC_PAPER = en_AG
 # environment
 XDG_RUNTIME_DIR = /run/user/1000
 # environment
+D_DISABLE_RT_SCREEN_SCALE = 1
+# environment
 XDG_SESSION_CLASS = user
 # environment
 VSCODE_AMD_ENTRYPOINT = vs/workbench/api/node/extensionHostProcess
@@ -193,7 +195,7 @@ HOME = /home/nedd
 # environment
 ELECTRON_RUN_AS_NODE = 1
 # environment
-VSCODE_IPC_HOOK = /run/user/1000/vscode-ae719b1f-1.70.0-main.sock
+VSCODE_IPC_HOOK = /run/user/1000/vscode-ae719b1f-1.70.1-main.sock
 # environment
 XDG_SESSION_ID = 2
 # environment
@@ -221,7 +223,7 @@ DOTNET_ROOT = /usr/share/dotnet
 # environment
 LC_IDENTIFICATION = en_AG
 # variable set hash-table stats:
-# Load=104/1024=10%, Rehash=0, Collisions=4/131=3%
+# Load=105/1024=10%, Rehash=0, Collisions=4/132=3%
 
 # Pattern-specific Variable Values
 
@@ -229,9 +231,9 @@ LC_IDENTIFICATION = en_AG
 
 # Directories
 
-# . (device 2052, inode 9702340): 10 files, no impossibilities.
+# . (device 2052, inode 9702340): 12 files, no impossibilities.
 
-# 10 files, no impossibilities in 1 directories.
+# 12 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -281,12 +283,12 @@ GNUmakefile:
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 18 / storage = 145 B / avg = 8 B
-# current buf: size = 8162 B / used = 145 B / count = 18 / avg = 8 B
+# strcache buffers: 1 (0) / strings = 20 / storage = 162 B / avg = 8 B
+# current buf: size = 8162 B / used = 162 B / count = 20 / avg = 8 B
 
-# strcache performance: lookups = 21 / hit rate = 14%
+# strcache performance: lookups = 23 / hit rate = 13%
 # hash-table stats:
-# Load=18/8192=0%, Rehash=0, Collisions=0/21=0%
-# Finished Make data base on Tue Aug 16 04:06:14 2022
+# Load=20/8192=0%, Rehash=0, Collisions=0/23=0%
+# Finished Make data base on Fri Aug 19 19:33:26 2022
 
  

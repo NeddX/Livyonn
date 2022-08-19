@@ -48,16 +48,23 @@ namespace avm
         E14,
         E15,
 
+        ZF,
+        FNR,
+        RFR,
+        EFR,
+
         NUL
     };
 
     struct Registers
     {
-
         private:
-            uint64_t buffer[32];
+            uint64_t buffer[NUL] = { 0 };
 
         public:
-            uint64_t &operator[](size_t index);
+            constexpr uint64_t &operator[](size_t index)
+            {
+                return buffer[index];
+            }
     };
 }

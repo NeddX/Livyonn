@@ -19,37 +19,20 @@ namespace avm
         Write32(data >> 32);
     }
 
-    void ByteBuffer::WriteToAddress(int16_t data, int address)
+    void ByteBuffer::WriteToAddress(uint16_t data, int address)
     {
         buffer.push_back(buffer[address]);
     }
 
-    void ByteBuffer::WriteToAddress32(int32_t data, int address)
+    void ByteBuffer::WriteToAddress32(uint32_t data, int address)
     {
 
     }
 
-    void ByteBuffer::WriteToAddress64(int64_t data, int address)
+    void ByteBuffer::WriteToAddress64(uint64_t data, int address)
     {
 
-    }   
-
-    int16_t ByteBuffer::Read()
-    {
-        int16_t data = buffer.back();
-        buffer.pop_back();
-        return data;
-    }
-
-    int32_t ByteBuffer::Read32()
-    {
-        return (static_cast<int32_t>(Read()) << 16) | Read(); // Static cast for stability
-    }
-
-    int64_t ByteBuffer::Read64()
-    {
-        return (static_cast<int64_t>(Read32()) << 32) | Read32(); // Static cast for stability
-    }
+    }       
 
     void ByteBuffer::Pop()
     {
@@ -68,18 +51,24 @@ namespace avm
         Pop32();
     }    
 
-    int16_t& ByteBuffer::operator[](size_t index)
-    {
-        return buffer[index];
-    }
-
-    int16_t ByteBuffer::Last()
-    {
-        return buffer.back();
-    }
-
     void ByteBuffer::Push(int16_t data)
     {
         buffer.push_back(data);
+    }
+
+    void ByteBuffer::InsertBack(ByteBuffer& v)
+    {
+        buffer.insert(buffer.end(), v.buffer.begin(), v.buffer.end());
+    }
+
+    void ByteBuffer::Reserve(size_t size)
+    {
+        buffer.reserve(size);
+    }
+
+    void ByteBuffer::RemoveRange(size_t start, size_t end)
+    {
+        buffer.erase(buffer.begin() + end, buffer.end());
+        buffer.erase(buffer.begin(), buffer.begin() + start);
     }
 }
