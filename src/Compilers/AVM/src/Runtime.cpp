@@ -61,7 +61,28 @@ namespace avm
 
     void PopHandler(Runtime& r)
     {
-        r.stack.Pop64();
+        switch (r.pc->pl)
+        {
+            case 16:
+            {
+                if (r.pc->reg1 != NUL) r.regs[r.pc->reg1] = r.stack.Read();
+                else r.stack.Pop();
+                break;
+            }
+            case 32:
+            {
+                if (r.pc->reg1 != NUL) r.regs[r.pc->reg1] = r.stack.Read32();
+                else r.stack.Pop32();
+                break;
+            }
+            case 64:
+            default:
+            {
+                if (r.pc->reg1 != NUL) r.regs[r.pc->reg1] = r.stack.Read64();
+                else r.stack.Pop64();
+                break;
+            } 
+        }
         r.pc++;
     }
 

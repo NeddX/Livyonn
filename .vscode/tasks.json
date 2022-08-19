@@ -10,7 +10,7 @@
                 "-o",
                 "${workspaceFolder}/bin/Debug/liv",
                 "-g",
-                "${workspaceFolder}/main.cpp",
+                "${workspaceFolder}/src/main.cpp",
                 "${workspaceFolder}/src/Lib/src/Utils.cpp",
                 "${workspaceFolder}/src/Analyzer/Armavir/src/Lexer.cpp",
                 "${workspaceFolder}/src/Analyzer/Armavir/src/Analyzer.cpp",

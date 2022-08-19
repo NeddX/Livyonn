@@ -7,8 +7,8 @@ namespace avm
         using Inst = Instruction;
         Instruction bytecode[]
         {
-            Inst { .opcode = MOV, .reg1 = RAX, .p3 = 0 },            
-            Inst { .opcode = MOV, .reg1 = RBX, .p3 = 3 },
+            Inst { .opcode = MOV, .reg1 = RAX, .p3 = 0 },   
+            Inst { .opcode = POP, .reg1 = RBX },
             Inst { .opcode = PUSH, .reg1 = RAX },
             Inst { .opcode = PRINT_INT }, 
             Inst { .opcode = ADD, .reg1 = RAX, .p3 = 1},
@@ -21,8 +21,8 @@ namespace avm
         };
 
         int64_t result = 0;
-        optional<ByteBuffer> args;
-        args->buffer = { 10 };
+        ByteBuffer args;
+        args.Write64(8667);
         Runtime::Run(bytecode, result, args);
 
         cout << "Return result: " << result << endl;
