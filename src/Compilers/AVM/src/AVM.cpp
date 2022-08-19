@@ -25,6 +25,6 @@ namespace avm
         args->buffer = { 10 };
         Runtime::Run(bytecode, result, args);
 
-        cout << "Result: " << result << endl;
+        cout << "Return result: " << result << endl;
     }    
 }
