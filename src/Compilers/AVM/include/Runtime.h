@@ -25,6 +25,7 @@ namespace avm
     };
 
     // Instruction Handlers    
+    void NopHandler(Runtime& r);
     void EndHandler(Runtime& r);
     void PushHandler(Runtime& r);
     void PopHandler(Runtime& r);
@@ -44,11 +45,14 @@ namespace avm
     void PrintHandler(Runtime& r);
     void CompIntLTHandler(Runtime& r);
     void CompIntETHandler(Runtime& r);
+    void CompIntNEHandler(Runtime& r);
     void ComptIntGTHandler(Runtime& r);
     void MoveHandler(Runtime& r);
     void MoveSHandler(Runtime& r);
     void JumpHandler(Runtime& r);
     void ConditionalJumpHandler(Runtime& r);
+    void RelativeJumpHandler(Runtime& r);
+    void ConditionalRelativeJumpHandler(Runtime& r);
     void CallHandler(Runtime& r);
     void ReturnHandler(Runtime& r);
 

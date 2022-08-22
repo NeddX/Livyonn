@@ -1,0 +1,28 @@
+MOV %RBX, #10
+CALL @l2 
+MOV %FNR, #999
+RETURN   
+
+@l1:
+    CIET %RAX, #0
+    CJRP #3
+    SUB %RAX, #1
+    JMP @l1
+    MOV %FNR, #1
+    PUSH %FNR
+    PINT
+    RETURN
+
+@l2:
+    MOV %RAX, #2
+    PUSH %RBX
+    PINT
+    CIET %RBX, #0
+    CJRP #3
+    CALL @l1
+    SUB %RBX, #1
+    JMP @l2
+    MOV %FNR, #1
+    RETURN
+
+NOP    

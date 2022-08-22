@@ -6,31 +6,40 @@
 
 #include "Lib/include/Define.h"
 #include "Lib/include/Utils.h"
-#include "Analyzer/Armavir/include/Analyzer.h"
+#include "Analyzers/Armavir/include/Analyzer.h"
+#include "Analyzers/AVM/include/Analyzer.h"
 #include "Compilers/AVM/include/AVM.h"
 
 //\ |
 
-using namespace arma;
-using namespace avm;
+using namespace arma; // Armavir Analyzer
+using namespace arba; // Armavir Bytecode Analyzer
+using namespace avm; // Armavir Virtual Machine
 
 int main(int argc, char** argv) 
 {
     try
     {
-        std::optional<std::string> src = ReadToString("/home/nedd/source/repos/Livyonn/Test/HL_Sample.arm");
-        if (!src.has_value()) throw runtime_error(string("Failed to open source file."));
+        std::optional<std::string> hl_src = ReadToString("/home/nedd/source/repos/Livyonn/Test/HL_Sample.arm");
+        if (!hl_src.has_value()) throw runtime_error(string("Failed to open source file."));
+
+        std::optional<std::string> mc_src = ReadToString("/home/nedd/source/repos/Livyonn/Test/MC_Sample.amc");
+        if (!mc_src.has_value()) throw runtime_error(string("Failed to open source file."));
 
         // Analyzer an;
-        // an.StartAnalysis(*src);
+        // an.StartAnalysis(*hl_src);
         // an.DumpTruck(); // debug print
     
-        AVM avm;
-        avm.Start();    
+        AVM avm;  
+
+        arba::Analyzer bca;
+        auto v = bca.StartAnalysis(*mc_src);
+        //cout << NL;
+        avm.Start(v);
     }
     catch (exception& ex)
     {
-        std::cerr << RED << " Error: " << ex.what() << RESET << std::endl;
+        std::cerr << RED << "Error: " << ex.what() << RESET << std::endl;
 
         return 2;
     }

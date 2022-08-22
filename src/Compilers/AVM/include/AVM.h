@@ -13,6 +13,6 @@ namespace avm
     struct AVM
     {
         public:
-            void Start();
+            void Start(vector<Instruction>& bytecode);
     };
 }

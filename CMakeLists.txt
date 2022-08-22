@@ -12,14 +12,16 @@ set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 add_executable(liv 
 src/main.cpp
 src/Lib/src/Utils.cpp
-src/Analyzer/Armavir/src/Lexer.cpp
-src/Analyzer/Armavir/src/Analyzer.cpp
-src/Analyzer/Armavir/src/FunctionDefinition.cpp
-src/Analyzer/Armavir/src/Statement.cpp
+src/Analyzers/Armavir/src/Lexer.cpp
+src/Analyzers/Armavir/src/Analyzer.cpp
+src/Analyzers/Armavir/src/FunctionDefinition.cpp
+src/Analyzers/Armavir/src/Statement.cpp
 src/Compilers/AVM/src/AVM.cpp
 src/Compilers/AVM/src/Runtime.cpp
 src/Compilers/AVM/src/ByteBuffer.cpp
 src/Compilers/AVM/src/Registers.cpp
+src/Analyzers/AVM/src/Analyzer.cpp
+src/Analyzers/AVM/src/Lexer.cpp
 )
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})

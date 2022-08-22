@@ -16,13 +16,17 @@ namespace avm
         CompIntLTHandler,
         CompIntETHandler,
         ComptIntGTHandler,
+        CompIntNEHandler,
         MoveHandler,
         MoveSHandler,
         JumpHandler,
         ConditionalJumpHandler,
+        RelativeJumpHandler,
+        ConditionalRelativeJumpHandler,
         CallHandler,
-        ReturnHandler
+        ReturnHandler,
         
+        NopHandler
     };
 
     void Runtime::Run(Instruction* bytecode, int64_t& result, optional<ByteBuffer> args)
@@ -43,6 +47,11 @@ namespace avm
         r.stack.RemoveRange(0, argc);
 
         result = r.regs[FNR];
+    }
+
+    void NopHandler(Runtime& r)
+    {
+        r.pc++;
     }
 
     // End Instruction handler. Simply ends the runtime.
@@ -131,7 +140,7 @@ namespace avm
     void PrintIntHandler(Runtime& r)
     {
         //uint64_t ra = r.stack.Read64();
-        cout << r.stack.Read64() << endl;
+        cout << r.stack.Read64() << NL;
         r.pc++;
     }
 
@@ -148,7 +157,7 @@ namespace avm
         int64_t rhv, lhv;
         rhv = r.regs[r.pc->reg1];
         if (r.pc->reg2 != NUL) lhv = r.regs[r.pc->reg2];
-        else lhv = r.stack.Read64();
+        else lhv = r.pc->p3;
         r.regs[ZF] = rhv < lhv;
         r.pc++;
     }
@@ -158,8 +167,18 @@ namespace avm
         int64_t rhv, lhv;
         rhv = r.regs[r.pc->reg1];
         if (r.pc->reg2 != NUL) lhv = r.regs[r.pc->reg2];
-        else lhv = r.stack.Read64();
+        else lhv = r.pc->p3;
         r.regs[ZF] = lhv == rhv;//r.stack.Write(lhv == rhv);
+        r.pc++;
+    }
+
+    void CompIntNEHandler(Runtime& r)
+    {
+        int64_t rhv, lhv;
+        rhv = r.regs[r.pc->reg1];
+        if (r.pc->reg2 != NUL) lhv = r.regs[r.pc->reg2];
+        else lhv = r.stack.Read64();
+        r.regs[ZF] = lhv != rhv;//r.stack.Write(lhv == rhv);
         r.pc++;
     }
 
@@ -168,7 +187,7 @@ namespace avm
         int64_t rhv, lhv;
         rhv = r.regs[r.pc->reg1];
         if (r.pc->reg2 != NUL) lhv = r.regs[r.pc->reg2];
-        else lhv = r.stack.Read64();
+        else lhv = r.pc->p3;
         r.regs[ZF] = rhv > lhv;
         r.pc++;
     }
@@ -186,6 +205,18 @@ namespace avm
         r.pc++;
     }
 
+    void RelativeJumpHandler(Runtime& r)
+    {
+        if (r.pc->reg1 != NUL) r.pc += r.regs[r.pc->reg1];
+        else r.pc += r.pc->p3;
+    }
+
+    void ConditionalRelativeJumpHandler(Runtime& r)
+    {
+        if (r.regs[ZF] == 1) RelativeJumpHandler(r);
+        else r.pc++;    
+    }
+
     void JumpHandler(Runtime& r)
     {
         if (r.pc->reg1 != NUL) r.pc = &r.bytecode[r.regs[r.pc->reg1]];
@@ -194,7 +225,6 @@ namespace avm
 
     void ConditionalJumpHandler(Runtime& r)
     {
-        //
         if (r.regs[ZF] == 1) JumpHandler(r);
         else r.pc++;    
     }
@@ -202,9 +232,9 @@ namespace avm
     void CallHandler(Runtime& r)
     {
         r.stack.Write64(r.baseIndex);
-        r.stack.Write64(reinterpret_cast<int64_t>(r.pc));
+        r.stack.Write64(reinterpret_cast<int64_t>(r.pc + 1));
         r.baseIndex = r.stack.Size();
-        r.pc += r.pc->p3;
+        JumpHandler(r);
     }
 
     void ReturnHandler(Runtime& r)

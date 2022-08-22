@@ -12,14 +12,16 @@
                 "-g",
                 "${workspaceFolder}/src/main.cpp",
                 "${workspaceFolder}/src/Lib/src/Utils.cpp",
-                "${workspaceFolder}/src/Analyzer/Armavir/src/Lexer.cpp",
-                "${workspaceFolder}/src/Analyzer/Armavir/src/Analyzer.cpp",
-                "${workspaceFolder}/src/Analyzer/Armavir/src/FunctionDefinition.cpp",
-                "${workspaceFolder}/src/Analyzer/Armavir/src/Statement.cpp",
+                "${workspaceFolder}/src/Analyzers/Armavir/src/Lexer.cpp",
+                "${workspaceFolder}/src/Analyzers/Armavir/src/Analyzer.cpp",
+                "${workspaceFolder}/src/Analyzers/Armavir/src/FunctionDefinition.cpp",
+                "${workspaceFolder}/src/Analyzers/Armavir/src/Statement.cpp",
                 "${workspaceFolder}/src/Compilers/AVM/src/AVM.cpp",
                 "${workspaceFolder}/src/Compilers/AVM/src/Runtime.cpp",
                 "${workspaceFolder}/src/Compilers/AVM/src/ByteBuffer.cpp",
-                "${workspaceFolder}/src/Compilers/AVM/src/Registers.cpp"
+                "${workspaceFolder}/src/Compilers/AVM/src/Registers.cpp",
+                "${workspaceFolder}/src/Analyzers/AVM/src/Analyzer.cpp",
+                "${workspaceFolder}/src/Analyzers/AVM/src/Lexer.cpp"
             ],
             "options": {
                 "cwd": "${fileDirname}"
