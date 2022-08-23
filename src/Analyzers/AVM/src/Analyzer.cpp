@@ -2,7 +2,7 @@
 
 namespace arba
 {
-    vector<Instruction> Analyzer::StartAnalysis(const string& src)
+    ByteCode Analyzer::StartAnalysis(const string& src)
     {
         vector<Token> tokens = Lexer::Lex(src);
         //for (auto& t : tokens) t.TDumpTruck(); // debug print
@@ -10,7 +10,7 @@ namespace arba
         return Analyze(tokens);
     }
 
-    vector<Instruction> Analyzer::Analyze(vector<Token>& tokens)
+    ByteCode Analyzer::Analyze(const vector<Token>& tokens)
     {
         Instruction* inst = new Instruction(); // Is this stupid? Dunno. Maybe? But it works right?  
         vector<Instruction> bytecode;
@@ -19,10 +19,8 @@ namespace arba
         for (auto& l : tokens)
         {
             if (l.type == INST) i++;
-            else if (l.type == LABEL_DEFINITION) 
-                labelAddresses[l.text] = i;
+            else if (l.type == LABEL_DEFINITION) labelAddresses[l.text] = i;
         }
-        i = 0;
         for (auto& t : tokens)
         {
             switch (t.type)
@@ -56,15 +54,15 @@ namespace arba
                     break;
                 }
             }
-            i++;
         }
+        bytecode.push_back(*inst); 
 
         // for (auto& e : bytecode)
         // {
             // cout << "INST: " << opcodeType[e.opcode] << " reg1: " << regType[e.reg1] << " reg2: " << regType[e.reg2] << " p3: " << e.p3 << NL;
         // }
 
-        delete inst; // O.O
+        delete inst;
         return bytecode;
     }
 }

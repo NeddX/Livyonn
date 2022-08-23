@@ -8,11 +8,11 @@
 
 namespace avm
 {
-    using namespace std;
+    using namespace std;    
 
     struct AVM
     {
         public:
-            void Start(vector<Instruction>& bytecode);
+            void Start(vector<Instruction>& bytecode, optional<vector<string>> args = nullopt);
     };
 }

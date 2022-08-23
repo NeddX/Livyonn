@@ -73,4 +73,6 @@ namespace avm
         int16_t p2 = 0;
         int64_t p3 = 0;
     };    
+
+    typedef vector<Instruction> ByteCode;
 }

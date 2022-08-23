@@ -2,7 +2,7 @@
 
 namespace avm
 {
-    void AVM::Start(vector<Instruction>& bytecode)
+    void AVM::Start(ByteCode& bytecode, optional<vector<string>> args)
     {
         // using Inst = Instruction;
         // Instruction bytecode[]
@@ -31,10 +31,9 @@ namespace avm
         // };
 
         int64_t result = 0;
-        //ByteBuffer args;
-        //args.Write64(30);
-        //args.Write64(9999);
-        Runtime::Run(bytecode.data(), result);
+        ByteBuffer bargs;
+        if (args) for (auto& e : *args) bargs.Write64(stoi(e));
+        Runtime::Run(bytecode.data(), result, bargs);
 
         cout << "Return result: " << result << endl;
     }    

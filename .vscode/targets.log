@@ -1,4 +1,6 @@
 make all --print-data-base --no-builtin-variables --no-builtin-rules --question
+make: *** No rule to make target 'all'.  Stop.
+
 # GNU Make 4.3
 # Built for x86_64-pc-linux-gnu
 # Copyright (C) 1988-2020 Free Software Foundation, Inc.
@@ -6,7 +8,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Mon Aug 22 20:08:35 2022
+# Make data base, printed on Tue Aug 23 23:37:33 2022
 
 # Variables
 
@@ -89,13 +91,13 @@ MAKEFILE_LIST :=
 # automatic
 @F = $(notdir $@)
 # environment
-VSCODE_PID = 2378
+VSCODE_PID = 2406
 # environment
 XDG_SESSION_TYPE = x11
 # automatic
 ?D = $(patsubst %/,%,$(dir $?))
 # environment
-SESSION_MANAGER = local/Node:@/tmp/.ICE-unix/1205,unix/Node:/tmp/.ICE-unix/1205
+SESSION_MANAGER = local/Node:@/tmp/.ICE-unix/1204,unix/Node:/tmp/.ICE-unix/1204
 # automatic
 *F = $(notdir $*)
 # environment
@@ -161,7 +163,7 @@ XDG_VTNR = 1
 # makefile
 .DEFAULT_GOAL := 
 # environment
-SYSTEMD_EXEC_PID = 1072
+SYSTEMD_EXEC_PID = 1071
 # environment
 DISPLAY = :0
 # environment
@@ -281,15 +283,12 @@ GNUmakefile:
 
 # No general ('VPATH' variable) search path.
 
- 
-make: *** No rule to make target 'all'.  Stop.
-
 # strcache buffers: 1 (0) / strings = 21 / storage = 174 B / avg = 8 B
 # current buf: size = 8162 B / used = 174 B / count = 21 / avg = 8 B
 
 # strcache performance: lookups = 24 / hit rate = 12%
 # hash-table stats:
 # Load=21/8192=0%, Rehash=0, Collisions=0/24=0%
-# Finished Make data base on Mon Aug 22 20:08:35 2022
+# Finished Make data base on Tue Aug 23 23:37:33 2022
 
  

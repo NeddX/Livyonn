@@ -18,6 +18,6 @@ namespace arba
             vector<Instruction> StartAnalysis(const string& src);
 
         private:
-            vector<Instruction> Analyze(vector<Token>& tokens);    
+            vector<Instruction> Analyze(const vector<Token>& tokens);    
     };
 }
