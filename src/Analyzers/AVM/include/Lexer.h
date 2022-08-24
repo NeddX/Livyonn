@@ -6,7 +6,7 @@
 #include <vector>
 
 #include "../../../Lib/include/Define.h"
-#include "../../../Compilers/AVM/include/AVM.h"
+#include "../../../Runtime/AVM/include/AVM.h"
 
 namespace arba
 {
@@ -54,5 +54,5 @@ namespace arba
 
     void EndToken(Token& t, vector<Token>& tokens);
     OpCode GetInst(string& inst);
-    Regs64 GetReg(string& reg);
+    Regs GetReg(string& reg);
 }

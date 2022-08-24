@@ -17,6 +17,7 @@ namespace avm
             Instruction* bytecode;
             Instruction* pc;
             ByteBuffer stack;
+            vector<Instruction*> returnAddressStack;
             size_t baseIndex;
             Registers regs;
 

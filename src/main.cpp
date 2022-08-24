@@ -11,7 +11,7 @@
 #include "Lib/include/Utils.h"
 #include "Analyzers/Armavir/include/Analyzer.h"
 #include "Analyzers/AVM/include/Analyzer.h"
-#include "Compilers/AVM/include/AVM.h"
+#include "Runtime/AVM/include/AVM.h"
 
 //\ |
 
@@ -77,7 +77,7 @@ int main(int argc, char** argv)
             arba::Analyzer bca;
             arba::ByteCode v = bca.StartAnalysis(*mc_src);
             std::cout << NL;
-            std::vector<std::string> fa = { "99999", "50" };
+            std::vector<std::string> fa = { "999999", "50" };
             avm.Start(v);
 
             return 0;

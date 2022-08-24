@@ -34,6 +34,8 @@ namespace avm
         Runtime r(bytecode);
         
         r.stack.Reserve(1024);
+        r.returnAddressStack.reserve(1024);
+        r.returnAddressStack.push_back(nullptr);
         r.stack.Write64(r.baseIndex); 
         r.baseIndex = r.stack.Size();
         r.stack.Write64(0);
@@ -231,7 +233,7 @@ namespace avm
 
     void CallHandler(Runtime& r)
     {
-        r.stack.Write64(r.baseIndex);
+        r.stack.Write(r.baseIndex);
         r.stack.Write64(reinterpret_cast<int64_t>(r.pc + 1));
         r.baseIndex = r.stack.Size();
         JumpHandler(r);
@@ -240,7 +242,7 @@ namespace avm
     void ReturnHandler(Runtime& r)
     {
         Instruction* addr = reinterpret_cast<Instruction*>(r.stack.Read64());
-        r.baseIndex = r.stack.Read64();
+        r.baseIndex = r.stack.Read();
         r.pc = addr;
     }    
 }

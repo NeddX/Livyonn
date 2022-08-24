@@ -7,6 +7,7 @@ project(Livyonn VERSION 0.1.0)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_FLAGS_DEBUG "-O3")
+#set(CMAKE_CXX_FLAGS_DEBUG "-O3 -pg")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 set(src_dir "${PROJECT_SOURCE_DIR}/src")
 
@@ -21,10 +22,10 @@ src/Analyzers/Armavir/src/Lexer.cpp
 src/Analyzers/Armavir/src/Analyzer.cpp
 src/Analyzers/Armavir/src/FunctionDefinition.cpp
 src/Analyzers/Armavir/src/Statement.cpp
-src/Compilers/AVM/src/AVM.cpp
-src/Compilers/AVM/src/Runtime.cpp
-src/Compilers/AVM/src/ByteBuffer.cpp
-src/Compilers/AVM/src/Registers.cpp
+src/Runtime/AVM/src/AVM.cpp
+src/Runtime/AVM/src/Runtime.cpp
+src/Runtime/AVM/src/ByteBuffer.cpp
+src/Runtime/AVM/src/Registers.cpp
 src/Analyzers/AVM/src/Analyzer.cpp
 src/Analyzers/AVM/src/Lexer.cpp
 )

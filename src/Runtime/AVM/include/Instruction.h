@@ -67,8 +67,8 @@ namespace avm
     struct Instruction
     {
         OpCode opcode = NOP;
-        Regs64 reg1 = NUL;
-        Regs64 reg2 = NUL;
+        Regs reg1 = NUL;
+        Regs reg2 = NUL;
         uint8_t pl = 0;
         int16_t p2 = 0;
         int64_t p3 = 0;

@@ -44,8 +44,8 @@ namespace arba
                 }
                 case REG:
                 {
-                    if (inst->reg1 == NUL) inst->reg1 = static_cast<Regs64>(t.data);
-                    else inst->reg2 = static_cast<Regs64>(t.data);
+                    if (inst->reg1 == NUL) inst->reg1 = static_cast<Regs>(t.data);
+                    else inst->reg2 = static_cast<Regs>(t.data);
                     break;
                 }
                 case LABEL_CALL:

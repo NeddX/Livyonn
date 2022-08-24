@@ -10,7 +10,7 @@ namespace avm
 {
     using namespace std;
 
-    enum Regs64
+    enum Regs
     {
         RAX,
         RBX,

@@ -43,11 +43,11 @@ namespace avm
             }
             constexpr int32_t Read32()
             {
-                return (static_cast<uint32_t>(Read()) << 16) | (uint16_t) (Read()); // Static cast for stability
+                return ((uint32_t) Read() << 16) | (uint16_t) (Read()); 
             }
             constexpr int64_t Read64()
             {
-                return (static_cast<uint64_t>(Read32()) << 32) | (uint32_t) Read32(); // Static cast for stability
+                return ((uint64_t) (Read32()) << 32) | (uint32_t) Read32(); 
             }               
             constexpr uint16_t Last()
             {

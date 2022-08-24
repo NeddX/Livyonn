@@ -1,5 +1,5 @@
-POP %RAX ; Retrieving the first parameter and pushing it to RAX register.
-POP %RBX ; Retrieving the second parameter and pushing it to RBX register.
+POP %RAX ; Retrieving the first parameter and pushing it tothe RAX register.
+POP %RBX ; Retrieving the second parameter and pushing it to the RBX register.
 
 CALL @l1
 RETURN

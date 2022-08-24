@@ -16,12 +16,7 @@ namespace arma
     using namespace std; 
 
     struct Analyzer
-    {
-        public:
-            Analyzer();
-            void StartAnalysis(const string& src);
-            void DumpTruck() const;
-        
+    {   
         private:
             void Analyze(vector<Token>& tokens);
             optional<Type> ExpectType(); 
@@ -41,5 +36,11 @@ namespace arma
             vector<Token>::iterator endToken;
             map<string, Type> types;
             map<string, FunctionDefinition> funcs;
+
+        public:
+            Analyzer();
+            void StartAnalysis(const string& src);
+            void DumpTruck() const;
+            map<string, FunctionDefinition> GetFunctions() { return funcs; }
     };
 }

@@ -5,7 +5,7 @@
 #include <map>
 
 #include "Lexer.h"
-#include "../../../Compilers/AVM/include/AVM.h"
+#include "../../../Runtime/AVM/include/AVM.h"
 
 namespace arba
 {

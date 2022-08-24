@@ -182,7 +182,7 @@ namespace arba
         return NOP;
     }   
 
-    Regs64 GetReg(string& reg)
+    Regs GetReg(string& reg)
     {
         transform(reg.begin(), reg.end(), reg.begin(), ::toupper);
         if (reg == "RAX") return RAX;
