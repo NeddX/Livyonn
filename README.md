@@ -8,7 +8,7 @@ You can compile very basic stuff like variable declerations, assignments, basic 
 I got alot to do.
 
 # Build
-Requires CMake v3.0(Ninja) or higher with GCC installed. Just run 'build.sh' on linux and it should create builds files and compile the code. Execute the output executable inside build files by typing './liv <paremeters>'.
+Requires CMake v3.0 (Ninja) or higher with GCC installed. Just run 'build.sh' on linux and it should create builds files and compile the code. Execute the output executable inside ```build``` folder by typing ```./liv <paremeters>```.
 Did not configure this project for windows but will do sometime in the future.
 Tested on Manjaro Linux works and compiles just fine.
 
