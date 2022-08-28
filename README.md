@@ -4,5 +4,22 @@
 Bytecode compiled programming language written in C++, designed by me, built by me. and you best hope, for it to work.
 
 # Pre-Alpha
-Only the VM functions and the high level language only gets analyzed. The VM is also very basic.
+You can compile very basic stuff like variable declerations, assignments, basic math and return.
 I got alot to do.
+
+# Build
+Requires CMake v3.0(Ninja) or higher with GCC installed. Just run 'build.sh' on linux and it should create builds files and compile the code. Execute the output executable inside build files by typing './liv <paremeters>'.
+Did not configure this project for windows but will do sometime in the future.
+Tested on Manjaro Linux works and compiles just fine.
+
+# Usage
+```liv <command> <parameters>```
+```run``` to compile and execute your source file.
+The compiler will compile depending on your file extension.
+```.arm``` files are Armavir source code files.
+```.amc``` files are AVM bytecode files.
+```.aex``` files are AVM executable files.
+Examples:
+```liv run path/to/your/file/mycode.arm```
+```liv run path/to/your/file/bytecode.amc```
+AVM Exectuable files are not implemented yet.
