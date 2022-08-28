@@ -14,6 +14,7 @@ Tested on Manjaro Linux works and compiles just fine.
 
 # Usage
 ```liv <command> <parameters>```
+  
 ```run``` to compile and execute your source file.
 The compiler will compile depending on your file extension.
 ```.arm``` files are Armavir source code files.
