@@ -21,7 +21,7 @@ namespace arc
 
     struct Compiler
     {
-        ByteCode Compile(Analyzer& syntaxTree, ByteCode& bytecode);
+        ByteCode Compile(Analyzer& syntaxTree);
         void FunctionCodeGen(const FunctionDefinition& func, ByteCode& compiledCode);
         void StatementCodeGen(const Statement& st, map<string, VarInfo> varOffsets, ByteCode& compiledCode);
     };  

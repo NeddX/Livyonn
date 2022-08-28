@@ -81,9 +81,8 @@ int main(int argc, char** argv)
             an.StartAnalysis(*src);
             an.DumpTruck();
             
-            avm::ByteCode compiledCode;
             arc::Compiler c;
-            c.Compile(an, compiledCode);
+            avm::ByteCode compiledCode = c.Compile(an, compiledCode);
 
             avm::AVM avm;
             avm.Start(compiledCode);

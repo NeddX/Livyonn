@@ -5,15 +5,15 @@ namespace arc
     using namespace std;
     using namespace arma;
 
-    ByteCode Compiler::Compile(Analyzer& syntaxTree, ByteCode& bytecode)
+    ByteCode Compiler::Compile(Analyzer& syntaxTree)
     {
-        ByteCode b;
+        ByteCode bytecode;
         map<string, FunctionDefinition> funcs = syntaxTree.GetFunctions();
         for (auto& [name, func] : funcs)
         {
             FunctionCodeGen(func, bytecode);
         }
-        return b;
+        return bytecode;
     }
 
     void Compiler::FunctionCodeGen(const FunctionDefinition& func, ByteCode& compiledCode)
@@ -46,15 +46,12 @@ namespace arc
                             int32_t data;
                             if (!cs.params.empty())
                             {
-                                //assert(cs.params[0].type.fType == cs.type.fType);
-                                //data = stoi(cs.params[0].name);
                                 for (auto& p : cs.params)
                                 {
                                     StatementCodeGen(p, varOffsets, compiledCode);
                                 }
                             }
                             varOffsets[cs.name] = vi;
-                            //compiledCode.push_back(Instruction { .opcode = PUSH, .pl = 32, .p3 = (uint32_t) data });
                             intVarCount++;
                             break;
                         }
@@ -130,10 +127,6 @@ namespace arc
                 }
             }
         }
-        // for (int i = 0; i < intVarCount; i++)
-        // {
-        //     compiledCode.push_back(Instruction { .opcode = POP, .pl =  });
-        // }
         compiledCode.push_back(Instruction { .opcode = RETURN });
     }
 
@@ -176,7 +169,7 @@ namespace arc
                     size_t count = 0;
                     if (st.params.size() != 2)
                     {
-                        throw runtime_error("Wrong num of args passed to assignment OP.");
+                        throw runtime_error("Bad Operation. Exception class needed.");
                     }
                     for (auto& p : st.params)
                     {
@@ -194,7 +187,7 @@ namespace arc
                     size_t count = 0;
                     if (st.params.size() != 2)
                     {
-                        throw runtime_error("Wrong num of args passed to assignment OP.");
+                        throw runtime_error("Bad Operation. Exception class needed.");
                     }
                     for (auto& p : st.params)
                     {
@@ -212,7 +205,7 @@ namespace arc
                     size_t count = 0;
                     if (st.params.size() != 2)
                     {
-                        throw runtime_error("Wrong num of args passed to assignment OP.");
+                        throw runtime_error("Bad Operation. Exception class needed.");
                     }
                     for (auto& p : st.params)
                     {
@@ -230,7 +223,7 @@ namespace arc
                     size_t count = 0;
                     if (st.params.size() != 2)
                     {
-                        throw runtime_error("Wrong num of args passed to assignment OP.");
+                        throw runtime_error("Bad Operation. Exception class needed.");
                     }
                     for (auto& p : st.params)
                     {
@@ -247,7 +240,7 @@ namespace arc
                 {
                     if (st.params.size() != 2)
                     {
-                        throw runtime_error("Wrong num of args passed to assignment OP.");
+                        throw runtime_error("Bad Operation. Exception class needed.");
                     }
                     auto foundVar = varOffsets.find(st.params[0].name);
                     if (foundVar == varOffsets.end())
@@ -270,13 +263,13 @@ namespace arc
                     case UINT8:
                     {
                         uint8_t data = stoi(st.name);
-                        compiledCode.push_back(Instruction { .opcode = PUSH, .pl = 32, .p3 = data });
+                        compiledCode.push_back(Instruction { .opcode = PUSH, .pl = 16, .p3 = data });
                         break;
                     }
                     case INT8:
                     {
                         int8_t data = stoi(st.name);
-                        compiledCode.push_back(Instruction { .opcode = PUSH, .pl = 32, .p3 = (uint8_t) data });
+                        compiledCode.push_back(Instruction { .opcode = PUSH, .pl = 16, .p3 = (uint8_t) data });
                         break;
                     }
                     case UINT32:
