@@ -13,6 +13,9 @@ namespace arma
     enum Kind
     {
         VARIABLE_DECLERATION,
+        ASSIGNMENT_EXPRESSION,
+        IDENTIFIER_EXPRESSION,
+        RETURN_STATEMENT,
         FUNCTION_CALL,
         LITERAL,
         OPERATOR_CALL
@@ -21,6 +24,9 @@ namespace arma
     static const string KindStr[] = 
     {
         "VARIABLE_DECLERATION",
+        "ASSIGNMENT_EXPRESSION",
+        "IDENTIFIER_EXPRESSION",
+        "RETURN_STATEMENT",
         "FUNCTION_CALL",
         "LITERAL",
         "OPERATOR_CALL"

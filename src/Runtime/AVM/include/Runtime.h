@@ -17,7 +17,6 @@ namespace avm
             Instruction* bytecode;
             Instruction* pc;
             ByteBuffer stack;
-            vector<Instruction*> returnAddressStack;
             size_t baseIndex;
             Registers regs;
 
@@ -30,6 +29,7 @@ namespace avm
     void EndHandler(Runtime& r);
     void PushHandler(Runtime& r);
     void PopHandler(Runtime& r);
+    void PeekHandler(Runtime& r);
     void AddHandler(Runtime& r);
     void AddSHandler(Runtime& r);
     void AddRHandler(Runtime& r);
@@ -50,10 +50,14 @@ namespace avm
     void ComptIntGTHandler(Runtime& r);
     void MoveHandler(Runtime& r);
     void MoveSHandler(Runtime& r);
+    void PushIntBasepointerRelative(Runtime& r);
+    void LoadIntBasepointerRelative(Runtime& r);
     void JumpHandler(Runtime& r);
     void ConditionalJumpHandler(Runtime& r);
     void RelativeJumpHandler(Runtime& r);
     void ConditionalRelativeJumpHandler(Runtime& r);
+    void RelativeJumpNotEqualHandler(Runtime& r);
+    void JumpNotEqualHandler(Runtime& r);
     void CallHandler(Runtime& r);
     void ReturnHandler(Runtime& r);
 

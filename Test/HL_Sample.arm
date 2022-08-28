@@ -4,7 +4,6 @@
 fn Entry(var argc, var argv)
 {
     printline("sup fucker! 10 - 6 * (3 + 2) is ", 10 - 6 * (3 + 2));
-
     capabilities();
 }
 
@@ -14,11 +13,13 @@ fn capabilities()
     var num = 1;
     var dnum = 3.28180123;
     var bul = true;
+    var undef; // Undefined dynamic variables
 
     string str2 = "but at the same time declare staticly typed variables like every other real programming language";
     int num2 = 2;
     double dnum2 = 6.192;
     bool bul2 = false;
+    string undef2; // Undefined staticly typed variables
 
     // function calls! and comments too!!
     fnCall("i didnt know rust also used the keyword fn for functions, heck i didnt even what the fuck was rust about until a month ago");
@@ -26,5 +27,5 @@ fn capabilities()
 
 fn fnCall(var str)
 {
-    printline(str);
+    printline("not implemented yet apparently");
 }

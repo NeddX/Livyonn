@@ -4,9 +4,9 @@
 
 namespace arma
 {
-    vector<Token> Lexer::Lex(const string& src)
+    TokenList Lexer::Lex(const string& src)
     {
-        vector<Token> tokens;
+        TokenList tokens;
         Token currentToken;
 
         currentToken.line = 1;
@@ -247,7 +247,7 @@ namespace arma
         return tokens;
     }
 
-    void EndToken(Token& t, vector<Token>& tokens)
+    void EndToken(Token& t, TokenList& tokens)
     {
         if (t.type == COMMENT) cout << "ignoring nn: " << t.text << endl;
         if (t.type == IDENTIFIER && t.text == "true" || t.text == "false")

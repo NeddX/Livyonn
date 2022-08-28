@@ -1,10 +1,10 @@
 #include "../include/Lexer.h"
 
-namespace arba
+namespace amca
 {
-    vector<Token> Lexer::Lex(const string& src)
+    TokenList Lexer::Lex(const string& src)
     {
-        vector<Token> tokens;
+        TokenList tokens;
         Token currentToken;
 
         currentToken.line = 1;
@@ -127,7 +127,7 @@ namespace arba
         return tokens;
     }
 
-    void EndToken(Token& t, vector<Token>& tokens)
+    void EndToken(Token& t, TokenList& tokens)
     {
         if (t.type != WHITESPACE)
         {
@@ -177,6 +177,8 @@ namespace arba
         if (inst == "CJMP") return CJMP;
         if (inst == "JRP") return JRP;
         if (inst == "CJRP") return CJRP;
+        if (inst == "JRN") return JRN;
+        if (inst == "JNE") return JNE;
         if (inst == "CALL") return CALL;
         if (inst == "RETURN") return RETURN;
         return NOP;

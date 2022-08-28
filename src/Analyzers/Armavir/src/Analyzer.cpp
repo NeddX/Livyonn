@@ -17,10 +17,11 @@ namespace arma
 
     map<string, OpEntry> opEntries = 
     {
-        { "+", OpEntry("+", 1) },
-        { "-", OpEntry("-", 1) },
-        { "*", OpEntry("*", 10) },
-        { "/", OpEntry("/", 10) },
+        { "+", OpEntry("+", 10) },
+        { "-", OpEntry("-", 10) },
+        { "*", OpEntry("*", 20) },
+        { "/", OpEntry("/", 20) },
+        { "=", OpEntry("=", 1) }
     };
 
     bool Analyzer::ExpectFunction()
@@ -41,7 +42,7 @@ namespace arma
 
             if (possibleOperator)
             {
-                cout << "funkchn: " << possibleName->text << endl;
+                //cout << "funkchn: " << possibleName->text << endl;
                 func.name = possibleName->text;
 
                 while (!ExpectOperator(")"))
@@ -85,11 +86,11 @@ namespace arma
     }
     void Analyzer::StartAnalysis(const string& src)
     {
-        vector<Token> tokens = Lexer::Lex(src);
+        TokenList tokens = Lexer::Lex(src);
         for (auto& t : tokens) t.TDumpTruck(); // debug print
         Analyze(tokens);
     }
-    void Analyzer::Analyze(vector<Token> &tokens)
+    void Analyzer::Analyze(TokenList &tokens)
     {
         endToken = tokens.end();
         currentToken = tokens.begin();
@@ -180,7 +181,7 @@ namespace arma
                 throw runtime_error("Invalid statement '" + currentToken->text + "' @ line (" + to_string(currentToken->line) + "," + to_string(currentToken->cur) + ").");        
             //currentToken++;
         }
-        cout << "reached end of the function" << endl;
+        //cout << "reached end of the function" << endl;
 
         return statements;
     }
@@ -194,6 +195,7 @@ namespace arma
         //     doubleLiteral.name = currentToken->text;
         //     switch (currentToken->type)
         // }
+        auto savedToken = currentToken;
         if (currentToken != endToken)
         {
             switch (currentToken->type)
@@ -250,6 +252,34 @@ namespace arma
                 }
             }
 
+            if (auto varName = ExpectIdentifier())
+            {
+                if (ExpectOperator("("))
+                {
+                    currentToken = savedToken;
+                }
+                else
+                {
+                    if (ExpectOperator(")")) // func_call(indetifier')';
+                    {
+                        Statement varNameStatement;
+                        varNameStatement.kind = IDENTIFIER_EXPRESSION;
+                        varNameStatement.name = varName->text;
+                        currentToken--; // 
+                        return varNameStatement;
+                    }
+                    else
+                    {
+                        ExpectOperator(";");
+                        Statement varNameStatement;
+                        varNameStatement.kind = IDENTIFIER_EXPRESSION;
+                        varNameStatement.name = varName->text;
+                        //currentToken++;
+                        return varNameStatement;
+                    }
+                }
+            }
+
             if (ExpectOperator("("))
             {
                 return ExpectExpression();
@@ -286,7 +316,7 @@ namespace arma
 
         if (ExpectOperator("="))
         {
-            optional<Statement> value = ExpectValue();
+            optional<Statement> value = ExpectExpression();//ExpectValue();
             if (!value)
                 throw runtime_error("Unknown type '" + currentToken->text + "' @ line (" + to_string(currentToken->line) + "," + to_string(currentToken->cur) + ")");
 
@@ -340,7 +370,7 @@ namespace arma
 
             // if (!ExpectOperator(",")) //throw an error
         }
-
+ 
         //if (!ExpectOperator(";"))
         //    throw runtime_error("Expected ';' @ line (" + to_string((--currentToken)->line) + "," + to_string((--currentToken)->cur) + ").");
 
@@ -348,21 +378,44 @@ namespace arma
     }
 
     optional<Statement> Analyzer::ExpectStatement()
-    {
+    {        
         auto result = ExpectVariableDecleration();
         if (result) return result;
 
+        result = ExpectKeyword();
+        if (result) return result;
+        
+        result = ExpectExpression();
+        if (result)
+        { 
+            ExpectOperator(";");
+            return result;
+        }
+
         result = ExpectFunctionCall();
         if (result) return result;        
+
 
         return nullopt;
     }
 
     optional<Statement> Analyzer::ExpectExpression()
     {
+
         auto lhv = ExpectValue();
-        if (!lhv) 
+        if (!lhv)
             return nullopt;
+        // if (!lhv) 
+        // {
+        //     if (ExpectIdentifier())
+        //     {
+        //         if (ExpectOperator("="))
+        //         {
+        //             lhv = ExpectExpression();
+        //             cout << NL;
+        //         }
+        //     }
+        // }
 
         while (true)
         {
@@ -426,6 +479,44 @@ namespace arma
         if (!rhv) return lhv;
 
         else return rhv;
+    }
+
+    optional<Statement> Analyzer::ExpectKeyword() // TO BE IMPLEMENTED...
+    {
+        auto startToken = currentToken;
+        if (auto possibleKeyword = ExpectIdentifier())
+        {
+            Statement rs;
+            if (possibleKeyword->text == "if")
+            {
+                currentToken--; 
+                return nullopt;
+            }
+            else if (possibleKeyword->text == "while")
+            { 
+                currentToken--;
+                return nullopt;
+            }
+            else if (possibleKeyword->text == "return")
+            {
+                rs.kind = RETURN_STATEMENT;
+                rs.name = possibleKeyword->text;
+                if (auto possibleStatement = ExpectStatement())
+                {
+                    rs.params.push_back(*possibleStatement);
+                }
+                //currentToken++;
+
+                return rs;
+            }
+            else
+            {
+                currentToken = startToken;
+                return nullopt;
+            }
+        }
+        currentToken = startToken;
+        return nullopt;
     }
 
     void Analyzer::DumpTruck() const

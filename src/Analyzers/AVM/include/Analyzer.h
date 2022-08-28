@@ -5,19 +5,13 @@
 #include <map>
 
 #include "Lexer.h"
-#include "../../../Runtime/AVM/include/AVM.h"
 
-namespace arba
+namespace amca
 {
     using namespace std;
-    using namespace avm;
 
     struct Analyzer
     {
-        public:
-            vector<Instruction> StartAnalysis(const string& src);
-
-        private:
-            vector<Instruction> Analyze(const vector<Token>& tokens);    
+        TokenList StartAnalysis(const string& src);
     };
 }

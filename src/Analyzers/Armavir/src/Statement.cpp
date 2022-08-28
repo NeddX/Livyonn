@@ -34,7 +34,7 @@ namespace arma
                     i++;
                 }
 
-                cout << ");";
+                cout << ");" << NL;
                 break;
             }
             case LITERAL:
@@ -60,6 +60,16 @@ namespace arma
                     }
                     i++;
                 }
+                break;
+            }
+            case ASSIGNMENT_EXPRESSION:
+            {
+                cout << "<" << KindStr[kind] << "> "; 
+                break;
+            }
+            case IDENTIFIER_EXPRESSION:
+            {
+                cout << name;
                 break;
             }
         }

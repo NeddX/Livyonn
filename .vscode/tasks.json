@@ -21,7 +21,9 @@
                 "${workspaceFolder}/src/Runtime/AVM/src/ByteBuffer.cpp",
                 "${workspaceFolder}/src/Runtime/AVM/src/Registers.cpp",
                 "${workspaceFolder}/src/Analyzers/AVM/src/Analyzer.cpp",
-                "${workspaceFolder}/src/Analyzers/AVM/src/Lexer.cpp"
+                "${workspaceFolder}/src/Analyzers/AVM/src/Lexer.cpp",
+                "${workspaceFolder}/src/Compilers/AVM/src/Compiler.cpp",
+                "${workspaceFolder}/src/Compilers/Armavir/src/Compiler.cpp"
             ],
             "options": {
                 "cwd": "${fileDirname}"

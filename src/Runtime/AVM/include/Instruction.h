@@ -16,6 +16,7 @@ namespace avm
         END,
         PUSH,
         POP,
+        PEEK,
         ADD,
         SUB,
         MUL,
@@ -28,10 +29,14 @@ namespace avm
         COMP_INT_NE, // If Not Equal
         MOV,
         MOVS,
+        PIBR, //Push Int Basepointer Relative
+        LIBR, // Liberal (ew) Load Int Basepointer Relative
         JMP, // Unconditional Address Jump
         CJMP, // Jump to Address If ZF Flag is 1
         JRP, // Unconditional Relative Jump
         CJRP, // Jump Relative if ZF Flag is 1
+        JRN, // Jump Relative if ZF Flag is 0
+        JNE, // Jump if ZF Flag is 0
         CALL,
         RETURN,
 
@@ -42,7 +47,8 @@ namespace avm
     {
         "END",      
         "PUSH",      
-        "POP",      
+        "POP",   
+        "PEEK",   
         "ADD",      
         "SUB",      
         "MUL",      
@@ -55,10 +61,14 @@ namespace avm
         "COMP_INT_NE,",              
         "MOV",      
         "MOVS",      
+        "PIBR",
+        "LIBR",
         "JMP",  
         "CJMP", 
         "JRP",
         "CJRP",    
+        "JRN",
+        "JNE",
         "CALL",      
         "RETURN",  
         "NOP"  
@@ -67,11 +77,11 @@ namespace avm
     struct Instruction
     {
         OpCode opcode = NOP;
+        uint8_t pl = 0;
         Regs reg1 = NUL;
         Regs reg2 = NUL;
-        uint8_t pl = 0;
-        int16_t p2 = 0;
-        int64_t p3 = 0;
+        uint16_t p2 = 0;
+        uint64_t p3 = 0;
     };    
 
     typedef vector<Instruction> ByteCode;

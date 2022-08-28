@@ -28,6 +28,8 @@ src/Runtime/AVM/src/ByteBuffer.cpp
 src/Runtime/AVM/src/Registers.cpp
 src/Analyzers/AVM/src/Analyzer.cpp
 src/Analyzers/AVM/src/Lexer.cpp
+src/Compilers/AVM/src/Compiler.cpp
+src/Compilers/Armavir/src/Compiler.cpp
 )
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})

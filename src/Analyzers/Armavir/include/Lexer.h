@@ -53,11 +53,12 @@ namespace arma
             size_t cur = 0;
             void TDumpTruck() const;
     };
+    typedef vector<Token> TokenList;
 
     struct Lexer
     {
-        static vector<Token> Lex(const string& src);
+        static TokenList Lex(const string& src);
     };
 
-    void EndToken(Token& t, vector<Token>& tokens);
+    void EndToken(Token& t, TokenList& tokens);
 }

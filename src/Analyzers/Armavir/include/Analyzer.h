@@ -18,7 +18,7 @@ namespace arma
     struct Analyzer
     {   
         private:
-            void Analyze(vector<Token>& tokens);
+            void Analyze(TokenList& tokens);
             optional<Type> ExpectType(); 
             optional<Token> ExpectIdentifier(const string& name = "");
             optional<Token> ExpectOperator(const string& name = "");
@@ -29,11 +29,12 @@ namespace arma
             optional<Statement> ExpectValue();
             optional<Statement> ExpectStatement();
             optional<Statement> ExpectExpression();
+            optional<Statement> ExpectKeyword();
             size_t GetOpPriority(const string& name);
             Statement* GetRightMostStatement(Statement* lhs, size_t rhvPriority);
 
-            vector<Token>::iterator currentToken;
-            vector<Token>::iterator endToken;
+            TokenList::iterator currentToken;
+            TokenList::iterator endToken;
             map<string, Type> types;
             map<string, FunctionDefinition> funcs;
 
