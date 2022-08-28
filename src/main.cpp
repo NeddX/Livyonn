@@ -63,29 +63,29 @@ int main(int argc, char** argv)
 
         if (ack == DEBUG)
         {
-            // std::optional<std::string> mc_src = ReadToString("/home/nedd/source/repos/Livyonn/Test/MC_Sample.amc");
-            // if (!mc_src.has_value()) throw std::runtime_error(std::string("Failed to open source file."));
+            std::optional<std::string> mc_src = ReadToString("/home/nedd/source/repos/Livyonn/Test/basic.amc");
+            if (!mc_src.has_value()) throw std::runtime_error(std::string("Failed to open source file."));
 
-            // avm::AVM avm;  
-            // amca::Analyzer an;
-            // amcc::Compiler c;
-            // avm::ByteCode bytecode = c.Compile(an.StartAnalysis(*mc_src));
-            // std::cout << NL;
-            // std::vector<std::string> fa = { "999999", "1000" };
-            // avm.Start(bytecode, fa);
+            avm::AVM avm;  
+            amca::Analyzer an;
+            amcc::Compiler c;
+            avm::ByteCode bytecode = c.Compile(an.StartAnalysis(*mc_src));
+            std::cout << NL;
+            std::vector<std::string> fa = { "999999", "1000" };
+            avm.Start(bytecode, fa);
 
-            std::optional<std::string> src = ReadToString("/home/nedd/source/repos/Livyonn/Test/basic.arm");
-            if (!src.has_value()) throw std::runtime_error(std::string("Failed to open source file."));
-            // ARMA (Armavir Analyzer) and ARBA (Armavi Bytecode Analyzer) 
-            arma::Analyzer an; 
-            an.StartAnalysis(*src);
-            an.DumpTruck();
+            // std::optional<std::string> src = ReadToString("/home/nedd/source/repos/Livyonn/Test/basic.arm");
+            // if (!src.has_value()) throw std::runtime_error(std::string("Failed to open source file."));
+            // // ARMA (Armavir Analyzer) and ARBA (Armavi Bytecode Analyzer) 
+            // arma::Analyzer an; 
+            // an.StartAnalysis(*src);
+            // an.DumpTruck();
             
-            arc::Compiler c;
-            avm::ByteCode compiledCode = c.Compile(an);
+            // arc::Compiler c;
+            // avm::ByteCode compiledCode = c.Compile(an);
 
-            avm::AVM avm;
-            avm.Start(compiledCode);
+            // avm::AVM avm;
+            // avm.Start(compiledCode);
             return 0;
         }
 
@@ -104,7 +104,7 @@ int main(int argc, char** argv)
                 }
                 else if (file.ends_with(".amc"))
                 {
-                    std::cout << "AVM Bytecode detected" << NL;
+                    std::cout << "AVM Bytecode file detected" << NL;
 
                     std::optional<std::string> src = ReadToString(file);
                     if (!src.has_value()) throw std::runtime_error(std::string("Failed to open source file."));

@@ -1,6 +1,20 @@
-MOV %RAX, #-10
-MOV %RBX, #-2
-DIV %RAX, %RBX
-PUSH %RAX
-PINT
-RETURN
+; Basic loop with AVM.
+; Run 'liv run basic.arm 10' then will be the number of times the loop will be performed.
+
+POP %RAX                ; Pops the first argument to RAX register.            
+CALL @l1                ; Calling the loop function (label).
+RETURN                  ; Returning the FNR register and ending the program. Calling RETURN in the global scope will end the program. 
+
+@l1:                    ; Loop function (label) definition.
+    CALL @print_int     ; Calling print_int function.
+    CIGT %RAX, #0       ; Comparing if RAX is greater than 0. If yes then the ZF flag will be set to 1, 0 otherwise. 
+    JRN #3              ; Performs a relative conditional NOT jump. Basically will jump if ZF is 0.
+    SUB %RAX, #1        ; Subtracts 1 from RAX.
+    JMP @l1             ; Performs unconditional jump to itself.
+    MOV %FNR, #1        ; Moves 1 in FNR register (Function Return Register). 
+    RETURN              ; Returns back to the caller.
+
+@print_int:             ; print_int function (label)  definition.
+    PUSH %RAX           ; Pushes whatever's inside RAX to the stack.
+    PINT                ; Pops the last element in the stack and print's it as a decimal.
+    RETURN              ; Returns back to the caller.
