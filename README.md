@@ -16,11 +16,19 @@ Tested on Manjaro Linux works and compiles just fine.
 ```liv <command> <parameters>```
   
 ```run``` to compile and execute your source file.
+
 The compiler will compile depending on your file extension.
+
 ```.arm``` files are Armavir source code files.
+
 ```.amc``` files are AVM bytecode files.
+
 ```.aex``` files are AVM executable files.
+
 Examples:
+
 ```liv run path/to/your/file/mycode.arm```
+
 ```liv run path/to/your/file/bytecode.amc```
+
 AVM Exectuable files are not implemented yet.
