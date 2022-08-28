@@ -31,4 +31,10 @@ Examples:
 
 ```liv run path/to/your/file/bytecode.amc```
 
+Check out ```Test``` folder.
+
+Basic files are fully functional meaning you can execute them fine.
+
+Sample files are prototypes, they will not execute hence why they are prototypes.  
+
 AVM Exectuable files are not implemented yet.
