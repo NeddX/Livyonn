@@ -27,7 +27,7 @@ fn Entry()
 //		str = str + " " + str2;
 
 // Supports function calls and return (only able to return ints and can't pass parameters yet)
-//		fn retNum { return 5;  }
+//		fn retNum { return 5; }
 //		int a = retNum() * 10;
 
 // Supports adding external files.
