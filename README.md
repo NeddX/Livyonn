@@ -28,18 +28,18 @@ Requires:
 After installing, simply run ```chmod +x build.sh``` in your terminal and execute ```build.sh```.
 
 # Usage
-```liv <command> <parameters>```.
-```run``` to compile and execute your source file.
-The compiler will compile depending on your file extension.
+```liv <command> <parameters>```.<br/>
+```run``` to compile and execute your source file.<br/>
+The compiler will compile depending on your file extension.<br/>
 
--```.arm``` Armavir source code file.
--```.amc``` AVM bytecode file.
--```.aex``` AVM executable file (Not implemented).
+- ```.arm``` Armavir source code file.<br/>
+- ```.amc``` AVM bytecode file.<br/>
+- ```.aex``` AVM executable file (Not implemented).<br/>
 
-Examples:
-```liv run path/to/your/file/mycode.arm```.
-```liv run path/to/your/file/bytecode.amc```.
+Examples:<br/>
+```liv run path/to/your/file/mycode.arm```<br/>
+```liv run path/to/your/file/bytecode.amc```<br/>
 
-Check out ```Test``` folder.
-Basic files are fully functional meaning you can execute them fine.
-Sample files are prototypes, they will not execute hence why they are prototypes.  
+Check out ```Test``` folder.<br/>
+Basic files are fully functional meaning you can execute them fine.<br/>
+Sample files are prototypes, they will not execute hence why they are prototypes.<br/>
