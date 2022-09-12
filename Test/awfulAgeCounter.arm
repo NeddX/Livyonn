@@ -8,5 +8,5 @@ fn aac()
 	int age = c_year - year;
 	_Print(name + " is ");
 	_PrintInt(age);
-	_Println(" years old and he is: " + adjective);
+	_Println(" years old and he is " + adjective);
 }

@@ -1,4 +1,4 @@
-include "{full path here}\\awfulAgeCounter.arm";
+include "{full path here}\\awfulAgeCounter";
 
 // Entry function
 fn Entry()
@@ -8,6 +8,9 @@ fn Entry()
 }
 
 // Currently supports two datatypes, Ints and strings.
+//		string str = "my string";
+//		int myint = 10;
+
 // Has 3 built-in functions.
 //		_Print(<str, str var, str expr>)			-		Prints the string and does not insert a newline at the end.
 //		_Println(<str, str var, str expr>)		-		Same as above except inserts a new line at the end.
@@ -26,5 +29,12 @@ fn Entry()
 // Supports function calls and return (only able to return ints and can't pass parameters yet)
 //		my_func();
 //		int a = retNum() * 10;
+
+// Supports adding external files.
+//		include FileName;
+//		include "File name if spaces";
+//		include FileNameWithExtension.arm;
+//		
+//		Just like C/C++, include actually replaces the include directive with the contents of the file specified.
 
 // That's pretty much it
