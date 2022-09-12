@@ -1,6 +1,5 @@
 builds/
 bin/
 .vs/
-.git/
 .vscode/
-.LivyonnNew/
+LivyonnNew/

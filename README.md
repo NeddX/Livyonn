@@ -37,11 +37,11 @@ The compiler will compile depending on your file extension.<br/>
 
 - ```.arm``` Armavir source code file.<br/>
 - ```.amc``` AVM bytecode file.<br/>
-- ```.aex``` AVM bytecode binary file (Not implemented yet).<br/>
+- ```.aex``` AVM bytecode binary file (Not implemented yet).<br/><br/>
 
 Examples:<br/>
 - ```liv run path/to/your/file/mycode.arm```<br/>
-- ```liv run path/to/your/file/bytecode.amc```<br/>
+- ```liv run path/to/your/file/bytecode.amc```<br/><br/>
 
 Check out ```Test``` folder.<br/>
 Basic files are fully functional meaning you can execute them fine.<br/>
