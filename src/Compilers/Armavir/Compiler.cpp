@@ -1,7 +1,5 @@
 #include "include/Compiler.h"
 
-#include <crtdbg.h>
-
 namespace arc
 {
     using namespace std;
