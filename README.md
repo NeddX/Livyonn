@@ -16,29 +16,29 @@ Check ```Test/basic.arm``` for more info.
 ## Windows
 Requires:
 - Visual Studio 2022
-- Visual C++ Development Kit (including CMake and Ninja).
+- Visual C++ Development Tools (including CMake and Ninja).
 
-After installing those, just open the ```CMakeLists.txt``` file in Visual Studio and build.
+After installing, just open the ```CMakeLists.txt``` file in Visual Studio and build.
 
 ## Linux
 Requires:
 - CMake v3.0 with Ninja
 - GCC v12.1.1
 
-After installing simply run ```chmod +x build.sh``` and execute ```build.sh```.
+After installing, simply run ```chmod +x build.sh``` in your terminal and execute ```build.sh```.
 
 # Usage
-```liv <command> <parameters>```
+```liv <command> <parameters>```.
 ```run``` to compile and execute your source file.
 The compiler will compile depending on your file extension.
-```.arm``` files are Armavir source code files.
-```.amc``` files are AVM bytecode files.
-```.aex``` files are AVM executable files (Not implemented).
+
+-```.arm``` Armavir source code file.
+-```.amc``` AVM bytecode file.
+-```.aex``` AVM executable file (Not implemented).
 
 Examples:
-```liv run path/to/your/file/mycode.arm```
-
-```liv run path/to/your/file/bytecode.amc```
+```liv run path/to/your/file/mycode.arm```.
+```liv run path/to/your/file/bytecode.amc```.
 
 Check out ```Test``` folder.
 Basic files are fully functional meaning you can execute them fine.
