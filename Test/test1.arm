@@ -1,0 +1,20 @@
+// Test file.
+// I test the compiler for bugs and crashes.
+// Stuff here might crash the compiler.
+// HL_Sample.arm for showcase of the compiler's capabilities.
+
+fn Entry()
+{
+	Println("\nProgram Started\n");
+
+	string d = "the long ass strinlaru marsu dideki";
+	string abc = "str var -";
+	string abs = "str var + " + abc + "\n" + " mystre " + d;
+	int a = 10 - 9;
+	int b = a * a * a;
+	PrintInt(b + a);
+	Println(abs);
+	
+	Println();
+	//return 0;
+}

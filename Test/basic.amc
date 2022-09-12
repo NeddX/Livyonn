@@ -1,5 +1,5 @@
 ; Basic loop with AVM.
-; Run 'liv run basic.arm 10' then will be the number of times the loop will be performed.
+; Run 'liv run basic.arm 10' 10 then will be the number of times the loop will be performed.
 
 POP %RAX                ; Pops the first argument to RAX register.            
 CALL @l1                ; Calling the loop function (label).

@@ -1,0 +1,9 @@
+fn Entry()
+{
+	string a = "10";
+	string b = "99";
+
+	string c = a + b + " it worked??";
+
+	Println(c);
+}

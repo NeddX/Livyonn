@@ -1,0 +1,4 @@
+- Implement function return types. 
+- Optimize strings.
+- Optimize integers, longs, shorts.
+- Implement function parameters.

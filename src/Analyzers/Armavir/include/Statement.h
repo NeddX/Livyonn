@@ -21,7 +21,13 @@ namespace arma
         OPERATOR_CALL
     };
 
-    static const string KindStr[] = 
+    enum OpKind
+    {
+        BLOCK,
+
+    };
+
+    static const string kindStr[] = 
     {
         "VARIABLE_DECLERATION",
         "ASSIGNMENT_EXPRESSION",
@@ -32,15 +38,19 @@ namespace arma
         "OPERATOR_CALL"
     };
 
+    static const string opKindStr[] =
+    {
+        "enn"
+    };
+
     struct Statement
     {
-        public:
-            string name;
-            Type type = Type("void", VOID);
-            bool isVar;
-            vector<Statement> params;
-            Kind kind = FUNCTION_CALL;
+        string name;
+        Type type = Type("void", VOID);
+        bool isVar;
+        vector<Statement> params;
+        Kind kind = FUNCTION_CALL;
 
-            void StDumpTruck() const;
+        void StDumpTruck() const;
     };
 }

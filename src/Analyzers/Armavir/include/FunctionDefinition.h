@@ -23,6 +23,7 @@ namespace arma
     {
         public:
             string name;
+            Type type;
             vector<ParamDefinition> params;
             vector<Statement> statements;
             

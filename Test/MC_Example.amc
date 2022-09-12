@@ -1,0 +1,39 @@
+POP %RAX ; Retrieving the first parameter and pushing it tothe RAX register.
+POP %RBX ; Retrieving the second parameter and pushing it to the RBX register.
+
+CALL @rcsv
+RETURN
+
+@rcsv:    
+    PUSH %RBX
+    PINT
+    CIGT %RBX, #0
+    JRNE #3
+    SUB %RBX, #1
+    CJMP @rcsv
+    MOV %FNR, #1
+    RETURN
+
+@l1:
+    CIGT %RAX, #0
+    CJRP #3
+    MOV %FNR, #1
+    RETURN
+
+    MOV %RDX, %RBX
+    PUSH %RAX
+    PINT
+    CALL @l2
+    SUB %RAX, %FNR
+    JMP @l1
+
+@l2:
+    CIGT %RDX, #0
+    CJRP #3
+    MOV %FNR, #1
+    RETURN
+
+    ;PUSH %RDX
+    ;PINT
+    SUB %RDX, #1
+    JMP @l2

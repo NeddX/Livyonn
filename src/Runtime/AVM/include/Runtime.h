@@ -43,7 +43,7 @@ namespace avm
     void DivSHandler(Runtime& r);
     void DivRHandler(Runtime& r);
     void PrintIntHandler(Runtime& r);
-    void PrintHandler(Runtime& r);
+    void PrintStrHandler(Runtime& r);
     void CompIntLTHandler(Runtime& r);
     void CompIntETHandler(Runtime& r);
     void CompIntNEHandler(Runtime& r);
@@ -52,6 +52,8 @@ namespace avm
     void MoveSHandler(Runtime& r);
     void PushIntBasepointerRelative(Runtime& r);
     void LoadIntBasepointerRelative(Runtime& r);
+    void PushStrBasepointerRelative(Runtime& r);
+    void LoadStrBasepointerRelative(Runtime& r);
     void JumpHandler(Runtime& r);
     void ConditionalJumpHandler(Runtime& r);
     void RelativeJumpHandler(Runtime& r);
@@ -60,6 +62,8 @@ namespace avm
     void JumpNotEqualHandler(Runtime& r);
     void CallHandler(Runtime& r);
     void ReturnHandler(Runtime& r);
+    void DefineBytesHandler(Runtime& r);
+    void CombineStringHandler(Runtime& r);
 
     // Instruction Handlers Map
     typedef void(*InstHandler)(Runtime&);

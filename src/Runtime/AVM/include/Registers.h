@@ -19,7 +19,7 @@ namespace avm
         RBP,
         RSP,
         RSI,
-        RDL,
+        RDI,
 
         EAX,
         EBX,

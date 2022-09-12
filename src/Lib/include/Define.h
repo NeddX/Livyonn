@@ -17,5 +17,7 @@
 #define BOLDCYAN    "\033[1m\033[36m"      /* Bold Cyan */
 #define BOLDWHITE   "\033[1m\033[37m"      /* Bold White */
 
-#define TAB "\t"
-#define NL "\n"
+#define TAB '\t'
+#define NL '\n'
+
+#define ASTDLIB "D:\\Users\\Nedd\\source\\repos\\NeddX\\AMFramework\\"
