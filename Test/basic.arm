@@ -1,8 +1,30 @@
 include "{full path here}\\awfulAgeCounter.arm";
 
+// Entry function
 fn Entry()
 {
 	_Println("\nProgram started\n");
 	aac();
 }
 
+// Currently supports two datatypes, Ints and strings.
+// Has 3 built-in functions.
+//		_Print(<str, str var, str expr>)			-		Prints the string and does not insert a newline at the end.
+//		_Println(<str, str var, str expr>)		-		Same as above except inserts a new line at the end.
+//		_PrintInt(<int, int var, int expr>)		-		Same as Print() but for ints only.
+
+// Supports int expressions and re-assignments
+// 		int a = 10 * 3;
+//		int b = a - 1;
+//		a = b * 10;
+
+// Supports string addition and re-assignments
+//		string str = "str 1";
+//		string str2 = "str 2";
+//		str = str + " " + str2;
+
+// Supports function calls and return (only able to return ints and can't pass parameters yet)
+//		my_func();
+//		int a = retNum() * 10;
+
+// That's pretty much it

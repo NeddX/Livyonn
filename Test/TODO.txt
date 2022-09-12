@@ -1,4 +1,4 @@
 - Implement function return types. 
-- Optimize strings.
-- Optimize integers, longs, shorts.
+- Optimize strings (horrible implementation and horrible performance).
+- Optimize integers, longs, shorts (all of them are stored as 4 bytes in the stack).
 - Implement function parameters.
