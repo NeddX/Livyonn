@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # Requires to at least CMAKE v3.0 or HIGHER!
-if [ ! -d "build/" ] 
+if [ ! -d "builds/" ] 
 then
-    konsole -e /bin/bash --rcfile <(echo "mkdir build/ && cd build/ && cmake ../ && cd .. && cmake --build build/ && printf \"\n\nPRESS ENTER TO EXIT...\" && read x && exit")
+    mkdir builds/ && mkdir builds/linux && cd builds/linux && cmake ../ && cd .. && cmake --build builds/linux
 else
-    konsole -e /bin/bash --rcfile <(echo "cmake --build build/ && printf \"\n\nPRESS ENTER TO EXIT...\" && read x && exit")
+    cmake --build builds/linux
 fi
