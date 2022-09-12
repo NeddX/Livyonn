@@ -1,8 +1,9 @@
 # Livyonn
 *"Sometimes you just need to create a compiler~~"*<br/>
-Bytecode compiled/interpreted programming language written in C++, designed by me, built by me, and you best hope, for it to work.
 
 ***
+
+Bytecode compiled/interpreted programming language written in C++, designed by me, built by me, and you best hope, for it to work.
 
 # Pre-Alpha
 Right now it supports only two datatypes, strings and 64bit ints. 
@@ -13,8 +14,6 @@ Include external files.
 Print to standard out.
 
 Check ```Test/basic.arm``` for more info.
-
-***
 
 # Build Instructions
 ## Windows
@@ -30,8 +29,6 @@ Requires:
 - GCC v12.1.1
 
 After installing, simply run ```chmod +x build.sh``` in your terminal and execute ```build.sh```.
-
-***
 
 # Usage
 ```liv <command> <parameters>```.<br/>
