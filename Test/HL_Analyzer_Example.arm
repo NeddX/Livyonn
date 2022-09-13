@@ -3,7 +3,7 @@
  
 fn Entry(var argc, var argv)
 {
-    printline("sup fucker! 10 - 6 * (3 + 2) is ", 10 - 6 * (3 + 2));
+    printline("10 - 6 * (3 + 2) is ", 10 - 6 * (3 + 2));
     capabilities();
 }
 
@@ -22,7 +22,7 @@ fn capabilities()
     string undef2; // Undefined staticly typed variables
 
     // function calls! and comments too!!
-    fnCall("i didnt know rust also used the keyword fn for functions, heck i didnt even what the fuck was rust about until a month ago");
+    fnCall("very cool");
 }
 
 fn fnCall(var str)
