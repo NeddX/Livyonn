@@ -3,7 +3,7 @@
 
 ***
 
-Bytecode compiled/interpreted programming language written in C++, designed by me, built by me, and you best hope, for it to work.
+Bytecode compiled and interpreted programming language written in C++, designed by me, built by me, and you best hope, for it to work.
 
 # Pre-Alpha
 Right now it supports only two datatypes, strings and 64bit ints. 
