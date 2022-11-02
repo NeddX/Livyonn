@@ -22,7 +22,7 @@ endif()
 
 add_executable(liv
 "main.cpp"
-"Lib/Utils.cpp"
+"Lib/System.cpp"
 "Analyzers/Armavir/Lexer.cpp"
 "Analyzers/Armavir/Analyzer.cpp"
 "Analyzers/Armavir/FunctionDefinition.cpp"

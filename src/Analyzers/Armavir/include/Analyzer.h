@@ -48,5 +48,6 @@ namespace arma
             void DumpTruck() const;
             map<string, FunctionDefinition> GetFunctions() { return funcs; }
             map<string, Statement> variableMap;
+            map<string, ArgDefinition> currentFuncArgs;
     };
 }

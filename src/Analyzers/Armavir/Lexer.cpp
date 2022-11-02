@@ -71,14 +71,14 @@ namespace arma
                 case '8':
                 case '9':
                 {
-                    if (currentToken.type == WHITESPACE) currentToken.type = INTEGER_LITERAL;
+                    if (currentToken.type == NONE) currentToken.type = INTEGER_LITERAL;
                     if (currentToken.type == POTENTIAL_DOUBLE) currentToken.type = DOUBLE_LITERAL;
                     currentToken.text.append(1, c);
                     break;
                 }
                 case '.':
                 {
-                    if (currentToken.type == WHITESPACE)
+                    if (currentToken.type == NONE)
                     {
                         currentToken.type = POTENTIAL_DOUBLE;
                         currentToken.cur = cur;
@@ -131,24 +131,94 @@ namespace arma
                     else if (currentToken.subType == RANGE_COMMENT)
                     {
                         currentToken.type = POTENTIAL_RANGE_END;
-                        currentToken.subType = WHITESPACE;
+                        currentToken.subType = NONE;
                     }
                 }
-                case '=':
-                case '-':
-                case '+':
+                case '!':
                 {
-                    if (currentToken.type != STRING_LITERAL && currentToken.type != COMMENT)
+                    if (currentToken.subType == POTENTIAL_DOUBLE_OPERATOR && currentToken.text == "=")
                     {
+                        currentToken.type = OPERATOR;
+                        currentToken.subType = DOUBLE_OPERATOR;
+                        currentToken.cur = cur;
+                        currentToken.text.append(1, c);
+                        EndToken(currentToken, tokens);
+                    }
+                    else if (currentToken.type != STRING_LITERAL && currentToken.type != COMMENT && currentToken.subType != POTENTIAL_DOUBLE_OPERATOR)
+                    {
+                        currentToken.subType = NONE;
                         EndToken(currentToken, tokens);
                         currentToken.type = OPERATOR;
+                        currentToken.subType = POTENTIAL_DOUBLE_OPERATOR;
                         currentToken.cur = cur;
                         currentToken.text.append(1, c);
                         //EndToken(currentToken, tokens);
                     }
                     else currentToken.text.append(1, c);
                     break;
-                }                    
+                }
+                case '=':
+                {
+                    if (currentToken.subType == POTENTIAL_DOUBLE_OPERATOR)
+                    {
+                        currentToken.type = OPERATOR;
+                        currentToken.subType = DOUBLE_OPERATOR;
+                        currentToken.cur = cur;
+                        currentToken.text.append(1, c);
+                        EndToken(currentToken, tokens);
+                    }
+                    else if (currentToken.type != STRING_LITERAL && currentToken.type != COMMENT && currentToken.subType != POTENTIAL_DOUBLE_OPERATOR)
+                    {
+                        currentToken.subType = NONE;
+                        EndToken(currentToken, tokens);
+                        currentToken.type = OPERATOR;
+                        currentToken.subType = POTENTIAL_DOUBLE_OPERATOR;
+                        currentToken.cur = cur;
+                        currentToken.text.append(1, c);
+                        //EndToken(currentToken, tokens);
+                    }
+                    else currentToken.text.append(1, c);
+                    break;
+                }
+                case '-':
+                case '+':
+                case '<':
+                case '>':
+                {
+                    if (currentToken.subType == POTENTIAL_DOUBLE_OPERATOR && currentToken.text[0] == c)
+                    {
+                        currentToken.type = OPERATOR;
+                        currentToken.subType = DOUBLE_OPERATOR;
+                        currentToken.cur = cur;
+                        currentToken.text.append(1, c);
+                        EndToken(currentToken, tokens);
+                    }
+                    else if (currentToken.type != STRING_LITERAL && currentToken.type != COMMENT && currentToken.subType != POTENTIAL_DOUBLE_OPERATOR)
+                    {
+                        EndToken(currentToken, tokens);
+                        currentToken.type = OPERATOR;
+                        currentToken.subType = POTENTIAL_DOUBLE_OPERATOR;
+                        currentToken.cur = cur;
+                        currentToken.text.append(1, c);
+                        //EndToken(currentToken, tokens);
+                    }
+                    else currentToken.text.append(1, c);
+                    break;
+                }
+                //case '<':
+                //case '>':
+                //{
+                //    if (currentToken.type != STRING_LITERAL && currentToken.type != COMMENT)
+                //    {
+                //        EndToken(currentToken, tokens);
+                //        currentToken.type = OPERATOR;
+                //        currentToken.cur = cur;
+                //        currentToken.text.append(1, c);
+                //        //EndToken(currentToken, tokens);
+                //    }
+                //    else currentToken.text.append(1, c);
+                //    break;
+                //}                    
                 case ' ':
                 case '\t':
                 {
@@ -162,7 +232,7 @@ namespace arma
                 case '\n':
                 {
                     if (currentToken.type == STRING_LITERAL) currentToken.text.append(1, '\n');
-                    if (currentToken.type == COMMENT && currentToken.subType != RANGE_COMMENT) currentToken.type = WHITESPACE;
+                    if (currentToken.type == COMMENT && currentToken.subType != RANGE_COMMENT) currentToken.type = NONE;
                     currentToken.line++;
                     cur = 0;
                     break;
@@ -170,7 +240,7 @@ namespace arma
                 case '\r':
                 {
                     if (currentToken.type == STRING_LITERAL) currentToken.text.append(1, '\r');
-                    if (currentToken.type == COMMENT && currentToken.subType != RANGE_COMMENT) currentToken.type = WHITESPACE;
+                    if (currentToken.type == COMMENT && currentToken.subType != RANGE_COMMENT) currentToken.type = NONE;
                     currentToken.line++;
                     cur = 0;
                     break;
@@ -229,7 +299,7 @@ namespace arma
                     if (currentToken.type != STRING_LITERAL && currentToken.type != COMMENT)
                     { 
                         EndToken(currentToken, tokens);
-                        if (currentToken.type == WHITESPACE)
+                        if (currentToken.type == NONE)
                         {
                             currentToken.type = SEMICOLON;
                             currentToken.cur = cur;
@@ -240,11 +310,10 @@ namespace arma
                     else currentToken.text.append(1, c);
                     break;
                 }
-                case '\0':
-                    continue;
+                case '\0': continue;
                 default:
                 {
-                   if (currentToken.type == WHITESPACE  || 
+                   if (currentToken.type == NONE  || 
                     currentToken.type == INTEGER_LITERAL || 
                     currentToken.type == DOUBLE_LITERAL)
                     {
@@ -270,13 +339,13 @@ namespace arma
 
     void EndToken(Token& t, TokenList& tokens)
     {
-        if (t.type == COMMENT || t.type == RANGE_COMMENT) cout << "ignoring nn: " << t.text << endl;
-        if (t.type == IDENTIFIER && t.text == "true" || t.text == "false")
+        if (t.type == COMMENT || t.type == RANGE_COMMENT) return;
+        else if (t.type == IDENTIFIER && t.text == "true" || t.text == "false")
         {
             t.type = BOOLEAN_LITERAL;
             tokens.push_back(t);
         }
-        else if (t.type != WHITESPACE)
+        else if (t.type != NONE)
         {
             if (t.type == IDENTIFIER)
             {
@@ -289,8 +358,8 @@ namespace arma
             if (t.text == ".") t.type = OPERATOR; 
             else t.type = DOUBLE_LITERAL;
         }
-        t.type = WHITESPACE;
-        t.subType = WHITESPACE;
+        t.type = NONE;
+        t.subType = NONE;
         t.text.erase();
     }
 

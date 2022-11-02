@@ -13,7 +13,7 @@ namespace arma
     
     enum TokenType
     {
-        WHITESPACE,
+        NONE,
         IDENTIFIER,
         INTEGER_LITERAL,
         STRING_LITERAL,
@@ -29,7 +29,9 @@ namespace arma
         POTENTIAL_RANGE_END,
         SEMICOLON,
         INCLUDE_DIRECTIVE,
-        ESCAPE_SEQUENCE
+        ESCAPE_SEQUENCE,
+        POTENTIAL_DOUBLE_OPERATOR,
+        DOUBLE_OPERATOR
     };
 
     static const char* tokenTypeString[] =
@@ -49,14 +51,16 @@ namespace arma
         "RANGE_COMMENT",
         "POTENTIAL_RANGE_END",
         "SEMICOLON",
-        "INCLUDE_DIRECTIVE"
+        "INCLUDE_DIRECTIVE",
+        "POTENTIAL_DOUBLE_OPERATOR",
+        "DOUBLE_OPERATOR"
     };
 
     struct Token
     {
         public:
-            TokenType type = WHITESPACE;
-            TokenType subType = WHITESPACE;
+            TokenType type = NONE;
+            TokenType subType = NONE;
             string text;
             size_t line = 0;
             size_t cur = 0;

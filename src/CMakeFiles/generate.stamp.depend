@@ -1,0 +1,8 @@
+# CMake generation dependency list for this directory.
+D:/Program Files/CMake/share/cmake-3.24/Modules/CMakeCheckCompilerFlagCommonPatterns.cmake
+D:/Program Files/CMake/share/cmake-3.24/Modules/CheckCXXCompilerFlag.cmake
+D:/Program Files/CMake/share/cmake-3.24/Modules/CheckCXXSourceCompiles.cmake
+D:/Program Files/CMake/share/cmake-3.24/Modules/Internal/CheckCompilerFlag.cmake
+D:/Program Files/CMake/share/cmake-3.24/Modules/Internal/CheckFlagCommonConfig.cmake
+D:/Program Files/CMake/share/cmake-3.24/Modules/Internal/CheckSourceCompiles.cmake
+D:/Users/Nedd/source/repos/NeddX/Livyonn/src/CMakeLists.txt

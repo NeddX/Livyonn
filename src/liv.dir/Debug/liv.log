@@ -1,0 +1,40 @@
+﻿  Building Custom Rule D:/Users/Nedd/source/repos/NeddX/Livyonn/src/CMakeLists.txt
+  main.cpp
+D:\Users\Nedd\source\repos\NeddX\Livyonn\src\main.cpp(113,28): warning C4244: 'initializing': conversion from '__int64' to 'long', possible loss of data
+  Utils.cpp
+  FunctionDefinition.cpp
+  Statement.cpp
+  AVM.cpp
+  Runtime.cpp
+D:\Users\Nedd\source\repos\NeddX\Livyonn\src\Runtime\AVM\Runtime.cpp(82,67): warning C4244: 'argument': conversion from 'uint64_t' to 'int16_t', possible loss of data
+D:\Users\Nedd\source\repos\NeddX\Livyonn\src\Runtime\AVM\Runtime.cpp(83,36): warning C4244: 'argument': conversion from 'uint64_t' to 'int16_t', possible loss of data
+D:\Users\Nedd\source\repos\NeddX\Livyonn\src\Runtime\AVM\Runtime.cpp(88,69): warning C4244: 'argument': conversion from 'uint64_t' to 'int32_t', possible loss of data
+D:\Users\Nedd\source\repos\NeddX\Livyonn\src\Runtime\AVM\Runtime.cpp(89,38): warning C4244: 'argument': conversion from 'uint64_t' to 'int32_t', possible loss of data
+D:\Users\Nedd\source\repos\NeddX\Livyonn\src\Runtime\AVM\Runtime.cpp(225,20): warning C4244: 'argument': conversion from 'uint16_t' to '_Elem', possible loss of data
+          with
+          [
+              _Elem=char
+          ]
+D:\Users\Nedd\source\repos\NeddX\Livyonn\src\Runtime\AVM\Runtime.cpp(310,30): warning C4244: 'argument': conversion from 'uint16_t' to '_Ty', possible loss of data
+          with
+          [
+              _Ty=uint8_t
+          ]
+D:\Users\Nedd\source\repos\NeddX\Livyonn\src\Runtime\AVM\Runtime.cpp(389,34): warning C4267: 'argument': conversion from 'size_t' to 'int16_t', possible loss of data
+D:\Users\Nedd\source\repos\NeddX\Livyonn\src\Runtime\AVM\Runtime.cpp(406,9): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  ByteBuffer.cpp
+  Registers.cpp
+  Source.cpp
+  Generating Code...
+  Lexer.cpp
+  Analyzer.cpp
+  Analyzer.cpp
+  Lexer.cpp
+D:\Users\Nedd\source\repos\NeddX\Livyonn\src\Analyzers\AVM\Lexer.cpp(170,37): error C2065: 'COMP_INT_LT': undeclared identifier
+D:\Users\Nedd\source\repos\NeddX\Livyonn\src\Analyzers\AVM\Lexer.cpp(171,36): error C2065: 'COMP_INT_ET': undeclared identifier
+D:\Users\Nedd\source\repos\NeddX\Livyonn\src\Analyzers\AVM\Lexer.cpp(172,37): error C2065: 'COMP_INT_GT': undeclared identifier
+D:\Users\Nedd\source\repos\NeddX\Livyonn\src\Analyzers\AVM\Lexer.cpp(173,36): error C2065: 'COMP_INT_NE': undeclared identifier
+D:\Users\Nedd\source\repos\NeddX\Livyonn\src\Analyzers\AVM\Lexer.cpp(170): warning C4390: ';': empty controlled statement found; is this the intent?
+D:\Users\Nedd\source\repos\NeddX\Livyonn\src\Analyzers\AVM\Lexer.cpp(171): warning C4390: ';': empty controlled statement found; is this the intent?
+D:\Users\Nedd\source\repos\NeddX\Livyonn\src\Analyzers\AVM\Lexer.cpp(172): warning C4390: ';': empty controlled statement found; is this the intent?
+D:\Users\Nedd\source\repos\NeddX\Livyonn\src\Analyzers\AVM\Lexer.cpp(173): warning C4390: ';': empty controlled statement found; is this the intent?

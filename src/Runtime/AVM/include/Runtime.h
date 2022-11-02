@@ -13,11 +13,13 @@ namespace avm
 
     struct Runtime
     {
+        // In my VM, bytes are stored as shorts (uint16),
+        // so cope with the fact that im gonan refeer uint16s as bytes.
         public:
             Instruction* bytecode;
             Instruction* pc;
             ByteBuffer stack;
-            size_t baseIndex;
+            size_t baseIndex = 0;
             Registers regs;
 
             Runtime(Instruction* pc) : pc(pc), bytecode(pc) {};
@@ -31,29 +33,23 @@ namespace avm
     void PopHandler(Runtime& r);
     void PeekHandler(Runtime& r);
     void AddHandler(Runtime& r);
-    void AddSHandler(Runtime& r);
-    void AddRHandler(Runtime& r);
     void SubHandler(Runtime& r);
-    void SubSHandler(Runtime& r);
-    void SubRHandler(Runtime& r);
     void MulHandler(Runtime& r);
-    void MulSHandler(Runtime& r);
-    void MulRHandler(Runtime& r);
     void DivHandler(Runtime& r);
-    void DivSHandler(Runtime& r);
-    void DivRHandler(Runtime& r);
     void PrintIntHandler(Runtime& r);
     void PrintStrHandler(Runtime& r);
-    void CompIntLTHandler(Runtime& r);
-    void CompIntETHandler(Runtime& r);
-    void CompIntNEHandler(Runtime& r);
-    void ComptIntGTHandler(Runtime& r);
+    void CompIntLessThanHandler(Runtime& r);
+    void CompIntEqualToHandler(Runtime& r);
+    void CompIntNotEqualHandler(Runtime& r);
+    void ComptIntGreaterThanHandler(Runtime& r);
     void MoveHandler(Runtime& r);
     void MoveSHandler(Runtime& r);
     void PushIntBasepointerRelative(Runtime& r);
     void LoadIntBasepointerRelative(Runtime& r);
     void PushStrBasepointerRelative(Runtime& r);
     void LoadStrBasepointerRelative(Runtime& r);
+    void PushByteBasepointerRelative(Runtime& r);
+    void LoadByteBasepointerRelative(Runtime& r);
     void JumpHandler(Runtime& r);
     void ConditionalJumpHandler(Runtime& r);
     void RelativeJumpHandler(Runtime& r);
@@ -64,6 +60,9 @@ namespace avm
     void ReturnHandler(Runtime& r);
     void DefineBytesHandler(Runtime& r);
     void CombineStringHandler(Runtime& r);
+    void IncrementHandler(Runtime& r);
+    void DecrementHandler(Runtime& r);
+    void PopStrHandler(Runtime& r);
 
     // Instruction Handlers Map
     typedef void(*InstHandler)(Runtime&);

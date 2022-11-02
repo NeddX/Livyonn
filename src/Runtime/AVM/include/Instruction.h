@@ -23,16 +23,18 @@ namespace avm
         DIV,
         PRINT_INT,
         PRINT_STR,
-        COMP_INT_LT, // If Less Than
-        COMP_INT_ET, // If Equal To
-        COMP_INT_GT, // If Greater than
-        COMP_INT_NE, // If Not Equal
+        CILT, // If Less Than
+        CIET, // If Equal To
+        CIGT, // If Greater than
+        CINE, // If Not Equal
         MOV,
         MOVS,
         PIBR, //Push Int Basepointer Relative
         LIBR, // Liberal (ew) Load Int Basepointer Relative
         PSBR,
         LSBR,
+        PBBR,
+        LBBR,
         JMP, // Unconditional Address Jump
         CJMP, // Jump to Address If ZF Flag is 1
         JRP, // Unconditional Relative Jump
@@ -43,6 +45,11 @@ namespace avm
         RETURN,
         DB,
         CMSTR,
+        INC,
+        DEC,
+        POP_STR,
+
+        BREAK, // Dummy instruction, gets replaced by JMP in the Compiler and the Runtime will crash if used.
 
         NOP
     };
@@ -70,6 +77,8 @@ namespace avm
         "LIBR",
         "PSBR",
         "LSBR",
+        "PBBR",
+        "LBBR",
         "JMP",  
         "CJMP", 
         "JRP",
@@ -80,7 +89,11 @@ namespace avm
         "RETURN",  
         "NOP",
         "DB",
-        "RB"
+        "RB",
+        "INC",
+        "DEC",
+
+        "NUL"
     };
 
     struct Instruction
@@ -89,8 +102,8 @@ namespace avm
         uint8_t pl = 0;
         Regs reg1 = NUL;
         Regs reg2 = NUL;
-        uint16_t p2 = 0;
-        uint64_t p3 = 0;
+        int16_t p2 = 0;
+        int64_t p3 = 0;
         vector<uint16_t> bytes;
     };    
 

@@ -8,7 +8,7 @@
 #include <iterator>
 
 #include "Lib/include/Define.h"
-#include "Lib/include/Utils.h"
+#include "Lib/include/System.h"
 #include "Analyzers/Armavir/include/Analyzer.h"
 #include "Analyzers/AVM/include/Analyzer.h"
 #include "Runtime/AVM/include/AVM.h"
@@ -34,7 +34,6 @@ int main(int argc, char** argv)
     Action ack = DEBUG;
     try
     {
-
         // if (argc < 2)
         // {
         //     std::cout << "Too few arguments." << std::endl;
@@ -63,18 +62,25 @@ int main(int argc, char** argv)
 
         if (ack == DEBUG)
         {
-            // std::optional<std::string> mc_src = ReadToString("/home/nedd/source/repos/Livyonn/Test/basic.amc");
-            // if (!mc_src.has_value()) throw std::runtime_error(std::string("Failed to open source file."));
+            //char buffer[8192];
+            //setvbuf(stdout, buffer, 0, sizeof(buffer));
 
-            // avm::AVM avm;  
-            // amca::Analyzer an;
-            // amcc::Compiler c;
-            // avm::ByteCode bytecode = c.Compile(an.StartAnalysis(*mc_src));
-            // std::cout << NL;
-            // std::vector<std::string> fa = { "999999", "1000" };
-            // avm.Start(bytecode, fa);
+            /* Low Level */
 
-            std::optional<std::string> src = ReadToString("../../../../Test/basic.arm");
+            //std::optional<std::string> mc_src = System::File::ReadToString("../../../../Test/test1.amc");
+            //if (!mc_src.has_value()) throw std::runtime_error(std::string("Failed to open source file."));
+
+            //avm::AVM avm;  
+            //amca::Analyzer an;
+            //amcc::Compiler c;
+            //avm::ByteCode bytecode = c.Compile(an.StartAnalysis(*mc_src));
+            ////std::cout << NL;
+            //avm.Start(bytecode);
+
+            /* end */
+
+            /* High Level */
+            std::optional<std::string> src = System::File::ReadToString("../../../../Test/test1.arm");
             if (!src.has_value()) throw std::runtime_error(std::string("Failed to open source file."));
             // ARMA (Armavir Analyzer) and ARBA (Armavi Bytecode Analyzer) 
             arma::Analyzer an; 
@@ -82,11 +88,20 @@ int main(int argc, char** argv)
             //an.DumpTruck();
             
             arc::Compiler c;
-            avm::ByteCode compiledCode = c.Compile(an);
+            arc::CompilerOptions* options = new arc::CompilerOptions
+            {
+                .outputType = arc::EXE,
+                .outputExecutable = true,
+                .path = "../../../../Test/out.aex"
+            };
+            avm::ByteCode compiledCode = c.Compile(an, options);
 
             avm::AVM avm;
 
             avm.Start(compiledCode);
+
+            /* end */
+
             return 0;
         }
 
@@ -107,10 +122,10 @@ int main(int argc, char** argv)
                 {
                     std::cout << "AVM Bytecode file detected" << NL;
 
-                    std::optional<std::string> src = ReadToString(file);
+                    std::optional<std::string> src = System::File::ReadToString(file);
                     if (!src.has_value()) throw std::runtime_error(std::string("Failed to open source file."));
 
-                    long i = find(args.begin(), args.end(), file) - args.begin();
+                    size_t i = find(args.begin(), args.end(), file) - args.begin();
 
                     std::vector<std::string> fargs(args.begin() + ++i, args.end());
                     avm::AVM avm; // The Virtual Machine (aka the Runtime)
@@ -124,7 +139,7 @@ int main(int argc, char** argv)
                 {
                     std::cout << "Armavir source file detected" << NL;
 
-                    std::optional<std::string> src = ReadToString(file);
+                    std::optional<std::string> src = System::File::ReadToString(file);
                     if (!src.has_value()) throw std::runtime_error(std::string("Failed to open source file."));
 
                     // ARMA (Armavir Analyzer) and ARBA (Armavi Bytecode Analyzer) 

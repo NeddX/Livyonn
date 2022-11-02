@@ -4,18 +4,29 @@
 // basic.arm for showcase of the compiler's and Runtime's capabilities.
 // HL_Sample.arm for showcase of the Analyzer's capabilities.
 
-fn Entry()
-{
-	Println("\nProgram Started\n");
+//include Core;
 
-	string d = "the long sssstttttttttrrrrrrinnnnnnnngggg";
-	string abc = "str var -";
-	string abs = "str var + " + abc + "\n" + " mystring " + d;
-	int a = 10 - 9;
-	int b = a * a * a;
-	PrintInt(b + a);
-	Println(abs);
-	
-	Println();
-	//return 0;
+fn Entry() 
+{ 
+	dum();
+	//njj("noglar", "marsi");
+	//_Print("I think this is what caused an issue\n");
 }
+
+fn dum()
+{
+	string myvar = "str1";
+	int a = 10;
+	_PrintInt(a);
+}
+
+//fn njj(string hn, string sp)
+//{
+//	// Causes error
+//	//string l_hn = hn; string l_sp;
+//	//string cont = l_hn + l_sp;
+//	
+//	//string cont = hn + sp;
+//	
+//	_Print("Cont: " + hn + "\nclownshitshow\n");
+//}

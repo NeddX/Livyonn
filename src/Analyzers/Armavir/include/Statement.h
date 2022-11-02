@@ -16,15 +16,18 @@ namespace arma
         ASSIGNMENT_EXPRESSION,
         IDENTIFIER_EXPRESSION,
         RETURN_STATEMENT,
+        WHILE_STATEMENT,
+        IF_STATEMENT,
+        ELSE_IF_STATEMENT,
+        ELSE_STATEMENT,
+        BREAK_STATEMENT,
         FUNCTION_CALL,
+        POST_INCREMENT_EXPRESSION,
+        PRE_INCREMENT_EXPRESSION,
+        POST_DECREMENT_EXPRESSION,
+        PRE_DECREMENT_EXPRESSION,
         LITERAL,
         OPERATOR_CALL
-    };
-
-    enum OpKind
-    {
-        BLOCK,
-
     };
 
     static const string kindStr[] = 
@@ -33,14 +36,25 @@ namespace arma
         "ASSIGNMENT_EXPRESSION",
         "IDENTIFIER_EXPRESSION",
         "RETURN_STATEMENT",
+        "WHILE_STATEMENT",
+        "IF_STATEMENT",
+        "ELSE_IF_STATEMENT",
+        "ELSE_STATEMENT",
+        "BREAK_STATEMENT",
         "FUNCTION_CALL",
         "LITERAL",
         "OPERATOR_CALL"
     };
 
-    static const string opKindStr[] =
+    enum OperationType
     {
-        "enn"
+        LOCAL_REFERENCE,
+        ARGUMENT_REFERENCE
+    };
+
+    struct Operation
+    {
+        OperationType type;
     };
 
     struct Statement
@@ -48,8 +62,10 @@ namespace arma
         string name;
         Type type = Type("void", VOID);
         bool isVar;
-        vector<Statement> params;
+        vector<Statement> args;
+        vector<Statement> body;
         Kind kind = FUNCTION_CALL;
+        Operation op;
 
         void StDumpTruck() const;
     };

@@ -11,12 +11,11 @@ namespace arma
 {
     using namespace std;
 
-    struct ParamDefinition
+    struct ArgDefinition
     {
         public:
             string name;
             Type type;
-
     };
 
     struct FunctionDefinition
@@ -24,8 +23,8 @@ namespace arma
         public:
             string name;
             Type type;
-            vector<ParamDefinition> params;
-            vector<Statement> statements;
+            vector<ArgDefinition> args;
+            vector<Statement> body;
             
             void FuncDumpTruck() const;
     };

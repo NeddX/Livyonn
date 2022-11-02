@@ -1,0 +1,23 @@
+; Wrote it as optimized as I could. Did gain little bit of performance but still, the virtual machine needs some aggressive optimization and so does the compiler.
+
+MOV %RAX, #0
+MOV %RBX, #10000
+CALL @l2
+RETURN
+
+@printInt:			; Print function
+	PUSH %RSI
+	PINT
+	RETURN
+
+@l3:				; Loop body
+	MOV %RSI, %RAX
+	CALL @printInt
+	ADD %RAX, #1
+
+@l2:				; Loop condition
+	CIGT %RBX, %RAX
+	CJMP @l3
+	RETURN
+	
+nop

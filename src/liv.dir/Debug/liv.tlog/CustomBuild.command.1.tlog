@@ -1,0 +1,10 @@
+^D:\USERS\NEDD\SOURCE\REPOS\NEDDX\LIVYONN\SRC\CMAKELISTS.TXT
+setlocal
+"D:\Program Files\CMake\bin\cmake.exe" -SD:/Users/Nedd/source/repos/NeddX/Livyonn -BD:/Users/Nedd/source/repos/NeddX/Livyonn --check-stamp-file D:/Users/Nedd/source/repos/NeddX/Livyonn/src/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

@@ -12,6 +12,7 @@ namespace avm
 
     enum Regs
     {
+        // Generic x86_64 registers
         RAX,
         RBX,
         RCX,
@@ -48,10 +49,12 @@ namespace avm
         E14,
         E15,
 
-        ZF,
-        FNR,
-        RFR,
-        EFR,
+        // Special Registers for this virutal machine
+        CF, // Conditional Flag, either 0 (false) or 1 (true)
+        FNR, // Function Return Register (returns the pointer pointing to the function return value)
+        RFR, // 64bit something?
+        EFR, // 32bit something?
+        SSR, // Stack Size Register, stores the total size of the stack (excluding basepointer size)
 
         NUL
     };
@@ -90,10 +93,11 @@ namespace avm
         "E13",
         "E14",
         "E15",
-        "ZF",
+        "CF",
         "FNR",
         "RFR",
         "EFR",
+        "SSR",
         "NUL"
     };
 

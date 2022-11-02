@@ -24,8 +24,9 @@ namespace amcc
                         inst->opcode = static_cast<OpCode>(t.data);
                         break;
                     }   
-                    bytecode.push_back(*inst);    
-                    inst = new Instruction();            
+                    bytecode.push_back(*inst);
+                    delete inst;
+                    inst = new Instruction();   
                     inst->opcode = static_cast<OpCode>(t.data);
                     break;
                 }

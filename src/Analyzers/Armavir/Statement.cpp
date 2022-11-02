@@ -9,12 +9,12 @@ namespace arma
             case VARIABLE_DECLERATION:
             {
                 cout << "<" << kindStr[kind] << "> " << type.name << " " << name << " = ";
-                if (params.size() <= 0)
+                if (body.size() <= 0)
                 {
                     cout << "<undefined>" << NL;
                     break;
                 }
-                for (auto& ps : params) 
+                for (auto& ps : body) 
                 {
                     ps.StDumpTruck();
                 }
@@ -27,10 +27,10 @@ namespace arma
                 cout << "<" << kindStr[kind] << "> " << name << "(";
 
                 int i = 0;
-                for (auto& fp : params)
+                for (auto& fp : body)
                 {
                     fp.StDumpTruck();
-                    if (i + 1 != params.size()) cout << ", ";
+                    if (i + 1 != body.size()) cout << ", ";
                     i++;
                 }
 
@@ -46,9 +46,9 @@ namespace arma
             case OPERATOR_CALL:
             {
                 int i = 0;
-                for (auto& op : params)
+                for (auto& op : body)
                 {
-                    if (i + 1 != params.size()) 
+                    if (i + 1 != body.size()) 
                     {
                         op.StDumpTruck(); 
                         cout << " " << name;

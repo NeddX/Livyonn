@@ -86,6 +86,11 @@ namespace avm
         buffer.reserve(size);
     }
 
+    void ByteBuffer::Resize(size_t size)
+    {
+        buffer.resize(size);
+    }
+
     void ByteBuffer::RemoveRange(size_t start, size_t end)
     {
         buffer.erase(buffer.begin() + end, buffer.end());

@@ -20,4 +20,4 @@
 #define TAB '\t'
 #define NL '\n'
 
-#define ASTDLIB "D:\\Users\\Nedd\\source\\repos\\NeddX\\AMFramework\\"
+#define ASTDLIB "D:/Users/Nedd/source/repos/NeddX/AMFramework/"

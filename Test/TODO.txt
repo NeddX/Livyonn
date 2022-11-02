@@ -1,4 +1,12 @@
-- Implement function return types. 
+- Implement function return types.
+- Fix when calling a function before it even being analyzed has the default type (VOID). So normally when its called in an expression, the analyzer will throw an excpetion saying that the types VOID and for example INT don't match.
 - Optimize strings (horrible implementation and horrible performance).
-- Optimize integers, longs, shorts (all of them are stored as 4 bytes in the stack).
+- Optimize integers, longs, shorts (all of them are stored as 8 bytes in the stack). 8 Bit numbers are going to be stored as 16 bit, I don't care about the additional memory.
 - Implement function parameters.
+- Fix Analyzer going nuts when there are no more tokens left
+	while (condition)
+	{
+		// statements...
+	 // <-- no closing bracket 
+- Optimize the VM, it's REALLY slow. Slower than python.
+- Optimize the Compiler, it generates dirty code.

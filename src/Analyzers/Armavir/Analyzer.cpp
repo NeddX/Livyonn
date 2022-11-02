@@ -1,5 +1,5 @@
 #include "include/Analyzer.h"
-#include "../../Lib/include/Utils.h"
+#include "../../Lib/include/System.h"
 
 namespace arma
 {
@@ -22,6 +22,12 @@ namespace arma
         { "-", OpEntry("-", 10) },
         { "*", OpEntry("*", 20) },
         { "/", OpEntry("/", 20) },
+        { ">", OpEntry(">", 5) },
+        { "<", OpEntry("<", 5) },
+        { "++", OpEntry("++", 5) },
+        { "--", OpEntry("--", 5) },
+        { "==", OpEntry("==", 5) },
+        { "!=", OpEntry("!=", 5) },
         { "=", OpEntry("=", 1) }
     };
 
@@ -44,10 +50,10 @@ namespace arma
 
                 // Temporary obviously
                 if (!incPath.ends_with(".arm")) incPath += ".arm";
-                optional<string> src = ReadToString(incPath);
+                optional<string> src = System::File::ReadToString(incPath);
                 if (!src.has_value())
                 {
-                    src = ReadToString(ASTDLIB + incPath);
+                    src = System::File::ReadToString(ASTDLIB + incPath);
                     if (!src) throw std::runtime_error("'" + incPath + "' No such file or directory.");
                 }
                 headers.push_back(Lexer::Lex(*src));
@@ -101,12 +107,13 @@ namespace arma
                     }
 
                     auto possibleIdentifier = ExpectIdentifier();
-                    ParamDefinition param;
-                    param.type = *possibleType;
+                    ArgDefinition arg;
+                    arg.type = *possibleType;
                     if (possibleIdentifier)
-                        param.name = possibleIdentifier->text;
+                        arg.name = possibleIdentifier->text;
 
-                    func.params.push_back(param);
+                    currentFuncArgs[arg.name] = arg;
+                    func.args.push_back(arg);
                 }
 
                 optional<vector<Statement>> statements = AnalyzeFunctionBody();
@@ -116,7 +123,7 @@ namespace arma
                     return false;
                 }
 
-                func.statements = *statements;
+                func.body = *statements;
                 funcs[func.name] = func;
 
                 return true;
@@ -284,7 +291,7 @@ namespace arma
                     Statement boolLiteral;
                     boolLiteral.kind = LITERAL;
                     boolLiteral.name = currentToken->text;
-                    boolLiteral.type = Type("boolean", BOOLEAN);
+                    boolLiteral.type = Type("true", BOOLEAN);
                     currentToken++;
                     return boolLiteral;
                 }
@@ -329,29 +336,54 @@ namespace arma
                 {
                     if (ExpectOperator(")")) // func_call(indetifier')';
                     {
-                        auto foundVar = variableMap.find(varName->text);
-                        if (foundVar == variableMap.end())
+                        Type referenceType;
+                        auto foundArg = currentFuncArgs.find(varName->text);
+                        if (foundArg != currentFuncArgs.end())
+                            referenceType = foundArg->second.type;
+                        else
                         {
-                            throw runtime_error("Syntax Error: Name '" + varName->text + "' does not exist in the current context.");
+                            auto foundVar = variableMap.find(varName->text);
+                            if (foundVar != variableMap.end())
+                                referenceType = foundVar->second.type;
+                            else
+                                throw runtime_error("Syntax Error: Name '" + varName->text + "' does not exist in the current context.");
                         }
+                        /*auto foundArg = currentFuncArgs.find(varName->text);
+                        if (foundArg == currentFuncArgs.end())
+                        {
+                            foundArg = variableMap.find(varName->text);
+                            if (foundArg == variableMap.end())
+                            {
+                                throw runtime_error("Syntax Error: Name '" + varName->text + "' does not exist in the current context.");
+                            }
+                        }*/
                         Statement identEx;
                         identEx.kind = IDENTIFIER_EXPRESSION;
-                        identEx.type = foundVar->second.type;
+                        identEx.op = Operation { ARGUMENT_REFERENCE };
+                        identEx.type = referenceType;
                         identEx.name = varName->text;
                         currentToken--;
                         return identEx;
                     }
                     else
                     {
-                        auto foundVar = variableMap.find(varName->text);
-                        if (foundVar == variableMap.end())
+                        Type referenceType;
+                        auto foundArg = currentFuncArgs.find(varName->text);
+                        if (foundArg != currentFuncArgs.end())
+                            referenceType = foundArg->second.type;
+                        else
                         {
-                            throw runtime_error("Syntax Error: Name '" + varName->text + "' does not exist in the current context.");
+                            auto foundVar = variableMap.find(varName->text);
+                            if (foundVar != variableMap.end())
+                                referenceType = foundVar->second.type;
+                            else
+                                throw runtime_error("Syntax Error: Name '" + varName->text + "' does not exist in the current context.");
                         }
                         //ExpectOperator(";");
                         Statement identEx;
                         identEx.kind = IDENTIFIER_EXPRESSION;
-                        identEx.type = foundVar->second.type;
+                        identEx.op = Operation { ARGUMENT_REFERENCE };
+                        identEx.type = referenceType;
                         identEx.name = varName->text;
                         //currentToken++;
                         return identEx;
@@ -403,11 +435,11 @@ namespace arma
             if(!ExpectOperator(";"))//if (currentToken->text != ";" && currentToken->type != SEMICOLON)
                 throw runtime_error("Expected ';' @ line (" + to_string((--currentToken)->line) + "," + to_string((--currentToken)->cur) + ").");
             
-            statement.params.push_back(*value);
+            statement.body.push_back(*value);
         }
         else if (ExpectOperator(";"))
         {
-            cout << "undef" << NL;
+            cout << "Livyonn.Analyzer: undefined variable decleration." << NL;
         }
         else
         {
@@ -445,10 +477,10 @@ namespace arma
         {
             if (ExpectOperator(",") || ExpectOperator("(") || ExpectOperator(")")) continue;
 
-            optional<Statement> param = ExpectExpression();
-            if (!param)
+            optional<Statement> arg = ExpectExpression();
+            if (!arg)
                 throw runtime_error("Unknown type '" + currentToken->text + "' as function argument @ line (" + to_string(currentToken->line) + "," + to_string(currentToken->cur) + ").");
-            fnCall.params.push_back(*param);
+            fnCall.args.push_back(*arg);
 
             // if (!ExpectOperator(",")) //throw an error
         }
@@ -497,7 +529,7 @@ namespace arma
         while (true)
         {
             optional<Token> op = ExpectOperator();
-            if (!op) break;            
+            if (!op) break;
 
             else if (op->text == "=")
             {
@@ -512,7 +544,7 @@ namespace arma
                 assignEx.type = foundVar->second.type;
                 assignEx.name = lhv->name;
                 //currentToken--;
-                assignEx.params.push_back(*ExpectExpression());
+                assignEx.body.push_back(*ExpectExpression());
                 return assignEx;
             }
 
@@ -530,8 +562,47 @@ namespace arma
                 rhv = ExpectFunctionCall();
                 if (!rhv)
                 {
-                    currentToken--;
-                    return lhv;
+                    if (lhv->kind == IDENTIFIER_EXPRESSION)
+                    {
+                        if (op->subType == DOUBLE_OPERATOR)
+                        {
+                            Statement opSt;
+                            if (op->text == "++")
+                            {
+                                auto foundVar = variableMap.find(lhv->name);
+                                if (foundVar == variableMap.end())
+                                {
+                                    throw runtime_error("Syntax Error: Name '" + lhv->name + "' does not exist in the current context.");
+                                }
+                                opSt.kind = POST_INCREMENT_EXPRESSION;
+                                opSt.type = foundVar->second.type;
+                                opSt.name = lhv->name;
+                                opSt.body.push_back(*lhv);
+                                return opSt;
+                            }
+                            else if (op->text == "--")
+                            {
+                                auto foundVar = variableMap.find(lhv->name);
+                                if (foundVar == variableMap.end())
+                                {
+                                    throw runtime_error("Syntax Error: Name '" + lhv->name + "' does not exist in the current context.");
+                                }
+                                opSt.kind = POST_DECREMENT_EXPRESSION;
+                                opSt.type = foundVar->second.type;
+                                opSt.name = lhv->name;
+                                opSt.body.push_back(*lhv);
+                                return opSt;
+                            }
+                            else
+                            {
+                                // Continue
+                                throw runtime_error("Syntax Error: Unknown syntax error occured at line (" + 
+                                    to_string(currentToken->line) + "," + to_string(currentToken->cur) + ").");
+                            }
+                        }
+                    }
+                    //currentToken--;
+                    //return lhv;
                 }
             }
 
@@ -550,9 +621,9 @@ namespace arma
                 opCall.kind = OPERATOR_CALL;
                 opCall.name = op->text;
                 opCall.type = *operationType;
-                opCall.params.push_back(rms->params[1]);
-                opCall.params.push_back(*rhv);
-                rms->params[1] = opCall;
+                opCall.body.push_back(rms->body[1]);
+                opCall.body.push_back(*rhv);
+                rms->body[1] = opCall;
             }
             else
             {
@@ -560,8 +631,8 @@ namespace arma
                 opCall.kind = OPERATOR_CALL;
                 opCall.name = op->text;
                 opCall.type = *operationType;
-                opCall.params.push_back(*lhv);
-                opCall.params.push_back(*rhv);
+                opCall.body.push_back(*lhv);
+                opCall.body.push_back(*rhv);
                 lhv = opCall;
             }
 
@@ -583,7 +654,7 @@ namespace arma
         if (lhv->kind != OPERATOR_CALL) return nullptr;
         if (GetOpPriority(lhv->name) >= rhvPriority) return nullptr;
         
-        Statement* rhv = &lhv->params[1];
+        Statement* rhv = &lhv->body[1];
         rhv = GetRightMostStatement(rhv, rhvPriority);
         if (!rhv) return lhv;
 
@@ -592,32 +663,114 @@ namespace arma
 
     optional<Statement> Analyzer::ExpectKeyword() // TO BE IMPLEMENTED...
     {
+        // VISUAL STUDIO ARE YOU FUCKING RETARDED???? WHAT ARE THESE 'ERRORS'?? IT BUILDS FINE CAUSE IT MAKES SENSE
+
         auto startToken = currentToken;
         if (auto possibleKeyword = ExpectIdentifier())
         {
-            Statement rs;
             if (possibleKeyword->text == "if")
             {
-                currentToken--; 
-                return nullopt;
+                Statement ist { .name = "___if_statement", .kind = IF_STATEMENT };
+                if (!ExpectOperator("(")) return nullopt;
+
+                optional<Statement> condition = ExpectExpression();
+                if (!condition)
+                    throw runtime_error("Analyzer Error: Expected an IF condition @ line (" +
+                        to_string(currentToken->line) + "," + to_string(currentToken->cur) + ").");
+
+                ist.args.push_back(*condition);
+
+                if (!ExpectOperator(")")) return nullopt;
+                if (!ExpectOperator("{")) return nullopt;
+
+                while (!ExpectOperator("}"))
+                {
+                    auto st = ExpectStatement();
+                    if (st) ist.body.push_back(*st);
+                }
+
+                return ist;
+            }
+            else if (possibleKeyword->text == "else" && ExpectIdentifier("if"))
+            {
+                Statement ist{ .name = "___else_if_statement", .kind = ELSE_IF_STATEMENT };
+                if (!ExpectOperator("(")) return nullopt;
+
+                optional<Statement> condition = ExpectExpression();
+                if (!condition)
+                    throw runtime_error("Analyzer Error: Expected an ELSE IF condition @ line (" +
+                        to_string(currentToken->line) + "," + to_string(currentToken->cur) + ").");
+
+                ist.args.push_back(*condition);
+
+                if (!ExpectOperator(")")) return nullopt;
+                if (!ExpectOperator("{")) return nullopt;
+
+                while (!ExpectOperator("}"))
+                {
+                    auto st = ExpectStatement();
+                    if (st) ist.body.push_back(*st);
+                }
+
+                return ist;
+            }
+            else if (possibleKeyword->text == "else")
+            {
+                Statement ist { .name = "___else_statement", .kind = ELSE_STATEMENT };
+                
+                if (!ExpectOperator("{")) return nullopt;
+                while (!ExpectOperator("}"))
+                {
+                    auto st = ExpectStatement();
+                    if (st) ist.body.push_back(*st);
+                }
+
+                return ist;
             }
             else if (possibleKeyword->text == "while")
-            { 
-                currentToken--;
-                return nullopt;
+            {
+                Statement wst { .name = "___while_loop", .kind = WHILE_STATEMENT };
+                if (!ExpectOperator("(")) return nullopt;
+
+                optional<Statement> condition = ExpectExpression();
+                if (!condition)
+                    throw runtime_error("Analyzer Error: Expected a loop condition @ line (" + 
+                        to_string(currentToken->line) + "," + to_string(currentToken->cur) + ").");
+                
+                wst.args.push_back(*condition);
+
+                if (!ExpectOperator(")")) return nullopt;
+                if (!ExpectOperator("{")) return nullopt;
+
+                while (!ExpectOperator("}"))
+                {
+                    auto st = ExpectStatement();
+                    if (st) wst.body.push_back(*st);
+                }
+
+                return wst;
             }
             else if (possibleKeyword->text == "return")
             {
-                rs.kind = RETURN_STATEMENT;
-                rs.name = possibleKeyword->text;
-                if (ExpectOperator(";")) return rs;
+                Statement rst { .name = "___return_statement", .kind = RETURN_STATEMENT };
+                if (ExpectOperator(";")) return rst;
                 if (auto possibleStatement = ExpectStatement())
                 {
-                    rs.params.push_back(*possibleStatement);
+                    rst.body.push_back(*possibleStatement);
                 }
                 //currentToken++;
 
-                return rs;
+                return rst;
+            }
+            else if (possibleKeyword->text == "break")
+            {
+                Statement bst { .name = "___break_statement", .kind = BREAK_STATEMENT };
+                if (ExpectOperator(";")) return bst;
+                else
+                {
+                    throw runtime_error("Syntax Error: Expected ';' after 'break' @ line (" +
+                        to_string(possibleKeyword->line) + "," + to_string(possibleKeyword->cur) + ").");
+                }
             }
             else
             {
@@ -635,13 +788,25 @@ namespace arma
         {
             case IDENTIFIER_EXPRESSION:
             {
-                auto stInContext = variableMap.find(st->name);
-                if (stInContext == variableMap.end() && st->kind == VARIABLE_DECLERATION)
+                Type referenceType;
+                auto foundArg = currentFuncArgs.find(st->name);
+                if (foundArg != currentFuncArgs.end())
+                    referenceType = foundArg->second.type;
+                else
+                {
+                    auto foundVar = variableMap.find(st->name);
+                    if (foundVar != variableMap.end())
+                        referenceType = foundVar->second.type;
+                    else
+                        throw runtime_error("Syntax Error: Name '" + st->name + "' does not exist in the current context.");
+                }
+                /*auto stInContext = variableMap.find(st->name);
+                if (stInContext == variableMap.end() && st->kind != VARIABLE_DECLERATION)
                 {
                     throw runtime_error("Syntax Error: The name '" + st->name + "' does not exist in the current context.");
                     return nullopt;
-                }
-                return stInContext->second.type;
+                }*/
+                return referenceType;
                 break;
             }
             case FUNCTION_CALL:

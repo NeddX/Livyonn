@@ -3,6 +3,16 @@
 #
 cmake_minimum_required (VERSION 3.8)
 
+string(
+    APPEND _opts
+    "$<IF:$<CXX_COMPILER_ID:MSVC>,"
+        "/W4;$<$<CONFIG:RELEASE>:/O2>,"
+        "-Wall;-Wextra;-Werror;"
+            "$<$<CONFIG:RELEASE>:-O3>"
+            "$<$<CXX_COMPILER_ID:Clang>:-stdlib=libc++>"
+    ">"
+)
+
 project ("Livyonn")
 
 #set_property(TARGET Livyonn PROPERTY CXX_STANDARD 20)

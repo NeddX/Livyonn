@@ -29,6 +29,7 @@ namespace avm
             void RemoveRange(size_t start, size_t end);
             void InsertBack(ByteBuffer& v);
             void Reserve(size_t size);
+            void Resize(size_t size);
             void Push(int16_t data);
 
             void Pop();
@@ -85,6 +86,10 @@ namespace avm
             constexpr size_t Size()
             {
                 return buffer.size();
+            }
+            constexpr uint16_t* Ptr()
+            {
+                return buffer.data();
             }
     };
 }

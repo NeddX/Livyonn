@@ -73,6 +73,8 @@ namespace amca
                     }
                     break;
                 }
+                case '\t':
+                    continue;
                 case '\n':
                 case '\r':
                 {
@@ -167,10 +169,10 @@ namespace amca
         if (inst == "DIV") return DIV;
         if (inst == "PINT") return PRINT_INT;
         if (inst == "PRINT_STR") return PRINT_STR;
-        if (inst == "CILT" ) return COMP_INT_LT;
-        if (inst == "CIET") return COMP_INT_ET;
-        if (inst == "CIGT" ) return COMP_INT_GT;
-        if (inst == "CIET") return COMP_INT_NE;
+        if (inst == "CILT" ) return CILT;
+        if (inst == "CIET") return CIET;
+        if (inst == "CIGT" ) return CIGT;
+        if (inst == "CIET") return CINE;
         if (inst == "MOV") return MOV;
         if (inst == "MOVS") return MOVS;
         if (inst == "JMP") return JMP;
@@ -219,7 +221,7 @@ namespace amca
         if (reg == "E13") return E13;
         if (reg == "E14") return E14;
         if (reg == "E15") return E15;
-        if (reg == "ZF") return ZF;
+        if (reg == "ZF") return CF;
         if (reg == "FNR") return FNR;
         if (reg == "RFR") return RFR;
         if (reg == "EFR") return EFR;

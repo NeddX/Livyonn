@@ -1,9 +1,20 @@
 fn Entry()
 {
-	string a = "10";
-	string b = "99";
-
-	string c = a + b + " did it  work??";
-
-	Println(c);
+	int i = 10;
+	if (i == 9)
+	{
+		_Println("it is 9");
+	}
+	else if (i == 1)
+	{
+		_Println("niggas bro");
+	}
+	else if (i == 10)
+	{
+		_Println("AYOO!!!");
+	}
+	else
+	{
+		_Println("Fuck niggers");
+	}
 }
