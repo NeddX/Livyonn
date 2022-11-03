@@ -8,9 +8,10 @@
 
 fn Entry() 
 { 
-	dum();
-	//njj("noglar", "marsi");
-	//_Print("I think this is what caused an issue\n");
+	string a = "str";
+
+	int sa = 2019;
+	_PrintStr(a);
 }
 
 fn dum()

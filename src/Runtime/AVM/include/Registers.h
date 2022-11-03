@@ -49,12 +49,11 @@ namespace avm
         E14,
         E15,
 
-        // Special Registers for this virutal machine
+        // Special Registers for this specific virutal machine
         CF, // Conditional Flag, either 0 (false) or 1 (true)
         FNR, // Function Return Register (returns the pointer pointing to the function return value)
         RFR, // 64bit something?
         EFR, // 32bit something?
-        SSR, // Stack Size Register, stores the total size of the stack (excluding basepointer size)
 
         NUL
     };
@@ -97,7 +96,6 @@ namespace avm
         "FNR",
         "RFR",
         "EFR",
-        "SSR",
         "NUL"
     };
 

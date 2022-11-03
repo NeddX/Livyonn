@@ -64,7 +64,8 @@ namespace avm
     void DecrementHandler(Runtime& r);
     void PopStrHandler(Runtime& r);
 
-    // Instruction Handlers Map
-    typedef void(*InstHandler)(Runtime&);
-    extern InstHandler instHandlers[];
+    // Handler array
+    extern void (*handlers[])(Runtime&);
+
+    inline void UpdateAndProceed(Runtime& r);
 }

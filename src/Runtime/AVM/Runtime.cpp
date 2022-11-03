@@ -2,7 +2,7 @@
 
 namespace avm
 {
-    InstHandler handlers[] =
+    extern void (*handlers[])(Runtime&) =
     {
         EndHandler,
         PushHandler,
@@ -66,7 +66,7 @@ namespace avm
 
     void NopHandler(Runtime& r)
     {
-        r.pc++;
+        UpdateAndProceed(r);
     }
 
     // End Instruction handler. Simply ends the runtime.
@@ -80,7 +80,7 @@ namespace avm
     {
         //if (r.pc->reg1 != NUL) r.stack.Write64(r.regs[r.pc->reg1]);
         //else r.stack.Write64(r.pc->p3);
-        //r.pc++;
+        //UpdateAndProceed(r);
         switch (r.pc->pl)
         {
             case 16:
@@ -103,8 +103,7 @@ namespace avm
                 break;
             }
         }
-        r.regs[SSR] = r.stack.Size() - 1;
-        r.pc++;
+        UpdateAndProceed(r);
     }
 
     void PopHandler(Runtime& r)
@@ -131,8 +130,7 @@ namespace avm
                 break;
             }
         }
-        r.regs[SSR] = r.stack.Size() - 1;
-        r.pc++;
+        UpdateAndProceed(r);
     }
 
     void PeekHandler(Runtime& r)
@@ -156,7 +154,7 @@ namespace avm
                 break;
             }
         }
-        r.pc++;
+        UpdateAndProceed(r);
     }
 
     // Add instruction handler. Adds two numbers together.
@@ -167,7 +165,7 @@ namespace avm
         if (r.pc->reg2 != NUL) lhv = r.regs[r.pc->reg2];
         else lhv = r.pc->p3;
         r.regs[r.pc->reg1] = rhv + lhv;
-        r.pc++;
+        UpdateAndProceed(r);
     }
 
     void SubHandler(Runtime& r)
@@ -177,7 +175,7 @@ namespace avm
         if (r.pc->reg2 != NUL) lhv = r.regs[r.pc->reg2];
         else lhv = r.pc->p3;
         r.regs[r.pc->reg1] = rhv - lhv;
-        r.pc++;
+        UpdateAndProceed(r);
     }
 
     void MulHandler(Runtime& r)
@@ -187,7 +185,7 @@ namespace avm
         if (r.pc->reg2 != NUL) lhv = r.regs[r.pc->reg2];
         else lhv = r.pc->p3;
         r.regs[r.pc->reg1] = rhv * lhv;
-        r.pc++;
+        UpdateAndProceed(r);
     }
 
     void DivHandler(Runtime& r)
@@ -197,7 +195,7 @@ namespace avm
         if (r.pc->reg2 != NUL) lhv = r.regs[r.pc->reg2];
         else lhv = r.pc->p3;
         r.regs[r.pc->reg1] = rhv / lhv;
-        r.pc++;
+        UpdateAndProceed(r);
     }
 
     // Print Int handler. Prints the last integer in the stack.
@@ -223,8 +221,7 @@ namespace avm
             }
         }
         printf("\n");
-        r.regs[SSR] = r.stack.Size() - 1;
-        r.pc++;
+        UpdateAndProceed(r);
     }
 
     void PrintStrHandler(Runtime& r)
@@ -240,8 +237,7 @@ namespace avm
         r.stack.Pop64(); // Get rid of the size at the beggining cause we dont really need it
         if (r.pc->pl == 0) printf(str.c_str());
         else printf("%s\n", str.c_str());
-        r.regs[SSR] = r.stack.Size() - 1;
-        r.pc++;
+        UpdateAndProceed(r);
     }
 
     // Compare Int Less Than instruction handler. Compares if int a is less than int b (a < b).
@@ -252,7 +248,7 @@ namespace avm
         if (r.pc->reg2 != NUL) lhv = r.regs[r.pc->reg2];
         else lhv = r.pc->p3;
         r.regs[CF] = rhv < lhv;
-        r.pc++;
+        UpdateAndProceed(r);
     }
 
     void CompIntEqualToHandler(Runtime& r)
@@ -262,7 +258,7 @@ namespace avm
         if (r.pc->reg2 != NUL) lhv = r.regs[r.pc->reg2];
         else lhv = r.pc->p3;
         r.regs[CF] = lhv == rhv;//r.stack.Write(lhv == rhv);
-        r.pc++;
+        UpdateAndProceed(r);
     }
 
     void CompIntNotEqualHandler(Runtime& r)
@@ -272,7 +268,7 @@ namespace avm
         if (r.pc->reg2 != NUL) lhv = r.regs[r.pc->reg2];
         else lhv = r.stack.Read64();
         r.regs[CF] = lhv != rhv;//r.stack.Write(lhv == rhv);
-        r.pc++;
+        UpdateAndProceed(r);
     }
 
     void ComptIntGreaterThanHandler(Runtime& r)
@@ -282,34 +278,32 @@ namespace avm
         if (r.pc->reg2 != NUL) lhv = r.regs[r.pc->reg2];
         else lhv = r.pc->p3;
         r.regs[CF] = rhv > lhv;
-        r.pc++;
+        UpdateAndProceed(r);
     }
 
     void MoveHandler(Runtime& r)
     {
         if (r.pc->reg2 != NUL) r.regs[r.pc->reg1] = r.regs[r.pc->reg2];
         else r.regs[r.pc->reg1] = r.pc->p3;
-        r.pc++;
+        UpdateAndProceed(r);
     }
 
     void MoveSHandler(Runtime& r)
     {
         r.regs[r.pc->reg1] = r.stack.Read64();
-        r.pc++;
+        UpdateAndProceed(r);
     }
 
     void PushIntBasepointerRelative(Runtime& r)
     {
         r.stack.WriteToAddress64(r.stack.Read64(), (r.pc->reg1 != NUL) ? r.regs[r.pc->reg1] + r.pc->p3 : r.pc->p3 + r.baseIndex);
-        r.regs[SSR] = r.stack.Size() - 1;
-        r.pc++;
+        UpdateAndProceed(r);
     }
 
     void LoadIntBasepointerRelative(Runtime& r)
     {
         r.stack.PushFromAddress64((r.pc->reg1 != NUL) ? r.regs[r.pc->reg1] + r.pc->p3 : r.pc->p3 + r.baseIndex);
-        r.regs[SSR] = r.stack.Size() - 1;
-        r.pc++;
+        UpdateAndProceed(r);
     }
 
     void PushStrBasepointerRelative(Runtime& r)
@@ -348,8 +342,7 @@ namespace avm
         s_buffer.insert(r.stack.buffer.begin() + oldIndex + 4,
             buffer.rbegin(), buffer.rend());
 
-        r.regs[SSR] = r.stack.Size() - 1;
-        r.pc++;
+        UpdateAndProceed(r);
     }
 
     void LoadStrBasepointerRelative(Runtime& r)
@@ -361,24 +354,21 @@ namespace avm
         {
             r.stack.Write(r.stack[index + i]);
         }
-        r.regs[SSR] = r.stack.Size() - 1;
-        r.pc++;
+        UpdateAndProceed(r);
     }
 
     void PushByteBasepointerRelative(Runtime& r)
     {
         // This is same as PushIntBasepointerRelative but for bytes.
         r.stack.WriteToAddress(r.stack.Read(), (r.pc->reg1 != NUL) ? r.regs[r.pc->reg1] + r.pc->p3 : r.pc->p3 + r.baseIndex);
-        r.regs[SSR] = r.stack.Size() - 1;
-        r.pc++;
+        UpdateAndProceed(r);
     }
 
     void LoadByteBasepointerRelative(Runtime& r)
     {
         // This is same as LoadIntBasepointerRelative but for bytes.
         r.stack.PushFromAddress((r.pc->reg1 != NUL) ? r.regs[r.pc->reg1] + r.pc->p3 : r.pc->p3 + r.baseIndex);
-        r.regs[SSR] = r.stack.Size() - 1;
-        r.pc++;
+        UpdateAndProceed(r);
     }
 
 
@@ -391,7 +381,7 @@ namespace avm
     void ConditionalRelativeJumpHandler(Runtime& r)
     {
         if (r.regs[CF] == 1) RelativeJumpHandler(r);
-        else r.pc++;
+        else UpdateAndProceed(r);
     }
 
     void JumpHandler(Runtime& r)
@@ -403,19 +393,19 @@ namespace avm
     void ConditionalJumpHandler(Runtime& r)
     {
         if (r.regs[CF] == 1) JumpHandler(r);
-        else r.pc++;
+        else UpdateAndProceed(r);
     }
 
     void RelativeJumpNotEqualHandler(Runtime& r)
     {
         if (r.regs[CF] == 0) RelativeJumpHandler(r);
-        else r.pc++;
+        else UpdateAndProceed(r);
     }
 
     void JumpNotEqualHandler(Runtime& r)
     {
         if (r.regs[CF] == 0) JumpHandler(r);
-        else r.pc++;
+        else UpdateAndProceed(r);
     }
 
     void CallHandler(Runtime& r)
@@ -424,7 +414,6 @@ namespace avm
         r.stack.Write64(r.baseIndex);
         r.stack.Write64(reinterpret_cast<int64_t>(r.pc + 1));
         r.baseIndex = r.stack.Size();
-        r.regs[SSR] = r.stack.Size() - 1;
         JumpHandler(r); // Absolute jump, not relative.
     }
 
@@ -433,7 +422,6 @@ namespace avm
         Instruction* addr = reinterpret_cast<Instruction*>(r.stack.Read64());
         r.baseIndex = r.stack.Read64();
         r.pc = addr;
-        r.regs[SSR] = r.stack.Size() - 1;
     }
 
     void DefineBytesHandler(Runtime& r)
@@ -444,8 +432,7 @@ namespace avm
         {
             r.stack.Write(r.pc->bytes[i]);
         }
-        r.regs[SSR] = r.stack.Size() - 1;
-        r.pc++;
+        UpdateAndProceed(r);
     }
 
     void CombineStringHandler(Runtime& r)
@@ -471,8 +458,7 @@ namespace avm
         r.stack.Write64(str.Size()); // Write the size at the beggining
 
         for (auto& e : str.buffer) r.stack.Write(e); // Push it
-        r.regs[SSR] = r.stack.Size() - 1;
-        r.pc++;
+        UpdateAndProceed(r);
     }
 
     void IncrementHandler(Runtime& r)
@@ -483,7 +469,7 @@ namespace avm
             r.stack.Write64(++data);
         }
         else r.regs[r.pc->reg1] += 1;
-        r.pc++;
+        UpdateAndProceed(r);
     }
 
     void DecrementHandler(Runtime& r)
@@ -494,7 +480,7 @@ namespace avm
             r.stack.Write64(--data);
         }
         else r.regs[r.pc->reg1] -= 1;
-        r.pc++;
+        UpdateAndProceed(r);
     }
 
     void PopStrHandler(Runtime& r)
@@ -502,7 +488,12 @@ namespace avm
         uint16_t byte = r.stack.Read();
         while (byte != 0) byte = r.stack.Read();
         r.stack.Pop64();
-        r.regs[SSR] = r.stack.Size() - 1;
+        UpdateAndProceed(r);
+    }
+
+    void UpdateAndProceed(Runtime& r)
+    {
+        r.regs[RSP] = r.stack.Size() - 1;
         r.pc++;
     }
 }

@@ -428,14 +428,14 @@ namespace arc
                         VarInfo vi;
                         vi.type.fType = STRING;
                         vi.index = fn.varCount;
-                        // To get the size of the string (which can be dynamic) we will need to iterate through
+                        // To get the size of the string we will need to iterate through
                         // the compiled code and get the sum of every DB (DefineByte) instruction's byte size
                         // to make sure we don't accidentally sum together other DB instructions that are
                         // not realated to the current variable decleration, we will have to get the compiledCode
-                        // size before actually generating code for variable's statements (value)
+                        // size before actually generating code for variable's statements.
                         size_t rbp = compiledCode.size();
 
-                        compiledCode.push_back(Instruction { .opcode = MOV, .reg1 = RAX, .reg2 = SSR });
+                        compiledCode.push_back(Instruction { .opcode = MOV, .reg1 = RAX, .reg2 = RSP });
 
                         if (!sti.st.body.empty())
                         {
@@ -450,7 +450,7 @@ namespace arc
                             if (compiledCode[i].opcode == DB || compiledCode[i].opcode == LSBR)
                                 vi.size += compiledCode[i].bytes.size() - 1;
                         }*/
-                        compiledCode.push_back(Instruction{ .opcode = MOV, .reg1 = RBX, .reg2 = SSR });
+                        compiledCode.push_back(Instruction{ .opcode = MOV, .reg1 = RBX, .reg2 = RSP });
                         compiledCode.push_back(Instruction{ .opcode = SUB, .reg1 = RBX, .reg2 = RAX });
                         
                         //vi.size += 1 + 4; // 1 for the null term and 4 for the size holder?
@@ -966,17 +966,16 @@ whileout:
 
                 // This will move to the next instruction but if there are any else/else if statements
                 // then they will replace this with their end.
-                // Basically if we get to this point in the runtime, then we sure know that the condition
+                // Basically if we get to this point in, then we sure know that the condition
                 // was met and we don't have to check and/or execute following else/else if statements if they are
                 // present of course. Obviously I will have to optimize this cause we are adding unnecessary
-                // instruction at the end if there are no else/else if statements following this which is common.
+                // instruction at the end if there are no else/else if statements following this.
                 // We also need to keep track of every If/If else instances cause if we have multiple else if
-                // statement and for example the condition of the first else if statement was met, then we'll
+                // statements and for example the condition of the first else if statement was met, then we'll
                 // have to skip rest of them but the problem is we are only going to skip the following 
                 // else if statement and anything after that is going to be executed anyways.
                 // We can prevent this by simply by storing the indexes of every If statement's JMP instruciton
-                // and then coming back to it and updating the index. Before that we need to clear
-                // the vector because of possible previous If/If else statements.
+                // and then coming back to it and updating the index.
                 if (!sti.fn.ifInsts.empty()) sti.fn.ifInsts.clear();
                 sti.fn.ifInsts.push_back(compiledCode.size());
                 compiledCode.push_back(Instruction { .opcode = JMP, .p3 = (int64_t) compiledCode.size() + 1 });
@@ -1046,7 +1045,7 @@ whileout:
                     if (arg.kind == IDENTIFIER_EXPRESSION && arg.type.fType == BOOLEAN)
                     {
                         // So many unnecessary insutrctions for so little. This shit definetly needs
-                        // some aggressive optimization and I literally mean it, like holy hell.
+                        // optimization and I literally mean it, like what the fuck.
                         compiledCode.push_back(Instruction { .opcode = POP, .pl = 16, .reg1 = R8 });
                         compiledCode.push_back(Instruction { .opcode = CIET, .reg1 = R8, .p3 = 1 });
                     }
@@ -1070,12 +1069,12 @@ whileout:
 
                 // This will move to the next instruction but if there are any else/else if statements
                 // then they will replace this with their end.
-                // Basically if we get to this point in the runtime, then we sure know that the condition
+                // Basically if we get to this point in, then we sure know that the condition
                 // was met and we don't have to check and/or execute following else/else if statements if they are
                 // present of course. Obviously I will have to optimize this cause we are adding unnecessary
-                // instruction at the end if there are no else/else if statements following this which is common.
+                // instruction at the end if there are no else/else if statements following this.
                 // We also need to keep track of every If/If else instances cause if we have multiple else if
-                // statement and for example the condition of the first else if statement was met, then we'll
+                // statements and for example the condition of the first else if statement was met, then we'll
                 // have to skip rest of them but the problem is we are only going to skip the following 
                 // else if statement and anything after that is going to be executed anyways.
                 // We can prevent this by simply by storing the indexes of every If statement's JMP instruciton
@@ -1086,8 +1085,7 @@ whileout:
 
                 // Replace the placeholder with the actual instruction now that we have the address
                 // of the instruction following the if statement.
-                if (!infi)
-                    compiledCode[offset] = Instruction { .opcode = JNE, .p3 = (int64_t) compiledCode.size() };
+                if (!infi) compiledCode[offset] = Instruction { .opcode = JNE, .p3 = (int64_t) compiledCode.size() };
                 else
                     // This If statement is going to execute anyways so let's remove the dummy JMP holder.
                     compiledCode.erase(compiledCode.begin() + offset);
@@ -1136,10 +1134,11 @@ whileout:
                 w_buffer.Write64(bc.p3);
             }
 
+            // This is a very bad implementation but for now it does the job
+            // I might convert my stack from 16bit to 8bit
             System::File::WriteToBytes(options->path, System::Stack::Convert_16bitTo8bit(w_buffer.buffer));
         }
-        else
-            cerr << "Compiler Error: Could not create file to write to." << endl;
+        else cerr << "Compiler Error: Could not create file to write to." << endl;
     }
 
     void ReadBinary()
@@ -1159,8 +1158,7 @@ whileout:
             inst.opcode = (OpCode)n_buffer.Read();
 
             size_t bs = n_buffer.Read64();
-            if (bs != 0)
-                for (size_t i = 0; i < bs; i++) inst.bytes.insert(inst.bytes.begin(), n_buffer.Read());
+            if (bs != 0) for (size_t i = 0; i < bs; i++) inst.bytes.insert(inst.bytes.begin(), n_buffer.Read());
 
             bin.insert(bin.begin(), inst);
         }

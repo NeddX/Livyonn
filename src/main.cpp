@@ -74,7 +74,6 @@ int main(int argc, char** argv)
             //amca::Analyzer an;
             //amcc::Compiler c;
             //avm::ByteCode bytecode = c.Compile(an.StartAnalysis(*mc_src));
-            ////std::cout << NL;
             //avm.Start(bytecode);
 
             /* end */
@@ -97,7 +96,6 @@ int main(int argc, char** argv)
             avm::ByteCode compiledCode = c.Compile(an, options);
 
             avm::AVM avm;
-
             avm.Start(compiledCode);
 
             /* end */

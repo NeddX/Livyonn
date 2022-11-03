@@ -5,19 +5,20 @@ MOV %RBX, #10000
 CALL @l2
 RETURN
 
-@printInt:			; Print function
-	PUSH %RSI
-	PINT
+@l2:				; Loop condition
+	CIGT %RBX, %RAX
+	CJMP @l3
 	RETURN
 
 @l3:				; Loop body
 	MOV %RSI, %RAX
 	CALL @printInt
 	ADD %RAX, #1
+	JMP @l2
 
-@l2:				; Loop condition
-	CIGT %RBX, %RAX
-	CJMP @l3
+@printInt:			; Print function
+	PUSH %RSI
+	PINT
 	RETURN
-	
+
 nop
