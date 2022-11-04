@@ -38,7 +38,7 @@ namespace amcc
                 {
                     if (ptrExp)
                     {
-                        if ()
+                        
                     }
                     inst->p3 = t.data;
                     if (!ptrExp) cInstOperandCount++;
@@ -77,13 +77,11 @@ namespace amcc
                     }
                     else if (t.text == "-")
                     {
-                        if (cInstOperandCount == 1) inst->reg1.offset = -1;
-                        else if (cInstOperandCount == 2) inst->reg2.offset = -1;
+                        
                     }
                     else if (t.text == "+")
                     {
-                        if (cInstOperandCount == 1) inst->reg1.offset = 1;
-                        else if (cInstOperandCount == 2) inst->reg2.offset = 1;
+                        
                     }
                     break;
                 }

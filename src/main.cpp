@@ -67,7 +67,8 @@ int main(int argc, char** argv)
 
             /* Low Level */
 
-            std::optional<std::string> mc_src = System::File::ReadToString("../../../../Test/test2.amc");
+			std::string file = std::string(PSRC) + "Test/test2.amc";
+            std::optional<std::string> mc_src = System::File::ReadToString(file);
             if (!mc_src.has_value()) throw std::runtime_error(std::string("Failed to open source file."));
 
             avm::AVM avm;  

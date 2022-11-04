@@ -21,6 +21,7 @@
 #define NL '\n'
 
 // IMPORTANT: Set your the absolute path to the project and end it with a backwards slash!
-#define PSRC "/data/data/com.termux/files/home/livyonn/" 
+#define PSRC "/data/data/com.termux/files/home/livyonn/"
+//#define PSRC "D:/Users/Nedd/source/repos/NeddX/Livyonn/"
 
 #define ASTDLIB "D:/Users/Nedd/source/repos/NeddX/AMFramework/"

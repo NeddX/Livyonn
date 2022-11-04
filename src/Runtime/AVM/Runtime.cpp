@@ -284,9 +284,38 @@ namespace avm
 
     void MoveHandler(Runtime& r)
     {
-        if (r.pc->reg2.reg != NUL) r.regs[r.pc->reg1.reg] = r.regs[r.pc->reg2.reg];
+		int64_t lhv, rhv;
+		if (r.pc->reg1.ptr)
+		{
+			if (r.pc->reg2.reg != NUL)
+			{
+				rhv = r.regs[r.pc->reg2.reg];
+			}
+			else
+			{
+				rhv = r.pc->p3;
+			}
+
+			switch (r.pc->pl)
+			{
+				default:
+				{
+					r.stack.WriteAt64(r.regs[r.pc->reg1.reg], rhv);
+				}
+			}
+		}
+		else
+		{
+		
+		}
+		/*
+        if (r.pc->reg2.reg != NUL) 
+		{
+			if (r.pc
+		}r.regs[r.pc->reg1.reg] = r.regs[r.pc->reg2.reg];
         else r.regs[r.pc->reg1.reg] = r.pc->p3;
-        UpdateAndProceed(r);
+        */
+		UpdateAndProceed(r);
     }
 
     void MoveSHandler(Runtime& r)
