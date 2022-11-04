@@ -21,7 +21,9 @@ namespace amca
         NUM,
         REG,
         LABEL_DEFINITION,
-        LABEL_CALL
+        LABEL_CALL,
+        OPERATOR,
+        BITSIZE_SPECIFIER
     };
 
     static const char* tokenTypeString[] =
@@ -32,7 +34,9 @@ namespace amca
         "NUM",
         "REG",
         "LABEL_DEFINITION",
-        "LABEL_CALL"
+        "LABEL_CALL",
+        "OPERATOR",
+        "BITSIZE_SPECIFIER"
     };
 
     struct Token

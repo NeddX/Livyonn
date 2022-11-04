@@ -2,13 +2,13 @@ push	%rbp
 mov		%rbp, %rsp
 
 sub		%rbp, #16	
-mov		DWORD [%rbp-8], 2019
-mov		%rax, DWORD [%rbp-8]
-call 	printInt
+mov		DWORD [%rbp-#8], #2019
+mov		%rax, DWORD [%rbp-#8]
+call 	@printInt
 pop		%rbp
 return
 
-:printInt
+@printInt:
 	push	%rax
 	pint
 	return

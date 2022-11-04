@@ -101,24 +101,21 @@ namespace avm
 
 	struct Reg
 	{
-		uint64_t value;
+        Regs reg;
 		bool ptr;
 		int64_t offset;
 		int8_t size;
 
-		Reg(uint64_t value = 0, bool ptr = false, int64_t offset = 0, int8_t size = 64) : value(value), ptr(ptr), offset(offset), size(size)
-		{
-
-		};
+        Reg(Regs reg = NUL, bool ptr = false, int64_t offset = 0, int8_t size = 64) : reg(reg), ptr(ptr), offset(offset), size(size) { };
 	};
 
     struct Registers
 	{
         private:
-            Reg buffer[NUL];
+            uint64_t buffer[NUL];
 
         public:
-            constexpr Reg &operator[](size_t index)
+            constexpr uint64_t &operator[](size_t index)
             {
                 return buffer[index];
             }

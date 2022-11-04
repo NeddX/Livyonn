@@ -67,37 +67,37 @@ int main(int argc, char** argv)
 
             /* Low Level */
 
-            //std::optional<std::string> mc_src = System::File::ReadToString("../../../../Test/test1.amc");
-            //if (!mc_src.has_value()) throw std::runtime_error(std::string("Failed to open source file."));
+            std::optional<std::string> mc_src = System::File::ReadToString("../../../../Test/test2.amc");
+            if (!mc_src.has_value()) throw std::runtime_error(std::string("Failed to open source file."));
 
-            //avm::AVM avm;  
-            //amca::Analyzer an;
-            //amcc::Compiler c;
-            //avm::ByteCode bytecode = c.Compile(an.StartAnalysis(*mc_src));
-            //avm.Start(bytecode);
+            avm::AVM avm;  
+            amca::Analyzer an;
+            amcc::Compiler c;
+            avm::ByteCode bytecode = c.Compile(an.StartAnalysis(*mc_src));
+            avm.Start(bytecode);
 
             /* end */
 
             /* High Level */
-			std::string file = std::string(PSRC) + std::string("Test/test1.arm");
-            std::optional<std::string> src = System::File::ReadToString(file);
-            if (!src.has_value()) throw std::runtime_error(std::string("Failed to open file '") + std::string(file));
-            // ARMA (Armavir Analyzer) and ARBA (Armavi Bytecode Analyzer) 
-            arma::Analyzer an; 
-            an.StartAnalysis(*src);
-            //an.DumpTruck();
-            
-            arc::Compiler c;
-            arc::CompilerOptions* options = new arc::CompilerOptions
-            {
-                .outputType = arc::EXE,
-                .outputExecutable = true,
-                .path = std::string(PSRC) + std::string("Test/out.aex")
-            };
-            avm::ByteCode compiledCode = c.Compile(an, options);
+			//std::string file = std::string(PSRC) + std::string("Test/test1.arm");
+   //         std::optional<std::string> src = System::File::ReadToString(file);
+   //         if (!src.has_value()) throw std::runtime_error(std::string("Failed to open file '") + std::string(file));
+   //         // ARMA (Armavir Analyzer) and ARBA (Armavi Bytecode Analyzer) 
+   //         arma::Analyzer an; 
+   //         an.StartAnalysis(*src);
+   //         //an.DumpTruck();
+   //         
+   //         arc::Compiler c;
+   //         arc::CompilerOptions* options = new arc::CompilerOptions
+   //         {
+   //             .outputType = arc::EXE,
+   //             .outputExecutable = true,
+   //             .path = std::string(PSRC) + std::string("Test/out.aex")
+   //         };
+   //         avm::ByteCode compiledCode = c.Compile(an, options);
 
-            avm::AVM avm;
-            avm.Start(compiledCode);
+   //         avm::AVM avm;
+   //         avm.Start(compiledCode);
 
             /* end */
 

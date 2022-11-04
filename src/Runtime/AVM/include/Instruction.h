@@ -100,10 +100,13 @@ namespace avm
     {
         OpCode opcode = NOP;
         uint8_t pl = 0;
-        Regs reg1 = NUL;
-        Regs reg2 = NUL;
-        int16_t p2 = 0;
+        Reg reg1;
+        Reg reg2;
+        //Regs reg1 = NUL;
+        //Regs reg2 = NUL;
+        int32_t p2 = 0;
         int64_t p3 = 0;
+        int64_t p4 = 0;
         vector<uint16_t> bytes;
     };    
 

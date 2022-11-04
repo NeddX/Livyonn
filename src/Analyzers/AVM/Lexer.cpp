@@ -73,8 +73,22 @@ namespace amca
                     }
                     break;
                 }
-                case '\t':
-                    continue;
+                case '+':
+                case '-':
+                case ']':
+                case '[':
+                {
+                    if (currentToken.type == COMMENT)
+                    {
+                        currentToken.text.append(1, c);
+                        break;
+                    }
+                    EndToken(currentToken, tokens);
+                    currentToken.text.append(1, c);
+                    currentToken.type = OPERATOR;
+                    EndToken(currentToken, tokens);
+                    break;
+                }
                 case '\n':
                 case '\r':
                 {
@@ -84,6 +98,7 @@ namespace amca
                     currentToken.type = WHITESPACE;
                     break;
                 }
+                case '\t':
                 case ' ':
                 {
                     if (currentToken.type == COMMENT)
@@ -133,22 +148,29 @@ namespace amca
     {
         if (t.type != WHITESPACE)
         {
-            switch (t.type)
+            if (t.text == "BYTE" || t.text == "WORD" || t.text == "DWORD" || t.text == "QWORD")
             {
-                case INST:
+                t.type = BITSIZE_SPECIFIER;
+            }
+            else
+            {
+                switch (t.type)
                 {
-                    t.data = GetInst(t.text);
-                    break;
-                }     
-                case REG:
-                {
-                    t.data = GetReg(t.text);
-                    break;
-                }   
-                case NUM:
-                {
-                    t.data = stoi(t.text);
-                    break;
+                    case INST:
+                    {
+                        t.data = GetInst(t.text);
+                        break;
+                    }
+                    case REG:
+                    {
+                        t.data = GetReg(t.text);
+                        break;
+                    }
+                    case NUM:
+                    {
+                        t.data = stoi(t.text);
+                        break;
+                    }
                 }
             }
             tokens.push_back(t);

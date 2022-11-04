@@ -1128,8 +1128,8 @@ whileout:
                 w_buffer.Write64(bc.bytes.size());
                 w_buffer.Write(bc.opcode);
                 w_buffer.Write(bc.pl);
-                w_buffer.Write(bc.reg1);
-                w_buffer.Write(bc.reg2);
+                w_buffer.Write(bc.reg1.reg);
+                w_buffer.Write(bc.reg2.reg);
                 w_buffer.Write(bc.p2);
                 w_buffer.Write64(bc.p3);
             }
