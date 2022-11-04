@@ -18,9 +18,9 @@ namespace avm
             void Write32(int32_t data);
             void Write64(int64_t data);
 
-            void WriteToAddress(uint16_t data, size_t address);
-            void WriteToAddress64(uint64_t data, size_t address);
-            void WriteToAddress32(uint32_t data, size_t address);
+            void WriteAt(size_t address, uint16_t data);
+            void WriteAt32(size_t address, uint32_t data);
+            void WriteAt64(size_t address, uint64_t data);
 
             void PushFromAddress(size_t address);
             void PushFromAddress64(size_t address);

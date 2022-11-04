@@ -19,22 +19,21 @@ namespace avm
         Write32(data >> 32);
     }
 
-    void ByteBuffer::WriteToAddress(uint16_t data, size_t address)
+    void ByteBuffer::WriteAt(size_t address, uint16_t data)
     {
         buffer[address] = data;
-        //buffer.pop_back();
     }
 
-    void ByteBuffer::WriteToAddress32(uint32_t data, size_t address)
+    void ByteBuffer::WriteAt32(size_t address, uint32_t data)
     {
-        WriteToAddress(data & 0xffff, address);
-        WriteToAddress(data >> 16, address + 1);
+        WriteAt(data & 0xffff, address);
+        WriteAt(data >> 16, address + 1);
     }
 
-    void ByteBuffer::WriteToAddress64(uint64_t data, size_t address)
+    void ByteBuffer::WriteAt64(size_t address, uint64_t data)
     {
-        WriteToAddress32(data & 0xffffffff, address);
-        WriteToAddress32(data >> 32, address + 2);
+        WriteAt32(data & 0xffffffff, address);
+        WriteAt32(data >> 32, address + 2);
     }   
 
     void ByteBuffer::PushFromAddress(size_t address)

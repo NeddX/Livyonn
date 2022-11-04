@@ -1,0 +1,16 @@
+push	%rbp
+mov		%rbp, %rsp
+
+sub		%rbp, #16
+sub		%rbp, #8
+mov		DWORD [%rbp], #2019
+mov		%rax, DWORD [%rbp]
+call 	@printInt
+add		%rbp, #16
+pop		%rbp
+return
+
+@printInt:
+	push	%rax
+	pint
+	return

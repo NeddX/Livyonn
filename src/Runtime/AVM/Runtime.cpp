@@ -56,6 +56,8 @@ namespace avm
 		r.regs[RBP] = r.baseIndex; 
 
         if (args) r.stack.InsertBack(*args);
+        r.stack.Resize(1024);
+        r.regs[RSP] = r.stack.Size();
 
         while (r.pc != nullptr) handlers[r.pc->opcode](r);
 
@@ -217,7 +219,7 @@ namespace avm
             }
             default:
             {
-                printf("%ld", r.stack.Read64());
+                printf("%lld", r.stack.Read64());
                 break;
             }
         }
@@ -284,29 +286,29 @@ namespace avm
 
     void MoveHandler(Runtime& r)
     {
-		int64_t lhv, rhv;
+        int64_t rhv;
 		if (r.pc->reg1.ptr)
 		{
-			if (r.pc->reg2.reg != NUL)
-			{
-				rhv = r.regs[r.pc->reg2.reg];
-			}
-			else
-			{
-				rhv = r.pc->p3;
-			}
+			if (r.pc->reg2.reg != NUL) rhv = r.regs[r.pc->reg2.reg];
+			else rhv = r.pc->p3;
 
 			switch (r.pc->pl)
 			{
+                case 8:
+                case 16:
+                case 32:
+                case 64:
 				default:
 				{
 					r.stack.WriteAt64(r.regs[r.pc->reg1.reg], rhv);
+                    break;
 				}
 			}
 		}
 		else
 		{
-		
+            if (r.pc->reg2.reg != NUL) r.regs[r.pc->reg1.reg] = r.regs[r.pc->reg2.reg];
+            else r.regs[r.pc->reg2.reg] = r.pc->p3;
 		}
 		/*
         if (r.pc->reg2.reg != NUL) 
@@ -326,7 +328,7 @@ namespace avm
 
     void PushIntBasepointerRelative(Runtime& r)
     {
-        r.stack.WriteToAddress64(r.stack.Read64(), (r.pc->reg1.reg != NUL) ? r.regs[r.pc->reg1.reg] + r.pc->p3 : r.pc->p3 + r.baseIndex);
+        r.stack.WriteAt64(r.stack.Read64(), (r.pc->reg1.reg != NUL) ? r.regs[r.pc->reg1.reg] + r.pc->p3 : r.pc->p3 + r.baseIndex);
         UpdateAndProceed(r);
     }
 
@@ -362,7 +364,7 @@ namespace avm
         //r.shift += n_size - p_size;
 
         // Insert the new size first ( - 4 because the size indicates the size of the string not the array)
-        r.stack.WriteToAddress64(n_size - 4, oldIndex);
+        r.stack.WriteAt64(n_size - 4, oldIndex);
 
         // Erase the old string (begining + offset + size holder, begining + offset + previous size)
         s_buffer.erase(s_buffer.begin() + oldIndex + 4, s_buffer.begin() + oldIndex + p_size);
@@ -390,7 +392,7 @@ namespace avm
     void PushByteBasepointerRelative(Runtime& r)
     {
         // This is same as PushIntBasepointerRelative but for bytes.
-        r.stack.WriteToAddress(r.stack.Read(), (r.pc->reg1.reg != NUL) ? r.regs[r.pc->reg1.reg] + r.pc->p3 : r.pc->p3 + r.baseIndex);
+        r.stack.WriteAt(r.stack.Read(), (r.pc->reg1.reg != NUL) ? r.regs[r.pc->reg1.reg] + r.pc->p3 : r.pc->p3 + r.baseIndex);
         UpdateAndProceed(r);
     }
 

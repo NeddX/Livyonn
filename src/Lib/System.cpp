@@ -7,9 +7,7 @@ namespace System
         std::ifstream fs(path, std::ios::in);
         if (fs.is_open())
         {
-			fs.seekg(SEEK_END);
-            size_t size = fs.tellg();
-			fs.seekg(0);
+            size_t size = std::filesystem::file_size(path);
 
             std::string content(size, '\0');
             fs.read(content.data(), size);
@@ -51,9 +49,7 @@ namespace System
         std::ifstream fs;
         fs.open(path, std::ios::in);
 
-		fs.seekg(SEEK_END);
-        size_t size = fs.tellg();
-		fs.seekg(0);
+        size_t size = std::filesystem::file_size(path);
 
         std::vector<uint8_t> buffer(size);
         if (!fs.is_open()) return std::nullopt;
