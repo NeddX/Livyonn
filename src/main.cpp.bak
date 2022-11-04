@@ -79,9 +79,8 @@ int main(int argc, char** argv)
             /* end */
 
             /* High Level */
-			std::string file = std::string(PSRC) + std::string("Test/test1.arm");
-            std::optional<std::string> src = System::File::ReadToString(file);
-            if (!src.has_value()) throw std::runtime_error(std::string("Failed to open file '") + std::string(file));
+            std::optional<std::string> src = System::File::ReadToString(PSRC + "Test/test1.arm");
+            if (!src.has_value()) throw std::runtime_error(std::string("Failed to open source file."));
             // ARMA (Armavir Analyzer) and ARBA (Armavi Bytecode Analyzer) 
             arma::Analyzer an; 
             an.StartAnalysis(*src);
@@ -92,7 +91,7 @@ int main(int argc, char** argv)
             {
                 .outputType = arc::EXE,
                 .outputExecutable = true,
-                .path = std::string(PSRC) + std::string("Test/out.aex")
+                .path = PSRC + "Test/out.aex"
             };
             avm::ByteCode compiledCode = c.Compile(an, options);
 

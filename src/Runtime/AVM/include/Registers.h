@@ -99,13 +99,26 @@ namespace avm
         "NUL"
     };
 
+	struct Reg
+	{
+		uint64_t value;
+		bool ptr;
+		int64_t offset;
+		int8_t size;
+
+		Reg(uint64_t value = 0, bool ptr = false, int64_t offset = 0, int8_t size = 64) : value(value), ptr(ptr), offset(offset), size(size)
+		{
+
+		};
+	};
+
     struct Registers
-    {
+	{
         private:
-            uint64_t buffer[NUL] = { 0 };
+            Reg buffer[NUL];
 
         public:
-            constexpr uint64_t &operator[](size_t index)
+            constexpr Reg &operator[](size_t index)
             {
                 return buffer[index];
             }

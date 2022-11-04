@@ -11,7 +11,7 @@ fn Entry()
 	string a = "str";
 
 	int sa = 2019;
-	_PrintStr(a);
+	_Println(a);
 }
 
 fn dum()

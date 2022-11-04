@@ -8,6 +8,6 @@ namespace avm
         ByteBuffer bargs;
         if (args) for (auto& e : *args) bargs.Write64(stoi(e));
         Runtime::Run(bytecode.data(), result, bargs);
-        printf("\nAVM halted with the code: %d\n", result);
+        printf("\nAVM halted with the code: %ld\n", result);
     }    
 }
