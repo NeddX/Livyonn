@@ -13,14 +13,14 @@ namespace avm
     enum Regs
     {
         // Generic x86_64 registers
-        RAX,
+        /*RAX,
         RBX,
         RCX,
         RDX,
         RBP,
         RSP,
         RSI,
-        RDI,
+        RDI,*/
 
         EAX,
         EBX,
@@ -51,24 +51,22 @@ namespace avm
 
         // Special Registers for this specific virutal machine
         CF, // Conditional Flag, either 0 (false) or 1 (true)
-        FNR, // Function Return Register (returns the pointer pointing to the function return value)
-        RFR, // 64bit something?
-        EFR, // 32bit something?
 
         NUL
     };
 
     static const char* regType[] =
     {
-        "RAX",
+        /*"RAX",
         "RBX",
         "RCX",
         "RDX",
         "RBP",
         "RSP",
         "RSI",
-        "RDL",
-        "EAX",
+        "RDL",*/
+
+        "EAX"
         "EBX",
         "ECX",
         "EDX",
@@ -76,6 +74,7 @@ namespace avm
         "ESP",
         "ESI",
         "EDI",
+
         "R8",
         "R9",
         "R10",
@@ -112,10 +111,10 @@ namespace avm
     struct Registers
 	{
         private:
-            uint64_t buffer[NUL];
+            uint32_t buffer[NUL];
 
         public:
-            constexpr uint64_t &operator[](size_t index)
+            constexpr uint32_t &operator[](size_t index)
             {
                 return buffer[index];
             }

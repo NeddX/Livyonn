@@ -1,5 +1,31 @@
-mov		%rbp, %rsp
+push	%ebp
+mov		%ebp, %esp
+sub		%esp, #16
+mov		%edi, #10
+call	@negro
+sub		%ebp, #4
+mov		[%ebp], %eax
+add		%ebp, #4
+call	@printInt
+mov		%eax, #0
+mov		%esp, %ebp
+pop		%ebp
+end
 
-sub		%rbp, #4
-mov		DWORD [%rbp], #2019
+@negro:
+	push	%ebp
+	mov		%ebp, %esp
+	sub		%ebp, #4
+	mov		[%ebp], %edi
+	mov		%eax, [%ebp]
+	add		%ebp, #4
+	add		%eax, #2
+	pop		%ebp
+	return
+	
+@printInt:
+	push	%eax
+	pint
+	return
+	
 nop

@@ -55,7 +55,7 @@ namespace arc
         self.addr += compiledCode.size();
 
         // Generate code for those who called us before
-        for (auto& c : self.calls) compiledCode[c] = Instruction { .opcode = CALL, .p3 = (int64_t) self.addr };
+        for (auto& c : self.calls) compiledCode[c] = Instruction { .opcode = CALL, .p3 = (uint32_t) self.addr };
         
         // Look for variable declerations first
         //for (auto& cs : fd.statements)
@@ -96,7 +96,7 @@ namespace arc
         //        //                    {
         //        //                        //compiledCode.push_back(Instruction { .opcode = NOP });
         //        //                        StatementCodeGen(lst);
-        //        //                        compiledCode.push_back(Instruction { .opcode = PUSH, .reg1 = FNR });
+        //        //                        compiledCode.push_back(Instruction { .opcode = PUSH, .reg1 = EAX });
         //        //                    }
         //        //                    else StatementCodeGen(lst);
         //        //                }
@@ -189,7 +189,7 @@ namespace arc
         // If it's the entry boii
         if (fd.name == "Entry")
         {
-            compiledCode.push_back(Instruction { .opcode = MOV, .reg1 = FNR, .p3 = 0 });
+            compiledCode.push_back(Instruction { .opcode = MOV, .reg1 = EAX, .p3 = 0 });
         }
         FunctionEpilogue(fn);
     }
@@ -235,7 +235,7 @@ namespace arc
                     {
                         StatementInfo lst(p, sti.fn);
                         StatementCodeGen(lst);
-                        compiledCode.push_back(Instruction { .opcode = POP, .reg1 = FNR });
+                        compiledCode.push_back(Instruction { .opcode = POP, .reg1 = EAX });
                     }
                 }
                 FunctionEpilogue(sti.fn);
@@ -252,7 +252,7 @@ namespace arc
                     auto arit = funcOffsets[sti.st.name].args.begin();
                     for (auto arg = sti.st.args.begin(); arg != sti.st.args.end(); arg++)
                     {
-                        size_t rbp = compiledCode.size();
+                        size_t EBP = compiledCode.size();
 
                         // Generate code for the funciton argument
                         StatementInfo lst(*arg, sti.fn);
@@ -275,7 +275,7 @@ namespace arc
                             case STRING:
                             {
                                 arit->second.index = addrCount;
-                                for (size_t i = rbp; i < compiledCode.size(); i++)
+                                for (size_t i = EBP; i < compiledCode.size(); i++)
                                 {
                                     if (compiledCode[i].opcode == DB || compiledCode[i].opcode == LSBR)
                                         arit->second.size += compiledCode[i].bytes.size() - 1;
@@ -297,7 +297,7 @@ namespace arc
                         foundFunc->second.calls.push_back(compiledCode.size());
                         compiledCode.push_back(Instruction{ .opcode = NOP, }); // Placeholder instruction
                     }
-                    else compiledCode.push_back(Instruction{ .opcode = CALL, .p3 = (int64_t)foundFunc->second.addr });
+                    else compiledCode.push_back(Instruction{ .opcode = CALL, .p3 = (uint32_t) foundFunc->second.addr });
 
                     // Let's clean after us
                     for (auto arg : funcOffsets[sti.st.name].args)
@@ -404,7 +404,7 @@ namespace arc
                                 {
                                     //compiledCode.push_back(Instruction { .opcode = NOP });
                                     StatementCodeGen(lst);
-                                    compiledCode.push_back(Instruction{ .opcode = PUSH, .reg1 = FNR });
+                                    compiledCode.push_back(Instruction{ .opcode = PUSH, .reg1 = EAX });
                                 }
                                 else StatementCodeGen(lst);
                             }
@@ -433,9 +433,9 @@ namespace arc
                         // to make sure we don't accidentally sum together other DB instructions that are
                         // not realated to the current variable decleration, we will have to get the compiledCode
                         // size before actually generating code for variable's statements.
-                        size_t rbp = compiledCode.size();
+                        size_t EBP = compiledCode.size();
 
-                        compiledCode.push_back(Instruction { .opcode = MOV, .reg1 = RAX, .reg2 = RSP });
+                        compiledCode.push_back(Instruction { .opcode = MOV, .reg1 = EAX, .reg2 = ESP });
 
                         if (!sti.st.body.empty())
                         {
@@ -445,13 +445,13 @@ namespace arc
                                 StatementCodeGen(lst);
                             }
                         }
-                        /*for (size_t i = rbp; i < compiledCode.size(); i++)
+                        /*for (size_t i = EBP; i < compiledCode.size(); i++)
                         {
                             if (compiledCode[i].opcode == DB || compiledCode[i].opcode == LSBR)
                                 vi.size += compiledCode[i].bytes.size() - 1;
                         }*/
-                        compiledCode.push_back(Instruction{ .opcode = MOV, .reg1 = RBX, .reg2 = RSP });
-                        compiledCode.push_back(Instruction{ .opcode = SUB, .reg1 = RBX, .reg2 = RAX });
+                        compiledCode.push_back(Instruction{ .opcode = MOV, .reg1 = EBX, .reg2 = ESP });
+                        compiledCode.push_back(Instruction{ .opcode = SUB, .reg1 = EBX, .reg2 = EAX });
                         
                         //vi.size += 1 + 4; // 1 for the null term and 4 for the size holder?
                         vi.size++;
@@ -489,7 +489,7 @@ namespace arc
                                 {
                                     //compiledCode.push_back(Instruction { .opcode = NOP });
                                     StatementCodeGen(lst);
-                                    compiledCode.push_back(Instruction{ .opcode = PUSH, .reg1 = FNR });
+                                    compiledCode.push_back(Instruction{ .opcode = PUSH, .reg1 = EAX });
                                 }
                                 else StatementCodeGen(lst);
                             }
@@ -523,7 +523,7 @@ namespace arc
                                 StatementCodeGen(lst);
                             }
 
-                            compiledCode.push_back(Instruction { .opcode = PIBR, .p3 = (int64_t) foundVar->second.index });
+                            compiledCode.push_back(Instruction { .opcode = PIBR, .p3 = (uint32_t) foundVar->second.index });
                             break;
                         }
                         case STRING:
@@ -550,7 +550,7 @@ namespace arc
                             // if there's no change in size then nothings gonna happen
                             sti.fn.varCount += foundVar->second.size - p_size;
 
-                            compiledCode.push_back(Instruction{  .opcode = PSBR, .p3 = (int64_t) foundVar->second.index });
+                            compiledCode.push_back(Instruction{  .opcode = PSBR, .p3 = (uint32_t) foundVar->second.index });
                             break;
                         }
                         case BOOLEAN:
@@ -561,7 +561,7 @@ namespace arc
                                 StatementCodeGen(lst);
                             }
 
-                            compiledCode.push_back(Instruction{ .opcode = PBBR, .p3 = (int64_t) foundVar->second.index });
+                            compiledCode.push_back(Instruction{ .opcode = PBBR, .p3 = (uint32_t) foundVar->second.index });
                             break;
                         }
                     }
@@ -582,7 +582,7 @@ namespace arc
                 }
 
                 compiledCode.push_back(Instruction { .opcode = INC });
-                compiledCode.push_back(Instruction { .opcode = PIBR, .p3 = (int64_t) foundVar->second.index });
+                compiledCode.push_back(Instruction { .opcode = PIBR, .p3 = (uint32_t) foundVar->second.index });
                 break;
             }
             case POST_DECREMENT_EXPRESSION:
@@ -598,7 +598,7 @@ namespace arc
                 }
 
                 compiledCode.push_back(Instruction { .opcode = DEC });
-                compiledCode.push_back(Instruction { .opcode = PIBR, .p3 = (int64_t) foundVar->second.index });
+                compiledCode.push_back(Instruction { .opcode = PIBR, .p3 = (uint32_t) foundVar->second.index });
                 break;
             }
             case OPERATOR_CALL:
@@ -614,7 +614,7 @@ namespace arc
                         StatementInfo lst(*p, sti.fn);
                         StatementCodeGen(lst);
                         if (p->kind == FUNCTION_CALL)
-                            compiledCode.push_back(Instruction { .opcode = PUSH, .reg1 = FNR });
+                            compiledCode.push_back(Instruction { .opcode = PUSH, .reg1 = EAX });
                     }
                     switch (sti.st.type.fType)
                     {
@@ -645,7 +645,7 @@ namespace arc
                         StatementInfo lst(*p, sti.fn);
                         StatementCodeGen(lst);
                         if (p->kind == FUNCTION_CALL)
-                            compiledCode.push_back(Instruction { .opcode = PUSH, .reg1 = FNR });
+                            compiledCode.push_back(Instruction { .opcode = PUSH, .reg1 = EAX });
                     }
 
                     compiledCode.push_back(Instruction { .opcode = POP, .reg1 = R9 });
@@ -660,7 +660,7 @@ namespace arc
                         StatementInfo lst(*p, sti.fn);
                         StatementCodeGen(lst);
                         if (p->kind == FUNCTION_CALL)
-                            compiledCode.push_back(Instruction { .opcode = PUSH, .reg1 = FNR });
+                            compiledCode.push_back(Instruction { .opcode = PUSH, .reg1 = EAX });
                     }
 
                     compiledCode.push_back(Instruction { .opcode = POP, .reg1 = R9 });
@@ -675,7 +675,7 @@ namespace arc
                         StatementInfo lst(*p, sti.fn);
                         StatementCodeGen(lst);
                         if (p->kind == FUNCTION_CALL)
-                            compiledCode.push_back(Instruction { .opcode = PUSH, .reg1 = FNR }); 
+                            compiledCode.push_back(Instruction { .opcode = PUSH, .reg1 = EAX }); 
                     }
 
                     compiledCode.push_back(Instruction { .opcode = POP, .reg1 = R9 });
@@ -690,7 +690,7 @@ namespace arc
                         StatementInfo lst(*p, sti.fn);
                         StatementCodeGen(lst);
                         if (p->kind == FUNCTION_CALL)
-                            compiledCode.push_back(Instruction{ .opcode = PUSH, .reg1 = FNR });
+                            compiledCode.push_back(Instruction{ .opcode = PUSH, .reg1 = EAX });
                     }
 
                     compiledCode.push_back(Instruction { .opcode = POP, .reg1 = R9 });
@@ -704,7 +704,7 @@ namespace arc
                         StatementInfo lst(*p, sti.fn);
                         StatementCodeGen(lst);
                         if (p->kind == FUNCTION_CALL)
-                            compiledCode.push_back(Instruction{ .opcode = PUSH, .reg1 = FNR });
+                            compiledCode.push_back(Instruction{ .opcode = PUSH, .reg1 = EAX });
                     }
 
                     compiledCode.push_back(Instruction { .opcode = POP, .reg1 = R9 });
@@ -718,7 +718,7 @@ namespace arc
                         StatementInfo lst(*p, sti.fn);
                         StatementCodeGen(lst);
                         if (p->kind == FUNCTION_CALL)
-                            compiledCode.push_back(Instruction{ .opcode = PUSH, .reg1 = FNR });
+                            compiledCode.push_back(Instruction{ .opcode = PUSH, .reg1 = EAX });
                     }
 
                     compiledCode.push_back(Instruction { .opcode = POP, .reg1 = R9 });
@@ -732,7 +732,7 @@ namespace arc
                     StatementInfo lst(*p, sti.fn);
                     StatementCodeGen(lst);
                     if (p->kind == FUNCTION_CALL)
-                        compiledCode.push_back(Instruction{ .opcode = PUSH, .reg1 = FNR });
+                        compiledCode.push_back(Instruction{ .opcode = PUSH, .reg1 = EAX });
                 }
 
                 compiledCode.push_back(Instruction{ .opcode = POP, .reg1 = R9 });
@@ -758,7 +758,7 @@ namespace arc
                     case INT8:
                     {
                         int8_t data = stoi(sti.st.name);
-                        compiledCode.push_back(Instruction { .opcode = PUSH, .p3 = data });
+                        compiledCode.push_back(Instruction { .opcode = PUSH, .p3 = (uint8_t) data });
                         break;
                     }
                     case UINT32:
@@ -770,7 +770,7 @@ namespace arc
                     case INT32:
                     {
                         int32_t data = stoi(sti.st.name);
-                        compiledCode.push_back(Instruction { .opcode = PUSH, .p3 = data });
+                        compiledCode.push_back(Instruction { .opcode = PUSH, .p3 = (uint32_t) data });
                         break;
                     }
                     case DOUBLE:
@@ -779,7 +779,7 @@ namespace arc
                     }
                     case STRING:
                     {
-                        vector<uint16_t> bytes(sti.st.name.size());
+                        vector<uint8_t> bytes(sti.st.name.size());
                         for (int i = 0; i < sti.st.name.size(); i++) bytes[i] = sti.st.name[i];
                         bytes.push_back(0);
                         compiledCode.push_back(Instruction{ .opcode = DB, .bytes = bytes });
@@ -809,17 +809,17 @@ namespace arc
                     {
                         case INT32:
                         {
-                            compiledCode.push_back(Instruction { .opcode = LIBR, .reg1 = RBP, .p3 = (int64_t) foundArg->second.index });
+                            compiledCode.push_back(Instruction { .opcode = LIBR, .reg1 = EBP, .p3 = (uint32_t) foundArg->second.index });
                             break;
                         }
                         case STRING:
                         {
-                            compiledCode.push_back(Instruction { .opcode = LSBR, .reg1 = RBP, .p3 = (int64_t) foundArg->second.index, });
+                            compiledCode.push_back(Instruction { .opcode = LSBR, .reg1 = EBP, .p3 = (uint32_t) foundArg->second.index, });
                             break;
                         }
                         case BOOLEAN:
                         {
-                            compiledCode.push_back(Instruction { .opcode = LBBR, .reg1 = RBP, .p3 = (int64_t) foundArg->second.index });
+                            compiledCode.push_back(Instruction { .opcode = LBBR, .reg1 = EBP, .p3 = (uint32_t) foundArg->second.index });
                             break;
                         }
                     }
@@ -836,17 +836,17 @@ namespace arc
                 {
                     case INT32:
                     {
-                        compiledCode.push_back(Instruction { .opcode = LIBR, .p3 = (int64_t) foundVar->second.index });
+                        compiledCode.push_back(Instruction { .opcode = LIBR, .p3 = (uint32_t) foundVar->second.index });
                         break;
                     }
                     case STRING:
                     {
-                        compiledCode.push_back(Instruction { .opcode = LSBR, .p3 = (int64_t) foundVar->second.index });
+                        compiledCode.push_back(Instruction { .opcode = LSBR, .p3 = (uint32_t) foundVar->second.index });
                         break;
                     }
                     case BOOLEAN:
                     {
-                        compiledCode.push_back(Instruction { .opcode = LBBR, .p3 = (int64_t) foundVar->second.index });
+                        compiledCode.push_back(Instruction { .opcode = LBBR, .p3 = (uint32_t) foundVar->second.index });
                         break;
                     }
                 }
@@ -902,7 +902,7 @@ namespace arc
                         {
                             // Replace the dummy instruction with an unconditional jump and set the index
                             // to the end of the loop.
-                            compiledCode[i] = Instruction { .opcode = JMP, .p3 = (int64_t) compiledCode.size() + 1 };
+                            compiledCode[i] = Instruction { .opcode = JMP, .p3 = (uint32_t) compiledCode.size() + 1 };
                             break;
                         }
                     }
@@ -910,9 +910,9 @@ namespace arc
 
                 // If the condition is met, then jump back to the body again
                 if (!infi)
-                    compiledCode.push_back(Instruction { .opcode = CJMP, .p3 = (int64_t) bodyAddr });
+                    compiledCode.push_back(Instruction { .opcode = CJMP, .p3 = (uint32_t) bodyAddr });
                 else
-                    compiledCode.push_back(Instruction { .opcode = JMP, .p3 = (int64_t) bodyAddr });
+                    compiledCode.push_back(Instruction { .opcode = JMP, .p3 = (uint32_t) bodyAddr });
 whileout:
                 break;
             }
@@ -978,13 +978,13 @@ whileout:
                 // and then coming back to it and updating the index.
                 if (!sti.fn.ifInsts.empty()) sti.fn.ifInsts.clear();
                 sti.fn.ifInsts.push_back(compiledCode.size());
-                compiledCode.push_back(Instruction { .opcode = JMP, .p3 = (int64_t) compiledCode.size() + 1 });
+                compiledCode.push_back(Instruction { .opcode = JMP, .p3 = (uint32_t) compiledCode.size() + 1 });
 
 
                 // Replace the placeholder with the actual instruction now that we have the address
                 // of the instruction following the if statement.
                 if (!infi)
-                    compiledCode[offset] = Instruction { .opcode = JNE, .p3 = (int64_t) compiledCode.size() };
+                    compiledCode[offset] = Instruction { .opcode = JNE, .p3 = (uint32_t) compiledCode.size() };
                 else
                     // This If statement is going to execute anyways so let's remove the dummy JMP holder.
                     compiledCode.erase(compiledCode.begin() + offset);
@@ -1008,7 +1008,7 @@ whileout:
                     throw runtime_error("Compiler Error: Expected an IF statement before ELSE.\nException class needed.");
 
                 // Now Update every If instance's JMP instruction.
-                for (auto& addr : sti.fn.ifInsts) compiledCode[addr] = Instruction{ .opcode = JMP, .p3 = (int64_t) compiledCode.size() };
+                for (auto& addr : sti.fn.ifInsts) compiledCode[addr] = Instruction{ .opcode = JMP, .p3 = (uint32_t) compiledCode.size() };
 
                 // Clear all the If instances
                 sti.fn.ifInsts.clear();
@@ -1080,12 +1080,12 @@ whileout:
                 // We can prevent this by simply by storing the indexes of every If statement's JMP instruciton
                 // and then coming back to it and updating the index.
                 sti.fn.ifInsts.push_back(compiledCode.size());
-                compiledCode.push_back(Instruction { .opcode = JMP, .p3 = (int64_t) compiledCode.size() + 1 });
+                compiledCode.push_back(Instruction { .opcode = JMP, .p3 = (uint32_t) compiledCode.size() + 1 });
 
 
                 // Replace the placeholder with the actual instruction now that we have the address
                 // of the instruction following the if statement.
-                if (!infi) compiledCode[offset] = Instruction { .opcode = JNE, .p3 = (int64_t) compiledCode.size() };
+                if (!infi) compiledCode[offset] = Instruction { .opcode = JNE, .p3 = (uint32_t) compiledCode.size() };
                 else
                     // This If statement is going to execute anyways so let's remove the dummy JMP holder.
                     compiledCode.erase(compiledCode.begin() + offset);
@@ -1097,7 +1097,7 @@ whileout:
                     throw runtime_error("Compiler Error: Expected an IF statement before ELSE.\nException class needed.");
                 
                 // Now Update every If instance's JMP instruction.
-                for (auto& addr : sti.fn.ifInsts) compiledCode[addr] = Instruction{ .opcode = JMP, .p3 = (int64_t) compiledCode.size() };
+                for (auto& addr : sti.fn.ifInsts) compiledCode[addr] = Instruction{ .opcode = JMP, .p3 = (uint32_t) compiledCode.size() };
 
                 // Change the jump address to the end of ELSE.
                 //compiledCode[jmpAddr] = Instruction { .opcode = JMP, .p3 = compiledCode.size() };
@@ -1125,18 +1125,18 @@ whileout:
             for (auto& bc : compiledCode)
             {
                 for (auto& b : bc.bytes) w_buffer.Write(b);
-                w_buffer.Write64(bc.bytes.size());
+                w_buffer.Write32(bc.bytes.size());
                 w_buffer.Write(bc.opcode);
                 w_buffer.Write(bc.pl);
                 w_buffer.Write(bc.reg1.reg);
                 w_buffer.Write(bc.reg2.reg);
-                w_buffer.Write(bc.p2);
-                w_buffer.Write64(bc.p3);
+                w_buffer.Write(bc.p3);
+                w_buffer.Write32(bc.p3);
             }
 
             // This is a very bad implementation but for now it does the job
             // I might convert my stack from 16bit to 8bit
-            System::File::WriteToBytes(options->path, System::Stack::Convert_16bitTo8bit(w_buffer.buffer));
+            System::File::WriteToBytes(options->path, w_buffer.buffer);
         }
         else cerr << "Compiler Error: Could not create file to write to." << endl;
     }
@@ -1145,19 +1145,19 @@ whileout:
     {
         ByteCode bin;
         ByteBuffer n_buffer;
-        n_buffer.buffer = System::Stack::Convert_8bitTo16bit(*System::File::ReadAllBytes("../../../../Test/out.aex"));
+        n_buffer.buffer = *System::File::ReadAllBytes("../../../../Test/out.aex");
 
         while (n_buffer.Size() != 0)
         {
             Instruction inst;
-            inst.p3 = n_buffer.Read64();
-            inst.p2 = n_buffer.Read();
+            inst.p3 = n_buffer.Read32();
+            inst.p3 = n_buffer.Read();
             inst.reg2 = (Regs)n_buffer.Read();
             inst.reg1 = (Regs)n_buffer.Read();
             inst.pl = n_buffer.Read();
             inst.opcode = (OpCode)n_buffer.Read();
 
-            size_t bs = n_buffer.Read64();
+            size_t bs = n_buffer.Read32();
             if (bs != 0) for (size_t i = 0; i < bs; i++) inst.bytes.insert(inst.bytes.begin(), n_buffer.Read());
 
             bin.insert(bin.begin(), inst);

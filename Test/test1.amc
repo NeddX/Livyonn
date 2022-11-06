@@ -1,24 +1,26 @@
-; Wrote it as optimized as I could. Did gain little bit of performance but still, the virtual machine needs some aggressive optimization and so does the compiler.
+push	%ebp
+mov		%ebp, %esp
+sub		%esp, #16
+mov		%edi, #10
+call	@negro
+sub		%rbp, #4
+mov		[%rbp], %eax
+mov		%eax, [%rbp]
+push	%eax
+pint
+mov		%eax, #1
+mov		%esp, %ebp
+pop		%ebp
+end
 
-MOV %RAX, #0
-MOV %RBX, #10000
-CALL @l2
-RETURN
-
-@l2:				; Loop condition
-	CIGT %RBX, %RAX
-	CJMP @l3
-	RETURN
-
-@l3:				; Loop body
-	MOV %RSI, %RAX
-	CALL @printInt
-	ADD %RAX, #1
-	JMP @l2
-
-@printInt:			; Print function
-	PUSH %RSI
-	PINT
-	RETURN
+@negro:
+	push	%ebp
+	mov		%ebp, %esp
+	sub		%ebp, #4
+	mov		[%ebp], %edi
+	mov		%eax, [%ebp]
+	add		%eax, #2
+	pop		%ebp
+	return
 
 nop

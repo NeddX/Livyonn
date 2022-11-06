@@ -16,18 +16,25 @@ namespace avm
         END,
         PUSH,
         POP,
-        PEEK,
         ADD,
         SUB,
         MUL,
         DIV,
         PRINT_INT,
-        PRINT_STR,
-        CILT, // If Less Than
-        CIET, // If Equal To
-        CIGT, // If Greater than
-        CINE, // If Not Equal
         MOV,
+        JMP, // Unconditional Address Jump
+        CJMP, // Jump to Address If ZF Flag is 1
+        JNE, // Jump if ZF Flag is 0
+        CALL,
+        RETURN,
+        CIET, // If Equal To
+        CINE, // If Not Equal
+        CIGT, // If Greater than
+        CILT, // If Less Than
+        INC,
+        DEC,
+
+        PRINT_STR,
         MOVS,
         PIBR, //Push Int Basepointer Relative
         LIBR, // Liberal (ew) Load Int Basepointer Relative
@@ -35,18 +42,8 @@ namespace avm
         LSBR,
         PBBR,
         LBBR,
-        JMP, // Unconditional Address Jump
-        CJMP, // Jump to Address If ZF Flag is 1
-        JRP, // Unconditional Relative Jump
-        CJRP, // Jump Relative if ZF Flag is 1
-        JRN, // Jump Relative if ZF Flag is 0
-        JNE, // Jump if ZF Flag is 0
-        CALL,
-        RETURN,
         DB,
         CMSTR,
-        INC,
-        DEC,
         POP_STR,
 
         BREAK, // Dummy instruction, gets replaced by JMP in the Compiler and the Runtime will crash if used.
@@ -104,10 +101,8 @@ namespace avm
         Reg reg2;
         //Regs reg1 = NUL;
         //Regs reg2 = NUL;
-        int32_t p2 = 0;
-        int64_t p3 = 0;
-        int64_t p4 = 0;
-        vector<uint16_t> bytes;
+        uint32_t p3 = 0;
+        vector<uint8_t> bytes;
     };    
 
     typedef vector<Instruction> ByteCode;

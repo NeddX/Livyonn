@@ -168,7 +168,7 @@ namespace amca
                     }
                     case NUM:
                     {
-                        t.data = stoi(t.text);
+                        t.data = stoll(t.text);
                         break;
                     }
                 }
@@ -199,9 +199,6 @@ namespace amca
         if (inst == "MOVS") return MOVS;
         if (inst == "JMP") return JMP;
         if (inst == "CJMP") return CJMP;
-        if (inst == "JRP") return JRP;
-        if (inst == "CJRP") return CJRP;
-        if (inst == "JRN") return JRN;
         if (inst == "JNE") return JNE;
         if (inst == "CALL") return CALL;
         if (inst == "RETURN") return RETURN;
@@ -211,14 +208,15 @@ namespace amca
     Regs GetReg(string& reg)
     {
         transform(reg.begin(), reg.end(), reg.begin(), ::toupper);
-        if (reg == "RAX") return RAX;
+        /*if (reg == "RAX") return RAX;
         if (reg == "RBX") return RBX;
         if (reg == "RCX") return RCX;
         if (reg == "RDX") return RDX;
         if (reg == "RBP") return RBP;
         if (reg == "RSP") return RSP;
         if (reg == "RSI") return RSI;
-        if (reg == "RDI") return RDI;
+        if (reg == "RDI") return RDI;*/
+
         if (reg == "EAX") return EAX;
         if (reg == "EBX") return EBX;
         if (reg == "ECX") return ECX;
@@ -243,11 +241,6 @@ namespace amca
         if (reg == "E13") return E13;
         if (reg == "E14") return E14;
         if (reg == "E15") return E15;
-        if (reg == "ZF") return CF;
-        if (reg == "FNR") return FNR;
-        if (reg == "RFR") return RFR;
-        if (reg == "EFR") return EFR;
-        if (reg == "NUL") return NUL;
         return NUL;
     } 
 

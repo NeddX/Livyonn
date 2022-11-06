@@ -10,7 +10,7 @@ namespace amcc
         int i = 0;
         int cInstOperandCount = 0;
         bool ptrExp = false;
-        int cExprCount = 0;
+        int operandCount = 0;
         for (auto& l : tokens)
         {
             if (l.type == INST) i++;
@@ -24,6 +24,7 @@ namespace amcc
                 {
                     if (inst->opcode == NOP)
                     {
+                        cInstOperandCount = 0;
                         inst->opcode = (OpCode)(t.data);
                         break;
                     }
@@ -67,11 +68,9 @@ namespace amcc
                         ptrExp = true;
                         if (cInstOperandCount == 0) inst->reg1.ptr = true;
                         else if (cInstOperandCount == 1) inst->reg2.ptr = true;
-                        cExprCount++;
                     }
                     else if (t.text == "]")
                     {
-                        cExprCount = 0;
                         ptrExp = false;
                         cInstOperandCount++;
                     }

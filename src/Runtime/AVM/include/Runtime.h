@@ -23,7 +23,7 @@ namespace avm
             Registers regs;
 
             Runtime(Instruction* pc) : pc(pc), bytecode(pc) {};
-            static void Run(Instruction* bytecode, int64_t& result, optional<ByteBuffer> args = nullopt);
+            static void Run(Instruction* bytecode, int32_t& result, optional<ByteBuffer> args = nullopt);
     };
 
     // Instruction Handlers    
@@ -31,38 +31,37 @@ namespace avm
     void EndHandler(Runtime& r);
     void PushHandler(Runtime& r);
     void PopHandler(Runtime& r);
-    void PeekHandler(Runtime& r);
     void AddHandler(Runtime& r);
     void SubHandler(Runtime& r);
     void MulHandler(Runtime& r);
     void DivHandler(Runtime& r);
     void PrintIntHandler(Runtime& r);
-    void PrintStrHandler(Runtime& r);
-    void CompIntLessThanHandler(Runtime& r);
+    void MoveHandler(Runtime& r);
+
+    void JumpHandler(Runtime& r);
+    void ConditionalJumpHandler(Runtime& r);
+    void JumpNotEqualHandler(Runtime& r);
+    void CallHandler(Runtime& r);
+    void ReturnHandler(Runtime& r);
     void CompIntEqualToHandler(Runtime& r);
     void CompIntNotEqualHandler(Runtime& r);
     void ComptIntGreaterThanHandler(Runtime& r);
-    void MoveHandler(Runtime& r);
-    void MoveSHandler(Runtime& r);
+    void CompIntLessThanHandler(Runtime& r);
+    void IncrementHandler(Runtime& r);
+    void DecrementHandler(Runtime& r);
+    /*void PrintStrHandler(Runtime& r);
     void PushIntBasepointerRelative(Runtime& r);
     void LoadIntBasepointerRelative(Runtime& r);
     void PushStrBasepointerRelative(Runtime& r);
     void LoadStrBasepointerRelative(Runtime& r);
     void PushByteBasepointerRelative(Runtime& r);
     void LoadByteBasepointerRelative(Runtime& r);
-    void JumpHandler(Runtime& r);
-    void ConditionalJumpHandler(Runtime& r);
-    void RelativeJumpHandler(Runtime& r);
-    void ConditionalRelativeJumpHandler(Runtime& r);
-    void RelativeJumpNotEqualHandler(Runtime& r);
     void JumpNotEqualHandler(Runtime& r);
-    void CallHandler(Runtime& r);
-    void ReturnHandler(Runtime& r);
     void DefineBytesHandler(Runtime& r);
     void CombineStringHandler(Runtime& r);
     void IncrementHandler(Runtime& r);
     void DecrementHandler(Runtime& r);
-    void PopStrHandler(Runtime& r);
+    void PopStrHandler(Runtime& r);*/
 
     // Handler array
     extern void (*handlers[])(Runtime&);
