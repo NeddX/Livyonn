@@ -7,7 +7,7 @@ Bytecode compiled and interpreted programming language written in C++, designed 
 
 # Pre-Alpha
 Right now it supports only two datatypes, strings and 64bit ints. 
-You can do basic mathematical expressions with ints and with strings too (only add operator is allowed of course).
+You can do basic mathematical expressions with ints and concat strings.
 Use and define variables.
 Call and declare functions.
 Include external files.
