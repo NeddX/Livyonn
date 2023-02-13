@@ -52,8 +52,8 @@ namespace avm
 
         while (r.pc != nullptr) handlers[r.pc->opcode](r);
 
-        size_t argc = args->Size();
-        r.stack.RemoveRange(0, argc);
+        //size_t argc = args->Size();
+        //r.stack.RemoveRange(0, argc);
 
         result = r.regs[FNR];
     }
@@ -213,6 +213,7 @@ namespace avm
             break;
         }
         }
+        cout << "\n";
         r.pc++;
     }
 

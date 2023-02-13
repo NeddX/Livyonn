@@ -29,6 +29,8 @@ enum Action
 
 int main(int argc, char** argv) 
 {
+    std::ios::sync_with_stdio(false);
+
     std::vector<std::string> args(argv, argv + argc);
     std::string file;
     Action ack = DEBUG;
@@ -63,17 +65,18 @@ int main(int argc, char** argv)
 
         if (ack == DEBUG)
         {
-            // std::optional<std::string> mc_src = ReadToString("/home/nedd/source/repos/Livyonn/Test/basic.amc");
-            // if (!mc_src.has_value()) throw std::runtime_error(std::string("Failed to open source file."));
+            std::optional<std::string> mc_src = ReadToString("basic.amc");
+            if (!mc_src.has_value()) throw std::runtime_error(std::string("Failed to open source file."));
 
-            // avm::AVM avm;  
-            // amca::Analyzer an;
-            // amcc::Compiler c;
-            // avm::ByteCode bytecode = c.Compile(an.StartAnalysis(*mc_src));
-            // std::cout << NL;
-            // std::vector<std::string> fa = { "999999", "1000" };
-            // avm.Start(bytecode, fa);
+            avm::AVM avm;  
+            amca::Analyzer an;
+            amcc::Compiler c;
+            avm::ByteCode bytecode = c.Compile(an.StartAnalysis(*mc_src));
+            std::cout << NL;
+            std::vector<std::string> fa = { "20000" };
+            avm.Start(bytecode, fa);
 
+            /*
             std::optional<std::string> src = ReadToString("../../../../Test/basic.arm");
             if (!src.has_value()) throw std::runtime_error(std::string("Failed to open source file."));
             // ARMA (Armavir Analyzer) and ARBA (Armavi Bytecode Analyzer) 
@@ -86,7 +89,7 @@ int main(int argc, char** argv)
 
             avm::AVM avm;
 
-            avm.Start(compiledCode);
+            avm.Start(compiledCode);*/
             return 0;
         }
 

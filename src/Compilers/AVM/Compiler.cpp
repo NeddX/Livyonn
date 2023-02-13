@@ -5,7 +5,7 @@ namespace amcc
     ByteCode Compiler::Compile(const TokenList& tokens)
     {
         Instruction* inst = new Instruction();
-        vector<Instruction> bytecode;
+        ByteCode bytecode;
         map<string, size_t> labelAddresses;
         int i = 0;
         for (auto& l : tokens)
@@ -55,5 +55,6 @@ namespace amcc
         // {
             // cout << "INST: " << opcodeType[e.opcode] << " reg1: " << regType[e.reg1] << " reg2: " << regType[e.reg2] << " p3: " << e.p3 << NL;
         // }
+        return bytecode;
     }
 }
