@@ -2,3 +2,5 @@ builds/
 bin/
 .vs/
 .vscode/
+.cache/
+./compile_commands.json
