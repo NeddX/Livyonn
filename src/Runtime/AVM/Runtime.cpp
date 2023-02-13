@@ -213,7 +213,7 @@ namespace avm
             break;
         }
         }
-        cout << "\n";
+        //cout << "\n";
         r.pc++;
     }
 
