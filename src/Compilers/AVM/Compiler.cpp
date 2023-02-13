@@ -4,7 +4,7 @@ namespace amcc
 {
     ByteCode Compiler::Compile(const TokenList& tokens)
     {
-        Instruction* inst = new Instruction(); // Is this stupid? Dunno. Maybe? But it works right?  
+        Instruction* inst = new Instruction();
         vector<Instruction> bytecode;
         map<string, size_t> labelAddresses;
         int i = 0;
@@ -24,8 +24,9 @@ namespace amcc
                         inst->opcode = static_cast<OpCode>(t.data);
                         break;
                     }   
-                    bytecode.push_back(*inst);    
-                    inst = new Instruction();            
+                    bytecode.push_back(*inst); 
+					delete inst;
+					inst = new Instruction();            
                     inst->opcode = static_cast<OpCode>(t.data);
                     break;
                 }
@@ -48,13 +49,11 @@ namespace amcc
             }
         }
         bytecode.push_back(*inst); 
+		delete inst;
 
         // for (auto& e : bytecode)
         // {
             // cout << "INST: " << opcodeType[e.opcode] << " reg1: " << regType[e.reg1] << " reg2: " << regType[e.reg2] << " p3: " << e.p3 << NL;
         // }
-
-        delete inst;
-        return bytecode;
     }
 }
