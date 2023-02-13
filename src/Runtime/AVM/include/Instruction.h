@@ -34,11 +34,11 @@ namespace avm
         PSBR,
         LSBR,
         JMP, // Unconditional Address Jump
-        CJMP, // Jump to Address If ZF Flag is 1
+        CJMP, // Jump to Address If CF Flag is 1
         JRP, // Unconditional Relative Jump
-        CJRP, // Jump Relative if ZF Flag is 1
-        JRN, // Jump Relative if ZF Flag is 0
-        JNE, // Jump if ZF Flag is 0
+        CJRP, // Jump Relative if CF Flag is 1
+        JRN, // Jump Relative if CF Flag is 0
+        JNE, // Jump if CF Flag is 0
         CALL,
         RETURN,
         DB,

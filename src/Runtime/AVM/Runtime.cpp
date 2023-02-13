@@ -45,7 +45,7 @@ namespace avm
         r.stack.Reserve(1024);
         r.stack.Write64(r.baseIndex);
         if (result) r.stack.Write64(0);
-        r.stack.Write64(0); // nullptr
+        r.stack.Write64(NULL);
         r.baseIndex = r.stack.Size();
 
         if (args) r.stack.InsertBack(*args);

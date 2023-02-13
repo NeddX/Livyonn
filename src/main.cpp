@@ -113,8 +113,8 @@ int main(int argc, char** argv)
                     long i = find(args.begin(), args.end(), file) - args.begin();
 
                     std::vector<std::string> fargs(args.begin() + ++i, args.end());
-                    avm::AVM avm; // The Virtual Machine (aka the Runtime)
-                    amca::Analyzer an; // The Analyzer/Parser 
+                    avm::AVM avm; // The Virtual Machine (the Runtime)
+                    amca::Analyzer an; // The Analyzer (the Parser)
                     amcc::Compiler c; // The Compiler
                     avm::ByteCode bytecode = c.Compile(an.StartAnalysis(*src));
                     std::cout << NL;
