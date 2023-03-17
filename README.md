@@ -1,5 +1,5 @@
 # Livyonn
-*"Sometimes you just need to create a compiler~~"*<br/>
+*"Sometimes you just need to create a compiler"*<br/>
 
 ***
 
