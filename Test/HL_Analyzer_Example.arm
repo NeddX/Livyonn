@@ -1,4 +1,3 @@
-// Armavir, what if c# and typescript fucked
 // High Level basic example
  
 fn Entry(var argc, var argv)
